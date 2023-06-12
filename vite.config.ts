@@ -20,7 +20,7 @@ export default defineConfig({
     port: 6744,
   },
   build: {
-    assetsInlineLimit: 50000,
+    assetsInlineLimit: 20000,
   },
   // customLogger: logger,
 });
