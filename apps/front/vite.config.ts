@@ -5,17 +5,18 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/front',
-
   server: {
-    port: 4200,
+    port: 1418,
     host: 'localhost',
+    strictPort: true
   },
-
   preview: {
-    port: 4300,
+    port: 31000,
     host: 'localhost',
   },
-
+  build: {
+    assetsInlineLimit: 20000,
+  },
   plugins: [
     react(),
     viteTsConfigPaths({
@@ -31,13 +32,4 @@ export default defineConfig({
   //    }),
   //  ],
   // },
-
-  test: {
-    globals: true,
-    cache: {
-      dir: '../../node_modules/.vitest',
-    },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-  },
 });

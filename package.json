@@ -2,7 +2,9 @@
   "name": "@mainecoorse/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx serve front --host --open"
+  },
   "private": true,
   "dependencies": {
     "@swc/helpers": "~0.5.0",
