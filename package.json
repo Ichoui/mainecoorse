@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npm run start:front && npm run start:back",
     "start:front": "nx serve front --host --open",
     "preview:front": "nx preview front --host --open",
     "build:front": "nx build front",
     "start:back": "nx serve back",
+    "build:back": "nx build back",
     "lint:back": "nx lint back",
     "lint:front": "nx lint front"
   },
