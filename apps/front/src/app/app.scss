@@ -1,1 +1,32 @@
-/* Your styles goes here. */
+@import '../styles/shared';
+
+.layout {
+  color: $secondaryText;
+  header {
+    position: fixed;
+    top: 0;
+    display: flex;
+    height: $headerHeight;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    .logo {
+      img {
+        width: 50px;
+      }
+    }
+  }
+
+  .container {
+    margin-top: $headerHeight;
+    height: $containerHeight;
+  }
+
+  .Tabs {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: $footerHeight;
+    border-top: 1px solid $secondaryText;
+  }
+}

@@ -1,18 +1,24 @@
 /**********************/
 /******* Colors ******/
 /********************/
-$primary: blue;
-$secondary: white;
+$primary: #00897b;
+$secondary: #f50057;
 $white: white;
-$background: #282c34;
-$header: darken($background, 6%);
+
+
+$mainText: #d0d2d4;
+$secondaryText: #9a9c9e;
+$backgroundColor: #1b1d21;
+$headerColor: #1e2129;
+$footerColor: #1b1d21;
 
 /**********************/
 /******* Sizes *******/
 /********************/
 
-$headerHeight: 100px;
-$containerHeight: calc(100dvh - $headerHeight);
+$headerHeight: 75px;
+$footerHeight: 75px;
+$containerHeight: calc(100dvh - $headerHeight - $footerHeight);
 $radius: 10px;
 
 
