@@ -1,0 +1,19 @@
+@import "@styles/shared";
+
+
+.item {
+  width: calc(50% - $gapItems);
+
+  .itemHeader {
+  }
+
+  .itemContent {
+    img {
+      width: 50px;
+    }
+  }
+
+  .itemActions {
+
+  }
+}

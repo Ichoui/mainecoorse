@@ -6,13 +6,14 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "types": ["vite/client", "vitest"],
+    "baseUrl": "src",
     "paths": {
-      "*": ["src/*"],
-      "@app/*": ["src/app/*"],
-      "@services/*": ["src/services/*"],
-      "@assets/*": ["src/assets/*"],
-      "@styles/*": ["src/styles/*"],
-      "@interfaces/*": ["src/interfaces/*"]
+      "@/*": ["*"],
+      "@app/*": ["app/*"],
+      "@assets/*": ["assets/*"],
+      "@styles/*": ["styles/*"],
+      "@components/*": ["shared/components/*"],
+      "@shared/*": ["shared/*"]
     }
   },
   "files": [],
