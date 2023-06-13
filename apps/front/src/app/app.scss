@@ -28,5 +28,8 @@
     width: 100%;
     height: $footerHeight;
     border-top: 1px solid $secondaryText;
+     a {
+       font-family: Oswald-Regular, sans-serif;
+     }
   }
 }

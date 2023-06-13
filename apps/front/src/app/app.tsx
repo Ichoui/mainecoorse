@@ -6,11 +6,13 @@ import { CalendarMonthRounded, FormatListBulletedRounded, RestaurantMenuRounded,
 import './app.scss';
 import maple from './maple.png';
 import { backgroundThemeColor, headerThemeColor, themeOptions } from '../styles/theme';
+import { Link, Outlet } from "react-router-dom";
 
 export function App(): JSX.Element {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState('calendar');
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: 'items' | 'calendar' | 'recettes' | 'courses') => {
+    console.log(newValue);
     setValue(newValue);
   };
 
@@ -23,7 +25,7 @@ export function App(): JSX.Element {
             <img src={maple} alt='Logo mainecoorse' />
           </span>
 
-          <Fab >
+          <Fab component={Link} to='/courses'>
             <ShoppingCartRounded />
           </Fab>
         </header>
@@ -32,6 +34,7 @@ export function App(): JSX.Element {
         <section className='container' style={backgroundThemeColor}>
           Contenu MAINECOORSE
           <Button className='cta'>CTA</Button>
+          <Outlet />
         </section>
 
         {/* TABS */}
@@ -45,9 +48,9 @@ export function App(): JSX.Element {
           aria-label='menu tab'
           style={backgroundThemeColor}
         >
-          <Tab icon={<FormatListBulletedRounded />} iconPosition='top' label='Items' />
-          <Tab icon={<CalendarMonthRounded />} iconPosition='top' label='Calendrier' />
-          <Tab icon={<RestaurantMenuRounded />} iconPosition='top' label='Recette' />
+          <Tab value='items' icon={<FormatListBulletedRounded />} iconPosition='top' label='Items' component={Link} to='/items' />
+          <Tab value='calendar' icon={<CalendarMonthRounded />} iconPosition='top' label='Calendrier' component={Link} to='/calendar'/>
+          <Tab value='recettes' icon={<RestaurantMenuRounded />} iconPosition='top' label='Recette' component={Link} to='/recettes'/>
         </Tabs>
       </div>
     </ThemeProvider>
