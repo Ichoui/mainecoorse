@@ -2,8 +2,8 @@ import './articles.scss';
 import { Item } from '@components/item/item';
 import { ItemArticles } from '@shared-interfaces/items';
 import { Fab } from '@mui/material';
-import { AbcOutlined, DataSaverOn } from '@mui/icons-material';
-import { Link, Outlet, Route, Routes } from 'react-router-dom';
+import { DataSaverOnRounded } from '@mui/icons-material';
+import { Link, Outlet } from 'react-router-dom';
 
 export const Articles = (): JSX.Element => {
   const articles: ItemArticles[] = [
@@ -76,7 +76,7 @@ export const Articles = (): JSX.Element => {
     <div className='articles'>
       <div className='header'>
         <Fab color='primary'  size='small' aria-label='add new article' component={Link} to='/article/new'>
-          <DataSaverOn />
+          <DataSaverOnRounded />
         </Fab>
       </div>
       <Outlet />
