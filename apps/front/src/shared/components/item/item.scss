@@ -1,19 +1,33 @@
-@import "@styles/shared";
-
+@import '@styles/shared';
 
 .item {
   width: calc(50% - $gapItems);
 
-  .itemHeader {
-  }
-
   .itemContent {
+    .typo {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      line-height: initial;
+      font-size: 1.1rem;
+      margin-bottom: initial;
+      padding-top: 5px;
+    }
     img {
-      width: 50px;
     }
   }
 
   .itemActions {
+    justify-content: space-between;
+    padding: 0 8px;
+  }
+}
 
+#more-menu ul {
+  color: $mainText;
+  padding: 0;
+  background-color: $backgroundColor;
+  li {
+    padding: 0.2rem 10px !important;
   }
 }

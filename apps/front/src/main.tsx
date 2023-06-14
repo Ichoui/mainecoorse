@@ -2,11 +2,13 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import App from './app/app';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { Articles } from '@app/articles/articles';
 import { Calendar } from '@app/calendar/calendar';
 import { Recettes } from '@app/recettes/recettes';
 import { Courses } from '@app/courses/courses';
+import { EditArticle } from '@app/articles/editArticle/editArticle';
+import { Tags } from "@app/tags/tags";
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -21,16 +23,16 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        index: true,
-        Component: Calendar,
-      },
-      {
-        path: 'calendar',
-        Component: Calendar,
+        path: '/',
+        element: <Navigate to='/articles' replace />,
       },
       {
         path: 'articles',
         Component: Articles,
+      },
+      {
+        path: 'calendar',
+        Component: Calendar,
       },
       {
         path: 'recettes',
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
         path: 'courses',
         Component: Courses,
       },
+      {
+        path: 'tags',
+        Component: Tags,
+      },
+      {
+        path: 'article/:articleId',
+        Component: EditArticle
+      }
     ],
   },
 ]);

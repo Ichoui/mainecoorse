@@ -1,7 +1,9 @@
 import './articles.scss';
 import { Item } from '@components/item/item';
-import { ItemArticles } from "../../../../../libs/shared-interfaces/src";
-
+import { ItemArticles } from '@shared-interfaces/items';
+import { Fab } from '@mui/material';
+import { AbcOutlined, DataSaverOn } from '@mui/icons-material';
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
 
 export const Articles = (): JSX.Element => {
   const articles: ItemArticles[] = [
@@ -26,13 +28,64 @@ export const Articles = (): JSX.Element => {
       articlesTags: [],
       description: 'Allez le munster!',
     },
+    {
+      id: 3,
+      label: 'Munster aux olives basques ',
+      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      articlesTags: [],
+      description: 'Allez le munster!',
+    },
+    {
+      id: 3,
+      label: 'Munster',
+      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      articlesTags: [],
+      description: 'Allez le munster!',
+    },
+    {
+      id: 3,
+      label: 'Munster',
+      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      articlesTags: [],
+      description: 'Allez le munster!',
+    },
+    {
+      id: 3,
+      label: 'Munster',
+      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      articlesTags: [],
+      description: 'Allez le munster!',
+    },
+    {
+      id: 3,
+      label: 'Munster',
+      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      articlesTags: [],
+      description: 'Allez le munster!',
+    },
+    {
+      id: 3,
+      label: 'Munster',
+      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      articlesTags: [],
+      description: 'Allez le munster!',
+    },
   ];
 
   return (
     <div className='articles'>
-      {articles.map((article, i) => (
-        <Item key={i} item={article} isArticle={true} />
-      ))}
+      <div className='header'>
+        <Fab color='primary'  size='small' aria-label='add new article' component={Link} to='/article/new'>
+          <DataSaverOn />
+        </Fab>
+      </div>
+      <Outlet />
+
+      <div className='listing'>
+        {articles.map((article, i) => (
+          <Item key={i} item={article} isArticle={true} />
+        ))}
+      </div>
     </div>
   );
 };
