@@ -13,4 +13,23 @@
       background-position: center;
     }
   }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+    .inputs {
+      width: 80%;
+      &:first-child {
+        margin-top: 25px;
+      }
+    }
+  }
+
+  .actions {
+    text-align: center;
+    margin-top: 25px;
+  }
 }

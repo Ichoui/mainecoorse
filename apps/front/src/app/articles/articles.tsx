@@ -17,56 +17,64 @@ export const Articles = (): JSX.Element => {
     {
       id: 2,
       label: 'Munster',
-      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      webImage:
+        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       articlesTags: [],
       description: 'Allez le munster!',
     },
     {
       id: 3,
       label: 'Munster',
-      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      webImage:
+        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       articlesTags: [],
       description: 'Allez le munster!',
     },
     {
       id: 3,
       label: 'Munster aux olives basques ',
-      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      webImage:
+        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       articlesTags: [],
       description: 'Allez le munster!',
     },
     {
       id: 3,
       label: 'Munster',
-      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      webImage:
+        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       articlesTags: [],
       description: 'Allez le munster!',
     },
     {
       id: 3,
       label: 'Munster',
-      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      webImage:
+        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       articlesTags: [],
       description: 'Allez le munster!',
     },
     {
       id: 3,
       label: 'Munster',
-      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      webImage:
+        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       articlesTags: [],
       description: 'Allez le munster!',
     },
     {
       id: 3,
       label: 'Munster',
-      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      webImage:
+        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       articlesTags: [],
       description: 'Allez le munster!',
     },
     {
       id: 3,
       label: 'Munster',
-      webImage: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      webImage:
+        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       articlesTags: [],
       description: 'Allez le munster!',
     },
@@ -75,7 +83,7 @@ export const Articles = (): JSX.Element => {
   return (
     <div className='articles'>
       <div className='header'>
-        <Fab color='primary'  size='small' aria-label='add new article' component={Link} to='/article/new'>
+        <Fab color='primary' size='small' aria-label='add new article' component={Link} to='/article/new'>
           <DataSaverOnRounded />
         </Fab>
       </div>
