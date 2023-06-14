@@ -1,5 +1,5 @@
-import { createTheme, ThemeOptions } from '@mui/material/styles';
 import './shared.scss';
+import { createTheme, ThemeOptions } from '@mui/material/styles';
 import { SimplePaletteColorOptions } from "@mui/material/styles/createPalette";
 
 // https://zenoo.github.io/mui-theme-creator/#Switch

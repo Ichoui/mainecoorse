@@ -2,9 +2,9 @@ import './item.scss';
 import React from 'react';
 import { Button, Card, CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
 import { AddShoppingCart, MoreVert, SavedSearch } from '@mui/icons-material';
-import { ItemArticles, ItemRecette } from "@app/articles/articles";
+import { ItemArticles, ItemRecette } from "@shared-interfaces/items";
 
-export const Item = (props: { item: ItemRecette | ItemArticles; isArticle: boolean }): JSX.Element => {
+export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boolean }): JSX.Element => {
   const isArticle = props.isArticle;
 
   return (
@@ -17,7 +17,7 @@ export const Item = (props: { item: ItemRecette | ItemArticles; isArticle: boole
             </IconButton>
           }
           title={props.item.label}
-          className="itemHeader"
+          className='itemHeader'
         />
 
         <CardContent className='itemContent'>

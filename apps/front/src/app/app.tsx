@@ -5,7 +5,7 @@ import { Fab, Tab, Tabs, ThemeProvider } from '@mui/material';
 import { CalendarMonthRounded, FormatListBulletedRounded, RestaurantMenuRounded, ShoppingCartRounded } from '@mui/icons-material';
 import './app.scss';
 import maple from './maple.png';
-import { backgroundThemeColor, headerThemeColor, themeOptions } from '../styles/theme';
+import { backgroundThemeColor, headerThemeColor, themeOptions } from "@styles/theme";
 import { Link, Outlet } from 'react-router-dom';
 
 export const App = (): JSX.Element => {
@@ -17,7 +17,7 @@ export const App = (): JSX.Element => {
 
   return (
     <ThemeProvider theme={themeOptions}>
-      <div className='layout'>
+
         {/* HEADER */}
         <header className='header' style={headerThemeColor}>
           <span className='logo'>
@@ -49,7 +49,6 @@ export const App = (): JSX.Element => {
           <Tab value='calendar' icon={<CalendarMonthRounded />} iconPosition='top' label='Calendrier' component={Link} to='/calendar' />
           <Tab value='recettes' icon={<RestaurantMenuRounded />} iconPosition='top' label='Recette' component={Link} to='/recettes' />
         </Tabs>
-      </div>
     </ThemeProvider>
   );
 };

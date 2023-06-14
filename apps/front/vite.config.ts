@@ -40,6 +40,10 @@ export default defineConfig({
         find: '@components',
         replacement: '/src/shared/components',
       },
+      {
+        find: '@shared-interfaces',
+        replacement: '../../libs/shared-interfaces/src/interfaces/*',
+      },
     ],
   },
 
