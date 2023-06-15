@@ -1,7 +1,17 @@
 import './item.scss';
 import React, { useState } from 'react';
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import { AddShoppingCart, Delete, Edit, MoreVert } from '@mui/icons-material';
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from '@mui/material';
+import { AddShoppingCartRounded, DeleteRounded, EditRounded, MoreVertRounded } from '@mui/icons-material';
 import { ItemArticles, ItemRecette } from '@shared-interfaces/items';
 
 export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boolean }): JSX.Element => {
@@ -32,11 +42,11 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
         {/* BUTTONS */}
         <CardActions className='itemActions'>
           <IconButton aria-label='add to courses' color='primary'>
-            <AddShoppingCart />
+            <AddShoppingCartRounded />
           </IconButton>
           <div>
             <IconButton aria-label='see more' onClick={handleClick}>
-              <MoreVert />
+              <MoreVertRounded />
             </IconButton>
             <Menu
               id='more-menu'
@@ -53,10 +63,10 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
               }}
             >
               <MenuItem onClick={handleClose}>
-                <Delete /> Supprimer
+                <DeleteRounded /> Supprimer
               </MenuItem>
               <MenuItem onClick={handleClose}>
-                <Edit /> Modifier
+                <EditRounded /> Modifier
               </MenuItem>
             </Menu>
           </div>

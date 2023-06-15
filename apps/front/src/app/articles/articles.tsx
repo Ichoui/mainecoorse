@@ -2,7 +2,7 @@ import './articles.scss';
 import { Item } from '@components/item/item';
 import { ItemArticles } from '@shared-interfaces/items';
 import { Fab } from '@mui/material';
-import { DataSaverOnRounded } from '@mui/icons-material';
+import { AddRounded, DataSaverOnRounded } from '@mui/icons-material';
 import { Link, Outlet } from 'react-router-dom';
 
 export const Articles = (): JSX.Element => {
@@ -82,10 +82,8 @@ export const Articles = (): JSX.Element => {
 
   return (
     <div className='articles'>
-      <div className='header'>
-        <Fab color='primary' size='small' aria-label='add new article' component={Link} to='/article/new'>
-          <DataSaverOnRounded />
-        </Fab>
+      <div className='filters'>
+
       </div>
       <Outlet />
 
@@ -94,6 +92,10 @@ export const Articles = (): JSX.Element => {
           <Item key={i} item={article} isArticle={true} />
         ))}
       </div>
+
+      <Fab className='add' color='primary' size='small' aria-label='add new article' component={Link} to='/article/new'>
+        <AddRounded />
+      </Fab>
     </div>
   );
 };

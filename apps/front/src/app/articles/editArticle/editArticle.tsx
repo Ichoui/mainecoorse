@@ -1,9 +1,8 @@
 import './editArticle.scss';
 import { Params, useParams } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
-import { Fragment } from 'react';
 import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
-import { Form, Formik, FormikHelpers, FormikValues, useFormikContext } from 'formik';
+import { FormikHelpers, FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
 
 export const EditArticle = (): JSX.Element => {
@@ -14,74 +13,93 @@ export const EditArticle = (): JSX.Element => {
   if (articleId === 'new') {
     isNewArticle = true;
   }
+
   return (
     <div className='editArticle'>
       <div className='image'>
         <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
       </div>
-      <Fragment>{articleForm()}</Fragment>
+
+      {ArticleForm()}
     </div>
   );
 };
 
-const articleForm = (): JSX.Element => {
-  const formValues = {
+const ArticleForm = (values?: any): JSX.Element => {
+  const initialValues = {
     name: '',
     url: '',
     description: '',
   };
-  const validation = yup.object().shape({
-    name: yup.string().min(3, 'The value is too short'),
+  const validationSchema = yup.object().shape({
+    name: yup
+      .string()
+      .min(2, 'Pas assez de lettres 😬')
+      .max(25, 'Trop de lettres 😡')
+      .required('A remplir, banane ! 🍌'),
+    url: yup.string().url("Gruge pas, on veut un lien pas long!").min(2, 'zz').max(512, 'Trop long ton lien ! 😡').notRequired(),
+    description: yup.string().min(2, 'zz').max(256, 'Trop long ton fichu texte ! 😡').notRequired(),
   });
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: values => submit(values),
+  });
+
   return (
-    <Formik
-      initialValues={formValues}
-      onSubmit={(values, action) => submit(values, action)}
-      validationSchema={validation}
-    >
-      {({ errors, touched }) => (
-        <Form>
-          <TextField
-            name='name'
-            label='Nom'
-            placeholder='Roquefort'
-            type='text'
-            variant='outlined'
-            className='inputs'
-            required
-          />
-          <TextField
-            name='url'
-            label='URL Image'
-            placeholder='https://la-raclette-cest-la-vie.brie'
-            type='text'
-            variant='outlined'
-            className='inputs'
-          />
-          <TextField
-            name='description'
-            label='Description'
-            placeholder="Le Munster, c'est la vie... 🙃"
-            variant='outlined'
-            className='inputs'
-            rows={4}
-            multiline
-          />
-          <div className='actions'>
-            <Button variant='outlined' type='button' color='error' startIcon={<DeleteForeverRounded />}>
-              Supprimer
-            </Button>
-            <Button variant='outlined' type='submit' color='primary' startIcon={<SaveAsRounded />}>
-              Enregistrer
-            </Button>
-          </div>
-        </Form>
-      )}
-    </Formik>
+    <form onSubmit={formik.handleSubmit}>
+      <TextField
+        label='Nom*'
+        placeholder='Bethmale de vache 🧀'
+        type='text'
+        name='name'
+        value={formik.values.name}
+        variant='outlined'
+        className='inputs'
+        onChange={formik.handleChange}
+        helperText={formik.touched.name ? formik.errors.name : ''}
+        error={formik.touched.name && Boolean(formik.errors.name)}
+      />
+
+      <TextField
+        label='URL Image'
+        placeholder='https://munster-alsace.de'
+        type='text'
+        name='url'
+        value={formik.values.url}
+        variant='outlined'
+        onChange={formik.handleChange}
+        helperText={formik.touched.url ? formik.errors.url : ''}
+        error={formik.touched.url && Boolean(formik.errors.url)}
+        className='inputs'
+      />
+      <TextField
+        label='Description'
+        placeholder='On se fait une petite Raclette, une Tartiflette ou une Fondue ? 🫕'
+        name='description'
+        value={formik.values.description}
+        variant='outlined'
+        onChange={formik.handleChange}
+        helperText={formik.touched.description ? formik.errors.description : ''}
+        error={formik.touched.description && Boolean(formik.errors.description)}
+        className='inputs'
+        rows={4}
+        multiline
+      />
+      <div className='actions'>
+        <Button variant='outlined' type='button' color='error' startIcon={<DeleteForeverRounded />}>
+          Supprimer
+        </Button>
+        <Button variant='outlined' type='submit' color='primary' startIcon={<SaveAsRounded />}>
+          Enregistrer
+        </Button>
+      </div>
+    </form>
   );
 };
 
-const submit = (values: FormikValues, action: FormikHelpers<any>): void => {
+const submit = (values: FormikValues): void => {
+  // TO SERVER !
   console.log(values);
-  console.log(action);
 };

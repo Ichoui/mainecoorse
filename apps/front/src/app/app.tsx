@@ -10,7 +10,7 @@ import {
   TagRounded
 } from "@mui/icons-material";
 import './app.scss';
-import maple from './maple.png';
+import maple from '/logo.png';
 import { backgroundThemeColor, headerThemeColor, themeOptions } from '@styles/theme';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ export const App = (): JSX.Element => {
     }
   };
   const [value, setValue] = useState<string | boolean>(location());
-  const handleChange = (event: SyntheticEvent, newValue: 'articles' | 'calendar' | 'recettes' | 'courses') => setValue(newValue);
+  const handleChangeTab = (event: SyntheticEvent, newValue: 'articles' | 'calendar' | 'recettes' | 'courses') => setValue(newValue);
 
   return (
     <ThemeProvider theme={themeOptions}>
@@ -54,7 +54,7 @@ export const App = (): JSX.Element => {
       {/* TABS */}
       <Tabs
         value={value}
-        onChange={handleChange}
+        onChange={handleChangeTab}
         textColor='primary'
         indicatorColor='primary'
         variant='fullWidth'
