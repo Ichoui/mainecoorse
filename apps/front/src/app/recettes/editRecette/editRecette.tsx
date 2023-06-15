@@ -147,7 +147,7 @@ const JSXForm = (props: any): JSX.Element => {
                         <em>None</em>
                       </MenuItem>
                       {listComplete.map(e => (
-                        <MenuItem value={e.id}>{e.label}</MenuItem>
+                        <MenuItem value={e}>{e.label}</MenuItem>
                       ))}
                     </Select>
                     <TextField
