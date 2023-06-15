@@ -21,7 +21,7 @@ export const EditArticle = (): JSX.Element => {
         <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
       </div>
 
-      {ArticleForm()}
+      <ArticleForm/>
     </div>
   );
 };
