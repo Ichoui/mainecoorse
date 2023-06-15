@@ -1,13 +1,18 @@
 import './editRecette.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
-import { Autocomplete, Button, Chip, TextField } from '@mui/material';
+import { Autocomplete, Button, Chip, Input, MenuItem, Select, TextField } from '@mui/material';
 import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
-import { FormikValues, withFormik } from 'formik';
+import { Field, FieldArray, FormikValues, withFormik } from 'formik';
 import * as yup from 'yup';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface IIngredients {
+  label: string;
+  id: number;
+}
+
+interface IIngredientsWQuantity {
   label: string;
   id: number;
 }
@@ -15,7 +20,8 @@ interface IRecetteForm {
   name: string;
   url: string;
   description: string;
-  ingredient: IIngredients[];
+  ingredients: IIngredients[];
+  ingredientsWithQuantity: IIngredientsWQuantity[];
 }
 
 export const EditRecette = (): JSX.Element => {
@@ -34,17 +40,8 @@ export const EditRecette = (): JSX.Element => {
       </div>
 
       <RecetteForm />
-
-      {/*{form?.ingredient?.map(e => {*/}
-      {/*  console.log(e);*/}
-      {/*  return e.id;*/}
-      {/*})}*/}
     </div>
   );
-};
-
-const observer = v => {
-  console.log(v);
 };
 
 const JSXForm = (props: any): JSX.Element => {
@@ -61,8 +58,10 @@ const JSXForm = (props: any): JSX.Element => {
     { label: '2001: A Space Odyssey', id: 1968 },
     { label: 'Inglourious Basterds', id: 2009 },
   ];
+  const [ingredients, setIngredient] = useState<IIngredients[]>();
+
   return (
-    <form onSubmit={handleSubmit} onChange={() => observer(values)}>
+    <form onSubmit={handleSubmit} autoComplete='off'>
       <TextField
         label='Nom*'
         placeholder='Spätzle 🍝'
@@ -100,7 +99,7 @@ const JSXForm = (props: any): JSX.Element => {
         rows={4}
         multiline
       />
-      <Autocomplete
+      {/*      <Autocomplete
         multiple
         className='inputs'
         size='small'
@@ -113,18 +112,80 @@ const JSXForm = (props: any): JSX.Element => {
             <Chip variant='outlined' label={option.label} {...getTagProps({ index })} />
           ));
         }}
-        onChange={(e: object, ingredients: IIngredients[] | null) => setFieldValue('ingredients', ingredients)}
+        onInputChange={handleChange}
+        onChange={(e: object, ingredients: IIngredients[]) => {
+          setFieldValue('ingredients', ingredients);
+          setIngredient(ingredients);
+        }}
         renderInput={params => (
           <TextField
             {...params}
             helperText={touched.ingredients ? errors.ingredients : ''}
             error={touched.ingredients && Boolean(errors.ingredients)}
+            onChange={handleChange}
             variant='outlined'
             label='Ingrédients'
             placeholder='Allez les ingrédients !'
           />
         )}
-      />
+      />*/}
+      <div className='ingredients'>
+        <FieldArray name='ingredients'>
+          {({ remove, push }) => (
+            <div>
+              {(values.ingredients as IIngredients[])?.map((p, index) => {
+                return (
+                  <div key={p.id}>
+                    <Select
+                      label='Label'
+                      name={`ingredients[${index}].label`}
+                      value={p.label}
+                      variant='outlined'
+                      onChange={handleChange}
+                    >
+                      <MenuItem value=''>
+                        <em>None</em>
+                      </MenuItem>
+                      {listComplete.map(e => (
+                        <MenuItem value={e.id}>{e.label}</MenuItem>
+                      ))}
+                    </Select>
+                    <TextField
+                      label='Quantité'
+                      name={`ingredients[${index}].quantity`}
+                      value={p.id}
+                      type='number'
+                      InputProps={{ inputProps: { min: 1 } }}
+                      variant='outlined'
+                      onChange={handleChange}
+                    />
+                    <div onClick={() => remove(index)}>SUPPRIMER</div>
+                  </div>
+                );
+              })}
+              <Button onClick={() => push({ label: '', quantity: 1, id: null })}>AJOUTER</Button>
+            </div>
+          )}
+        </FieldArray>
+        {JSON.stringify(values.ingredients, null, 2)}
+
+        {/*
+        {ingredient?.map(e => (
+          <div>
+            <TextField
+              label='Quantité'
+              type='number'
+              InputProps={{ inputProps: { min: 1 } }}
+              name='ingredientsWithQuantity'
+              value={values.ingredientsWithQuantity}
+              onChange={handleChange}
+
+            />
+            {e.label}
+          </div>
+        ))}
+        */}
+      </div>
 
       <div className='actions'>
         <Button variant='outlined' type='button' color='error' startIcon={<DeleteForeverRounded />}>
@@ -139,7 +200,13 @@ const JSXForm = (props: any): JSX.Element => {
 };
 
 const RecetteForm = withFormik({
-  mapPropsToValues: () => ({ name: '', url: '', description: '', ingredients: [] }),
+  mapPropsToValues: () => ({
+    name: '',
+    url: '',
+    description: '',
+    ingredients: [{ id: null, label: '' }],
+    ingredientsWithQuantity: [],
+  }),
   validationSchema: yup.object().shape({
     name: yup
       .string()
@@ -151,11 +218,7 @@ const RecetteForm = withFormik({
       .url('Gruge pas, on veut un lien pas long !')
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
-    description: yup
-      .string()
-      .min(5, "Lol, t'appelles ça une description ?")
-      .max(256, 'Trop long ton fichu texte ! 😡')
-      .notRequired(),
+    description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').notRequired(),
     ingredients: yup.array().min(2, "C'est pas une recette là!").required('Au moins 2 ingrédients !'),
   }),
 

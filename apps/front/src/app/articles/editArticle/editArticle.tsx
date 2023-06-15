@@ -45,7 +45,6 @@ const ArticleForm = (values?: any): JSX.Element => {
       .required('Met une image stp 🖼️'),
     description: yup
       .string()
-      .min(5, "Lol, t'appelles ça une description ?")
       .max(256, 'Trop long ton fichu texte ! 😡')
       .notRequired(),
   });
