@@ -1,4 +1,4 @@
-import './editArticle.scss';
+import './editRecette.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
@@ -6,13 +6,13 @@ import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
 
-export const EditArticle = (): JSX.Element => {
-  const { articleId }: Readonly<Params<string>> = useParams();
-  const defaultUrl = 'https://img.cuisineaz.com/660x660/2013/12/20/i47006-raclette.jpeg';
+export const EditRecette = (): JSX.Element => {
+  const { recetteId }: Readonly<Params<string>> = useParams();
+  const defaultUrl = 'https://alsace-1bc06.kxcdn.com/img/ybc_blog/post/Choucroute_big.jpg';
 
-  let isNewArticle = false;
-  if (articleId === 'new') {
-    isNewArticle = true;
+  let isNewRecette = false;
+  if (recetteId === 'new') {
+    isNewRecette = true;
   }
 
   return (
@@ -21,12 +21,12 @@ export const EditArticle = (): JSX.Element => {
         <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
       </div>
 
-      {ArticleForm()}
+      {RecetteForm()}
     </div>
   );
 };
 
-const ArticleForm = (values?: any): JSX.Element => {
+const RecetteForm = (values?: any): JSX.Element => {
   const initialValues = {
     name: '',
     url: '',
@@ -60,7 +60,7 @@ const ArticleForm = (values?: any): JSX.Element => {
     <form onSubmit={formik.handleSubmit}>
       <TextField
         label='Nom*'
-        placeholder='Bethmale de vache 🧀'
+        placeholder='Spätzle 🍝'
         type='text'
         name='name'
         value={formik.values.name}
@@ -73,7 +73,7 @@ const ArticleForm = (values?: any): JSX.Element => {
 
       <TextField
         label='URL Image'
-        placeholder='https://munster-alsace.de'
+        placeholder='https://potee-egal-choucroute.de'
         type='text'
         name='url'
         value={formik.values.url}
@@ -85,7 +85,7 @@ const ArticleForm = (values?: any): JSX.Element => {
       />
       <TextField
         label='Description'
-        placeholder='On se fait une petite Raclette, une Tartiflette ou une Fondue ? 🫕'
+        placeholder='Qui a dit que le magret et la choucroute ça se mariait pas bien ? 🦆'
         name='description'
         value={formik.values.description}
         variant='outlined'

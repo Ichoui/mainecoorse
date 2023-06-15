@@ -2,7 +2,7 @@ import './articles.scss';
 import { Item } from '@components/item/item';
 import { ItemArticles } from '@shared-interfaces/items';
 import { Fab } from '@mui/material';
-import { AddRounded, DataSaverOnRounded } from '@mui/icons-material';
+import { AddRounded } from '@mui/icons-material';
 import { Link, Outlet } from 'react-router-dom';
 
 export const Articles = (): JSX.Element => {
