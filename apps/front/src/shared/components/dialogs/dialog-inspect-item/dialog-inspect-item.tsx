@@ -1,23 +1,28 @@
-import './dialog-inspect-item.scss';
+import '../dialog.scss'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import React from 'react';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
+import { ItemArticles, ItemRecette } from '@shared-interfaces/items';
 
 export const DialogInspectItem = (props: {
   open: boolean;
   isArticle: boolean;
+  item: ItemArticles | ItemRecette;
   onClose: (confirm?: boolean) => void;
 }): JSX.Element => {
-  const { open, isArticle, onClose } = props;
+  const { open, onClose, isArticle, item } = props;
   const handleClose = () => {
     onClose();
   };
 
   return (
-    <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} maxWidth='xs'>
-      <DialogTitle></DialogTitle>
+    <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} fullWidth>
+      <DialogTitle>{item.label}</DialogTitle>
       <DialogContent>
-        <DialogContentText>ON REGARDE L'ITEM ICI</DialogContentText>
+        <DialogContentText className='dialog-content'>
+          <img src={item.webImage} alt={item.label} />
+          <div>{item.description}</div>
+        </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose} variant='outlined' color='primary'>

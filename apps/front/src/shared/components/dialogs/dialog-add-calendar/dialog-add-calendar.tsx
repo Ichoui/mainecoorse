@@ -1,4 +1,3 @@
-import './dialog-add-calendar.scss';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material';
 import React from 'react';
 import { TransitionProps } from '@mui/material/transitions';

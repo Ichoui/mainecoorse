@@ -1,7 +1,5 @@
-import './dialog-confirmation.scss';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import React from 'react';
-import { TransitionProps } from '@mui/material/transitions';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
 
 export const DialogConfirmation = (props: {

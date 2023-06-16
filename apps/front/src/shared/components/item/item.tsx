@@ -15,34 +15,35 @@ import { AddShoppingCartRounded, DeleteRounded, EditRounded, MoreVertRounded } f
 import { ItemArticles, ItemRecette } from '@shared-interfaces/items';
 import { Link } from 'react-router-dom';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
+import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 
 export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boolean }): JSX.Element => {
   const { item, isArticle } = props;
   const urlToRoute = `/${isArticle ? 'article' : 'recette'}/id`;
 
+  // Anchor Element to attach mini menu
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMiniMenu = Boolean(anchorEl);
-  const handleMiniMenu = (event?: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event?.currentTarget ?? null);
-  };
+  const handleMiniMenu = (event?: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event?.currentTarget ?? null);
 
+  // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
-  const handleOpenDialogConfirmation = () => {
-    setOpenDialogConfirmation(true);
-  };
-
-  const handleCloseDialogConfirmation = (removeItem?: boolean) => {
-    setOpenDialogConfirmation(false);
+  const handleDialogConfirmation = (open = false, removeItem?: boolean) => {
+    setOpenDialogConfirmation(open);
     if (removeItem) {
       // ICI, gérer la suppression via API de l'item via son ID
     }
   };
 
+  // Dialog inspect item
+  const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
+  const handleDialogInspectItem = (open = false) => setOpenDialogInspectItem(open);
+
   return (
     <div className='item'>
       <Card variant='outlined'>
         {/* DATA*/}
-        <CardActionArea>
+        <CardActionArea onClick={() => handleDialogInspectItem(true)}>
           <CardContent className='itemContent'>
             <CardMedia component='img' alt={item.label} height='110' image={item.webImage} />
             <Typography className='typo' gutterBottom variant='h6' component='div'>
@@ -77,7 +78,7 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
               <MenuItem
                 onClick={() => {
                   handleMiniMenu();
-                  handleOpenDialogConfirmation();
+                  handleDialogConfirmation(true);
                 }}
               >
                 <DeleteRounded /> Supprimer
@@ -95,9 +96,12 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
         <DialogConfirmation
           open={openDialogConfirmation}
           isArticle={isArticle}
-          onClose={handleCloseDialogConfirmation}
+          onClose={removeItem => handleDialogConfirmation(false, removeItem)}
         />
       )}
+
+      {/*OPEN DIALOG TON INSPECT ITEM IN READONLY*/}
+      {openDialogInspectItem && (<DialogInspectItem open={openDialogInspectItem} onClose={handleDialogInspectItem} isArticle={isArticle} item={item}/>)}
     </div>
   );
 };
