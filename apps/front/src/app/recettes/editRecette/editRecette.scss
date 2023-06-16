@@ -1,3 +1,15 @@
 @import '@styles/shared';
 
-
+.ingredients {
+  width: 80%;
+  .ingredientForm {
+    display: flex;
+    gap: 10px;
+    .ingredient {
+      width: 60%;
+    }
+    .quantity {
+      width: 20%;
+    }
+  }
+}

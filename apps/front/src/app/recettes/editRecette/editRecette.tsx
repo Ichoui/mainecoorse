@@ -1,11 +1,11 @@
 import './editRecette.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
-import { Autocomplete, Button, Chip, Input, MenuItem, Select, TextField } from '@mui/material';
-import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
+import { Autocomplete, Button, Chip, IconButton, Input, MenuItem, Select, TextField } from '@mui/material';
+import { DeleteForeverRounded, DeleteRounded, RemoveCircle, RemoveRounded, SaveAsRounded } from '@mui/icons-material';
 import { Field, FieldArray, FormikValues, withFormik } from 'formik';
 import * as yup from 'yup';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 
 interface IIngredients {
   label: string;
@@ -46,7 +46,7 @@ export const EditRecette = (): JSX.Element => {
 
 const JSXForm = (props: any): JSX.Element => {
   const { values, touched, errors, handleChange, handleSubmit, setFieldValue } = props;
-  const listComplete = [
+  const listComplete: IIngredients[] = [
     { label: 'Interstellar', id: 2014 },
     { label: 'Shaun of the dead', id: 2004 },
     { label: 'Hot Fuzz', id: 2007 },
@@ -132,59 +132,48 @@ const JSXForm = (props: any): JSX.Element => {
       <div className='ingredients'>
         <FieldArray name='ingredients'>
           {({ remove, push }) => (
-            <div>
+            <Fragment>
               {(values.ingredients as IIngredients[])?.map((p, index) => {
                 return (
-                  <div key={p.id}>
+                  <div className='ingredientForm'>
                     <Select
-                      label='Label'
-                      name={`ingredients[${index}].label`}
+                      label='Ingredient'
+                      className='ingredient'
+                      name={`ingredients[${index}].ingredient`}
                       value={p.label}
                       variant='outlined'
                       onChange={handleChange}
                     >
-                      <MenuItem value=''>
-                        <em>None</em>
-                      </MenuItem>
-                      {listComplete.map(e => (
-                        <MenuItem value={e}>{e.label}</MenuItem>
+                      {/*<MenuItem value=''></MenuItem>*/}
+                      {listComplete.map(i => (
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        <MenuItem value={i}>{i.label}</MenuItem>
                       ))}
                     </Select>
                     <TextField
-                      label='Quantité'
+                      label='Qte'
+                      className='quantity'
                       name={`ingredients[${index}].quantity`}
-                      value={p.id}
+                      value={p.label}
                       type='number'
                       InputProps={{ inputProps: { min: 1 } }}
                       variant='outlined'
                       onChange={handleChange}
                     />
-                    <div onClick={() => remove(index)}>SUPPRIMER</div>
+                    <IconButton onClick={() => remove(index)} color='error'>
+                      <DeleteRounded />
+                    </IconButton>
                   </div>
                 );
               })}
-              <Button onClick={() => push({ label: '', quantity: 1, id: null })}>AJOUTER</Button>
-            </div>
+              <Button onClick={() => push({ quantity: 1 })} variant='outlined'>
+                Ajouter
+              </Button>
+            </Fragment>
           )}
         </FieldArray>
-        {JSON.stringify(values.ingredients, null, 2)}
-
-        {/*
-        {ingredient?.map(e => (
-          <div>
-            <TextField
-              label='Quantité'
-              type='number'
-              InputProps={{ inputProps: { min: 1 } }}
-              name='ingredientsWithQuantity'
-              value={values.ingredientsWithQuantity}
-              onChange={handleChange}
-
-            />
-            {e.label}
-          </div>
-        ))}
-        */}
+        {JSON.stringify(values.ingredients)}
       </div>
 
       <div className='actions'>
@@ -204,8 +193,7 @@ const RecetteForm = withFormik({
     name: '',
     url: '',
     description: '',
-    ingredients: [{ id: null, label: '' }],
-    ingredientsWithQuantity: [],
+    ingredients: [{ quantity: 1 }],
   }),
   validationSchema: yup.object().shape({
     name: yup
@@ -219,7 +207,7 @@ const RecetteForm = withFormik({
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
     description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').notRequired(),
-    ingredients: yup.array().min(2, "C'est pas une recette là!").required('Au moins 2 ingrédients !'),
+    // ingredients: yup.array().min(2, "C'est pas une recette là!").required('Au moins 2 ingrédients !'),
   }),
 
   handleSubmit: (values, { setSubmitting }) => {
