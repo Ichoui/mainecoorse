@@ -21,7 +21,7 @@ export const EditArticle = (): JSX.Element => {
         <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
       </div>
 
-      <ArticleForm/>
+      <ArticleForm />
     </div>
   );
 };
@@ -43,10 +43,7 @@ const ArticleForm = (values?: any): JSX.Element => {
       .url('Gruge pas, on veut un lien pas long !')
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
-    description: yup
-      .string()
-      .max(256, 'Trop long ton fichu texte ! 😡')
-      .notRequired(),
+    description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').notRequired(),
   });
 
   const formik = useFormik({
@@ -56,7 +53,7 @@ const ArticleForm = (values?: any): JSX.Element => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} autoComplete='off'>
       <TextField
         label='Nom*'
         placeholder='Bethmale de vache 🧀'

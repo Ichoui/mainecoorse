@@ -209,7 +209,6 @@ const RecetteForm = withFormik({
       .min(2, 'Une recette sans ingrédients... Voyons donc ! 🫠')
       .required('Au moins 2 ingrédients !'),
   }),
-
   handleSubmit: (values, { setSubmitting }) => {
     console.log(values);
   },

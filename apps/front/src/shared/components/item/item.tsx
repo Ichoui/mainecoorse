@@ -13,28 +13,40 @@ import {
 } from '@mui/material';
 import { AddShoppingCartRounded, DeleteRounded, EditRounded, MoreVertRounded } from '@mui/icons-material';
 import { ItemArticles, ItemRecette } from '@shared-interfaces/items';
+import { Link } from 'react-router-dom';
+import { DialogConfirmation } from '@components/dialog-confirmation/dialog-confirmation';
 
 export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boolean }): JSX.Element => {
-  const isArticle = props.isArticle; // For opening modal
+  const { item, isArticle } = props;
+  const urlToRoute = `/${isArticle ? 'article' : 'recette'}/id`;
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const openMiniMenu = Boolean(anchorEl);
+  const handleMiniMenu = (event?: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event?.currentTarget ?? null);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
+  const handleOpenDialogConfirmation = () => {
+    setOpenDialogConfirmation(true);
+  };
+
+  const handleCloseDialogConfirmation = (removeItem?: boolean) => {
+    setOpenDialogConfirmation(false);
+    if (removeItem) {
+      // ICI, gérer la suppression via API de l'item via son ID
+    }
   };
 
   return (
     <div className='item'>
       <Card variant='outlined'>
-
         {/* DATA*/}
         <CardActionArea>
           <CardContent className='itemContent'>
-            <CardMedia component='img' alt={props.item.label} height='110' image={props.item.webImage} />
+            <CardMedia component='img' alt={item.label} height='110' image={item.webImage} />
             <Typography className='typo' gutterBottom variant='h6' component='div'>
-              {props.item.label}
+              {item.label}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -45,14 +57,14 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
             <AddShoppingCartRounded />
           </IconButton>
           <div>
-            <IconButton aria-label='see more' onClick={handleClick}>
+            <IconButton aria-label='see more' onClick={e => handleMiniMenu(e)}>
               <MoreVertRounded />
             </IconButton>
             <Menu
               id='more-menu'
               anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
+              open={openMiniMenu}
+              onClose={() => handleMiniMenu()}
               anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
@@ -62,16 +74,30 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
                 horizontal: 'right',
               }}
             >
-              <MenuItem onClick={handleClose}>
+              <MenuItem
+                onClick={() => {
+                  handleMiniMenu();
+                  handleOpenDialogConfirmation();
+                }}
+              >
                 <DeleteRounded /> Supprimer
               </MenuItem>
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={() => handleMiniMenu} component={Link} to={urlToRoute}>
                 <EditRounded /> Modifier
               </MenuItem>
             </Menu>
           </div>
         </CardActions>
       </Card>
+
+      {/*OPEN DIALOG TO CONFIRM DELETE */}
+      {openDialogConfirmation && (
+        <DialogConfirmation
+          open={openDialogConfirmation}
+          isArticle={isArticle}
+          onClose={handleCloseDialogConfirmation}
+        />
+      )}
     </div>
   );
 };
