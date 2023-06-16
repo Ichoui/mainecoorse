@@ -81,10 +81,14 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
                   handleDialogConfirmation(true);
                 }}
               >
-                <DeleteRounded /> Supprimer
+                <Typography className='typo-mini-menu' color='error'>
+                <DeleteRounded /> <span>Supprimer</span>
+                </Typography>
               </MenuItem>
               <MenuItem onClick={() => handleMiniMenu} component={Link} to={urlToRoute}>
-                <EditRounded /> Modifier
+                <Typography className='typo-mini-menu'>
+                <EditRounded /> <span>Modifier</span>
+                </Typography>
               </MenuItem>
             </Menu>
           </div>

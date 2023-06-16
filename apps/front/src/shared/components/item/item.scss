@@ -21,13 +21,19 @@
     justify-content: space-between;
     padding: 0 8px;
   }
+
 }
 
 #more-menu ul {
   color: $mainText;
   padding: 0;
   background-color: $backgroundColor;
-  li {
+  li, a {
     padding: 0.2rem 10px !important;
+    p {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import '../dialog.scss'
+import '../dialog.scss';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import React from 'react';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
@@ -22,6 +22,7 @@ export const DialogInspectItem = (props: {
         <DialogContentText className='dialog-content'>
           <img src={item.webImage} alt={item.label} />
           <div>{item.description}</div>
+          {!isArticle && <div>liste ingredient</div>}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
