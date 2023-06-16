@@ -1,6 +1,9 @@
 @import '@styles/shared';
 
 .ingredients {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
   width: 80%;
   .ingredientForm {
     display: flex;
