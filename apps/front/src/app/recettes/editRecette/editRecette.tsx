@@ -1,7 +1,7 @@
 import './editRecette.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
-import { Autocomplete, Button, Chip, IconButton, Input, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, Button, Chip, IconButton, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { DeleteForeverRounded, DeleteRounded, RemoveCircle, RemoveRounded, SaveAsRounded } from '@mui/icons-material';
 import { Field, FieldArray, FormikValues, withFormik } from 'formik';
 import * as yup from 'yup';
@@ -135,8 +135,9 @@ const JSXForm = (props: any): JSX.Element => {
             <Fragment>
               {(values.ingredients as IIngredients[])?.map((p, index) => {
                 return (
-                  <div className='ingredientForm'>
-                    <Select
+                  <div key={index} className='ingredientForm'>
+                    <TextField
+                      select
                       label='Ingredient'
                       className='ingredient'
                       name={`ingredients[${index}].ingredient`}
@@ -144,13 +145,15 @@ const JSXForm = (props: any): JSX.Element => {
                       variant='outlined'
                       onChange={handleChange}
                     >
-                      {/*<MenuItem value=''></MenuItem>*/}
-                      {listComplete.map(i => (
+                      <MenuItem value=''></MenuItem>
+                      {listComplete.map(ing => (
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
-                        <MenuItem value={i}>{i.label}</MenuItem>
+                        <MenuItem key={index} value={ing.label}>
+                          {ing.label}
+                        </MenuItem>
                       ))}
-                    </Select>
+                    </TextField>
                     <TextField
                       label='Qte'
                       className='quantity'
