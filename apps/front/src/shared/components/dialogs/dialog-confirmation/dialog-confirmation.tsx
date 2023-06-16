@@ -2,6 +2,7 @@ import './dialog-confirmation.scss';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material';
 import React from 'react';
 import { TransitionProps } from '@mui/material/transitions';
+import { DialogTransitionUp } from '@components/dialogs/dialog';
 
 export const DialogConfirmation = (props: {
   open: boolean;
@@ -12,21 +13,12 @@ export const DialogConfirmation = (props: {
   const handleClose = () => {
     onClose();
   };
-
   const handleOk = () => {
     onClose(true);
   };
-  const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & {
-      children: React.ReactElement<any, any>;
-    },
-    ref: React.Ref<unknown>,
-  ) {
-    return <Slide direction='up' ref={ref} {...props} />;
-  });
 
   return (
-    <Dialog open={open} keepMounted TransitionComponent={Transition} maxWidth='xs'>
+    <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} maxWidth='xs'>
       <DialogTitle>Supprimer&nbsp;{isArticle ? "l'article" : 'la recette'}</DialogTitle>
       <DialogContent>
         <DialogContentText>

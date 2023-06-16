@@ -14,7 +14,7 @@ import {
 import { AddShoppingCartRounded, DeleteRounded, EditRounded, MoreVertRounded } from '@mui/icons-material';
 import { ItemArticles, ItemRecette } from '@shared-interfaces/items';
 import { Link } from 'react-router-dom';
-import { DialogConfirmation } from '@components/dialog-confirmation/dialog-confirmation';
+import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 
 export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boolean }): JSX.Element => {
   const { item, isArticle } = props;
