@@ -1,7 +1,7 @@
 import './editRecette.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
-import { Button, IconButton, MenuItem, Select, TextField } from '@mui/material';
+import { Button, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { ErrorMessage, FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
@@ -61,7 +61,6 @@ const JSXForm = (props: any): JSX.Element => {
   ];
   return (
     <form onSubmit={handleSubmit} autoComplete='off'>
-      {JSON.stringify(errors)}
       <TextField
         label='Nom*'
         placeholder='Spätzle 🍝'
@@ -107,7 +106,6 @@ const JSXForm = (props: any): JSX.Element => {
               {(values.ingredients as IIngredientsWithQte[])?.map((p, index) => {
                 return (
                   <div key={index} className='ingredientForm'>
-                    {/*{errors?.ingredients[index]?.ingredient}*/}
                     <TextField
                       select // because of outlined label does not display with <Select> tag ... bug
                       label='Ingredient'
@@ -157,7 +155,9 @@ const JSXForm = (props: any): JSX.Element => {
               <Button onClick={() => push({ quantity: 1 })} variant='outlined'>
                 Ajouter
               </Button>
-              {Boolean(errors.ingredients) && typeof errors.ingredients === 'string' ? errors.ingredients : ''}
+              <Typography color='error'>
+                {Boolean(errors.ingredients) && typeof errors.ingredients === 'string' ? errors.ingredients : ''}
+              </Typography>
             </Fragment>
           )}
         </FieldArray>
@@ -181,9 +181,9 @@ const RecetteForm = withFormik({
     url: 'http://localhost.com',
     description: 'test',
     ingredients: [
-      { quantity: 6, ingredient: { label: 'Thunder Tropics', id: 2008 } },
-      // { quantity: 1, ingredient: { label: '2001: A Space Odyssey', id: 1968 } },
-      // { quantity: 6, ingredient: { label: 'Shaun of the dead', id: 2004 } },
+      { quantity: 5, ingredient: { label: 'Thunder Tropics', id: 2008 } },
+      { quantity: 7, ingredient: { label: '2001: A Space Odyssey', id: 1968 } },
+      { quantity: 9, ingredient: { label: 'Shaun of the dead', id: 2004 } },
     ],
   }),
   validationSchema: yup.object().shape({
@@ -203,10 +203,10 @@ const RecetteForm = withFormik({
       .of(
         yup.object().shape({
           ingredient: yup.object().required('Ne pas zapper !'),
-          quantity: yup.number().min(1, '0 ? Non !'),
+          quantity: yup.number().min(1, '0 ? Nope !'),
         }),
       )
-      .min(2, "C'est pas une recette là!")
+      .min(2, 'Une recette sans ingrédients... Voyons donc ! 🫠')
       .required('Au moins 2 ingrédients !'),
   }),
 
