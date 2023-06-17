@@ -12,12 +12,12 @@ import {
   Typography,
 } from '@mui/material';
 import { AddShoppingCartRounded, DeleteRounded, EditRounded, MoreVertRounded } from '@mui/icons-material';
-import { ItemArticles, ItemRecette } from '@shared-interfaces/items';
 import { Link } from 'react-router-dom';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
+import { ItemBase } from '@shared-interfaces/items';
 
-export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boolean }): JSX.Element => {
+export const Item = (props: { item: ItemBase; isArticle: boolean }): JSX.Element => {
   const { item, isArticle } = props;
   const urlToRoute = `/${isArticle ? 'article' : 'recette'}/id`;
 
@@ -82,12 +82,12 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
                 }}
               >
                 <Typography className='typo-mini-menu' color='error'>
-                <DeleteRounded /> <span>Supprimer</span>
+                  <DeleteRounded /> <span>Supprimer</span>
                 </Typography>
               </MenuItem>
               <MenuItem onClick={() => handleMiniMenu} component={Link} to={urlToRoute}>
                 <Typography className='typo-mini-menu'>
-                <EditRounded /> <span>Modifier</span>
+                  <EditRounded /> <span>Modifier</span>
                 </Typography>
               </MenuItem>
             </Menu>
@@ -105,7 +105,14 @@ export const Item = (props: { item: ItemArticles | ItemRecette; isArticle: boole
       )}
 
       {/*OPEN DIALOG TON INSPECT ITEM IN READONLY*/}
-      {openDialogInspectItem && (<DialogInspectItem open={openDialogInspectItem} onClose={handleDialogInspectItem} isArticle={isArticle} item={item}/>)}
+      {openDialogInspectItem && (
+        <DialogInspectItem
+          open={openDialogInspectItem}
+          onClose={handleDialogInspectItem}
+          isArticle={isArticle}
+          item={item}
+        />
+      )}
     </div>
   );
 };

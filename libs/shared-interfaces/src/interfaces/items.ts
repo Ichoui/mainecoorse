@@ -1,17 +1,11 @@
+
 export interface ItemBase {
   webImage: string;
   description: string;
   id: number;
   label: string;
-}
-
-export interface ItemArticles extends ItemBase {
-  articlesTags: Tags[];
-}
-
-export interface ItemRecette extends ItemBase {
-  recettesTags: Tags[];
-  articlesList: ItemArticles[];
+  tags: Tags[]
+  articlesList?: ItemBase[];
 }
 
 export interface Tags {
@@ -21,6 +15,6 @@ export interface Tags {
 
 export interface Courses {
   id: number;
-  articlesList: ItemArticles[];
+  articlesList: ItemBase[];
   tags: Tags[];
 }

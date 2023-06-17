@@ -2,12 +2,12 @@ import '../dialog.scss';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import React from 'react';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
-import { ItemArticles, ItemRecette } from '@shared-interfaces/items';
+import { ItemBase } from '@shared-interfaces/items';
 
 export const DialogInspectItem = (props: {
   open: boolean;
   isArticle: boolean;
-  item: ItemArticles | ItemRecette;
+  item: ItemBase;
   onClose: (confirm?: boolean) => void;
 }): JSX.Element => {
   const { open, onClose, isArticle, item } = props;
