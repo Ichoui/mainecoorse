@@ -14,7 +14,7 @@
       "@styles/*": ["styles/*"],
       "@components/*": ["shared/components/*"],
       "@shared/*": ["shared/*"],
-      "@shared-interfaces/*": ["../../../libs/shared-interfaces/src/interfaces/*"],
+      "@shared-interfaces/*": ["../../../libs/shared-interfaces/src/interfaces/*"]
     }
   },
   "files": [],

@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { joinPathFragments } from '@nx/devkit';
+import { resolve } from 'path';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/shared-interfaces',
@@ -24,7 +25,7 @@ export default defineConfig({
     alias: [
       {
         find: '@shared-interfaces',
-        replacement: '/src/interfaces',
+        replacement: resolve(__dirname, '/src/interfaces'),
       },
     ],
   },

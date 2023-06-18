@@ -1,10 +1,15 @@
+export const enum ItemType {
+  ARTICLE = 'article',
+  RECETTE = 'recette',
+}
 
 export interface ItemBase {
-  webImage: string;
-  description: string;
   id: number;
+  itemType: ItemType;
+  description: string;
+  webImage: string;
   label: string;
-  tags: Tags[]
+  tags: Tags[];
   articlesList?: ItemBase[];
 }
 

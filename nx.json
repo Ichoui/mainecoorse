@@ -48,6 +48,7 @@
       },
       "library": {
         "style": "scss",
+        "bundler": "vite",
         "linter": "eslint",
         "unitTestRunner": "none"
       }

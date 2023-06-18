@@ -15,11 +15,12 @@ import { AddShoppingCartRounded, DeleteRounded, EditRounded, MoreVertRounded } f
 import { Link } from 'react-router-dom';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
-import { ItemBase } from '@shared-interfaces/items';
+import { ItemBase, ItemType } from '@shared-interfaces/items';
 
-export const Item = (props: { item: ItemBase; isArticle: boolean }): JSX.Element => {
-  const { item, isArticle } = props;
-  const urlToRoute = `/${isArticle ? 'article' : 'recette'}/id`;
+export const Item = (props: { item: ItemBase }): JSX.Element => {
+  const { item } = props;
+  const isArticle = item.itemType === ItemType.ARTICLE;
+  const urlToRoute = `/${isArticle ? 'article' : 'recette'}/${item.id}`;
 
   // Anchor Element to attach mini menu
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

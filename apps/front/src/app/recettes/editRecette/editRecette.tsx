@@ -1,12 +1,11 @@
 import './editRecette.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
-import { Button, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Button, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
-import { ErrorMessage, FieldArray, withFormik } from 'formik';
+import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
-import React, { Fragment, useState } from 'react';
-import { getIn } from 'yup';
+import React, { Fragment } from 'react';
 
 interface IIngredientsWithQte {
   ingredient: IIngredient;

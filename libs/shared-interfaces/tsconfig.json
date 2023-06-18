@@ -6,10 +6,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "types": ["vite/client"],
-//    "baseUrl": "src",
-//    "paths": {
-//      "@shared-interfaces": ["interfaces/*"]
-//    }
   },
   "files": [],
   "include": [],
