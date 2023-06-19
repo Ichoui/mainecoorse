@@ -31,15 +31,19 @@ export interface IIngredient {
   id: number;
 }
 
-export const enum Tags {
-  FRAIS = 'frais',
-  POISSON = 'poisson',
-  VIANDE = 'viande',
-  HIVER = 'hiver',
-}
+// export const enum Tags {
+//   FRAIS = 'frais',
+//   POISSON = 'poisson',
+//   VIANDE = 'viande',
+//   HIVER = 'hiver',
+// }
+
+// https://stackoverflow.com/questions/48478361/how-to-merge-two-enums-in-typescript
+export type Tags = ( typeof ArticleTags) & ( typeof RecetteTags)
+
 
 export const enum ArticleTags {
-  Viande = 'viande',
+  VIANDE = 'viande',
   POISSON = 'poisson',
   BOULANGERIE = 'boulangerie',
   FRUITS = 'fruits',
@@ -57,7 +61,7 @@ export const enum RecetteTags {
   PLAT = 'plat',
   DESSERT = 'dessert',
   BOISSON = 'boisson',
-  BREAKFAST = 'petit',
+  PETIT_DEJEUNER = 'petit_dejeuner',
   ETE = 'été',
   HIVER = 'hiver',
   COURT = 'court',
