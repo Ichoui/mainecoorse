@@ -16,7 +16,7 @@ export const DialogInspectItem = (props: {
   };
 
   return (
-    <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} fullWidth>
+    <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} fullWidth className='dialog-main'>
       <DialogTitle>{item.label}</DialogTitle>
       <DialogContent>
         <div className='dialog-content'>

@@ -100,7 +100,7 @@ export const Articles = (): JSX.Element => {
         ))}
       </div>
 
-      <Fab className='add' color='primary' size='small' aria-label='add new article' component={Link} to='/article/new'>
+      <Fab className='add' color='secondary' size='small' aria-label='add new article' component={Link} to='/article/new'>
         <AddRounded />
       </Fab>
     </div>

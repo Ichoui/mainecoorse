@@ -1,20 +1,19 @@
 import './shared.scss';
 import { createTheme, ThemeOptions } from '@mui/material/styles';
-import { SimplePaletteColorOptions } from "@mui/material/styles/createPalette";
+import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
+import { purple, yellow } from '@mui/material/colors';
 
 // https://zenoo.github.io/mui-theme-creator/#Switch
+// https://mui.com/material-ui/customization/color/
+
 export const themeOptions: ThemeOptions = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#00897b',
-      light: '#33A095',
-      dark: '#005F56',
+      main: '#9570de',
     },
     secondary: {
-      main: '#f50057',
-      light: '#F73378',
-      dark: '#AB003C',
+      main: yellow[500],
     },
     background: {
       default: '#1b1d21',
@@ -29,7 +28,26 @@ export const themeOptions: ThemeOptions = createTheme({
   shape: {
     borderRadius: 10,
   },
+  components: {
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Oswald-Bold',
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#1b1d21',
+          backgroundImage: 'inherit'
+        },
+      },
+    },
+  },
 });
 
 export const backgroundThemeColor = { backgroundColor: themeOptions?.palette?.background?.default };
-export const headerThemeColor = { backgroundColor: (themeOptions?.palette?.primary as SimplePaletteColorOptions)?.main };
+export const headerThemeColor = {
+  backgroundColor: (themeOptions?.palette?.primary as SimplePaletteColorOptions)?.dark,
+};

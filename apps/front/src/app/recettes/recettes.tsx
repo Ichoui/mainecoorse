@@ -109,7 +109,7 @@ export const Recettes = (): JSX.Element => {
         ))}
       </div>
 
-      <Fab className='add' color='primary' size='small' aria-label='add new recette' component={Link} to='/recette/new'>
+      <Fab className='add' color='secondary' size='small' aria-label='add new recette' component={Link} to='/recette/new'>
         <AddRounded />
       </Fab>
     </div>

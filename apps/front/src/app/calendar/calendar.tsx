@@ -3,7 +3,7 @@ import { ItemBase, ItemType, Tags } from '@shared-interfaces/items';
 import { Chip } from '@mui/material';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import React, { useState } from 'react';
-
+// https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
   const divers: ItemBase[] = [
     {
