@@ -19,5 +19,5 @@
       "@mainecoorse/interface/shared-interfaces": ["libs/interface/shared-interfaces/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "dist"]
 }

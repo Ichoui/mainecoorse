@@ -1,5 +1,5 @@
 import '../dialog.scss';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React from 'react';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
 import { ItemBase } from '@shared-interfaces/items';
@@ -19,11 +19,25 @@ export const DialogInspectItem = (props: {
     <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} fullWidth>
       <DialogTitle>{item.label}</DialogTitle>
       <DialogContent>
-        <DialogContentText className='dialog-content'>
+        <div className='dialog-content'>
           <img src={item.webImage} alt={item.label} />
-          <div>{item.description}</div>
-          {!isArticle && <div>liste ingredient</div>}
-        </DialogContentText>
+          <p>{item.description}</p>
+          {item?.tags && (
+            <div className='tags'>
+              {item.tags.map(tag => (
+                <p>{tag}</p>
+              ))}
+            </div>
+          )}
+
+          {!isArticle && (
+            <ul>
+              {item.articlesList!.map(art => (
+                <li>{art.label}</li>
+              ))}
+            </ul>
+          )}
+        </div>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose} variant='outlined' color='primary'>
