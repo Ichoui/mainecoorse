@@ -6,16 +6,7 @@ import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-m
 import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
 import React, { Fragment } from 'react';
-
-interface IIngredientsWithQte {
-  ingredient: IIngredient;
-  quantity?: number;
-}
-
-interface IIngredient {
-  label: string;
-  id: number;
-}
+import { IIngredient, IIngredientsWithQte } from '@shared-interfaces/items';
 
 interface IRecetteForm {
   name: string;
@@ -27,11 +18,7 @@ interface IRecetteForm {
 export const EditRecette = (): JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://alsace-1bc06.kxcdn.com/img/ybc_blog/post/Choucroute_big.jpg';
-
-  let isNewRecette = false;
-  if (recetteId === 'new') {
-    isNewRecette = true;
-  }
+  const isNewRecette = recetteId === 'new'
 
   return (
     <div className='editItem'>

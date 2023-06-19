@@ -13,7 +13,7 @@ export interface ItemBase {
   articlesList?: ArticleList[];
 }
 
-export type ArticleList = Omit<ItemBase, 'articlesList' | 'itemType' | 'tags'>;
+export type ArticleList = Omit<ItemBase, 'articlesList' | 'itemType'> & { quantity: number };
 
 export interface Courses {
   id: number;
@@ -21,9 +21,46 @@ export interface Courses {
   tags: Tags[];
 }
 
+export interface IIngredientsWithQte {
+  ingredient: IIngredient;
+  quantity?: number;
+}
+
+export interface IIngredient {
+  label: string;
+  id: number;
+}
+
 export const enum Tags {
   FRAIS = 'frais',
   POISSON = 'poisson',
   VIANDE = 'viande',
   HIVER = 'hiver',
+}
+
+export const enum ArticleTags {
+  Viande = 'viande',
+  POISSON = 'poisson',
+  BOULANGERIE = 'boulangerie',
+  FRUITS = 'fruits',
+  LEGUMES = 'légumes',
+  EPICERIE = 'épicerie',
+  LAITAGE = 'laitage',
+  ENTRETIEN = 'entretien',
+  HYGIENE = 'hygiène',
+  BOISSONS = 'boissons',
+  DIVERS = 'divers',
+}
+
+export const enum RecetteTags {
+  ENTREE = 'entrée',
+  PLAT = 'plat',
+  DESSERT = 'dessert',
+  BOISSON = 'boisson',
+  BREAKFAST = 'petit',
+  ETE = 'été',
+  HIVER = 'hiver',
+  COURT = 'court',
+  MOYEN = 'moyen',
+  LONG = 'long',
 }
