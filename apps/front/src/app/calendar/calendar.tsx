@@ -54,12 +54,12 @@ export const Calendar = () => {
   ];
 
   const days = [
-    { label: 'Samedi', slug: 'azf', items: [divers[1]] },
+    { label: 'Samedi', slug: 'azf', items: [divers[1], divers[0], divers[1], divers[0], divers[0], divers[0]] },
     { label: 'Dimanche', slug: 'sqsqs', items: [divers[0]] },
-    { label: 'Lundi', slug: 'ggbh', items: [divers[0]] },
+    { label: 'Lundi', slug: 'ggbh', items: [divers[0], divers[1]] },
     { label: 'Mardi', slug: 'ghf', items: [divers[1]] },
-    { label: 'Mercredi', slug: 'cxv', items: [divers[0]] },
-    { label: 'Jeudi', slug: 'rth', items: [divers[1]] },
+    { label: 'Mercredi', slug: 'cxv', items: [divers[0], divers[1]] },
+    { label: 'Jeudi', slug: 'rth', items: [divers[1], divers[0], divers[1], divers[0], divers[0]] },
     { label: 'Vendredi', slug: 'opk', items: [divers[1]] },
   ];
 
@@ -73,15 +73,17 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
+        <div className='divers'>
       {divers.map(item => (
-        <div key={item.id} className='divers'>
-          <Chip label={item.label} variant='outlined' onClick={() => handleDialogInspectItem(true, item)} />
-        </div>
+          <Chip key={item.id} label={item.label} variant='outlined' onClick={() => handleDialogInspectItem(true, item)} />
       ))}
+        </div>
 
       {days.map(day => (
         <div key={day.slug} className='day'>
           <h4>{day.label}</h4>
+          <div className='chip'>
+
           {day.items.map(item => (
             <Chip
               key={item.id}
@@ -91,6 +93,7 @@ export const Calendar = () => {
               onDelete={() => null}
             />
           ))}
+          </div>
           <hr />
         </div>
       ))}
