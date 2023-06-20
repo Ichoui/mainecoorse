@@ -4,17 +4,33 @@
   height: 100%;
   overflow-y: scroll;
 
-  .divers {
-  }
-
-  .day {
-    h4 {
-      color: $white;
+  .MuiChip-root {
+    display: flex;
+    justify-content: space-between;
+    width: 8em;
+    span {
+      padding: 0 5px;
+      width: 100%;
       text-align: center;
     }
   }
 
-  hr {
+  .divers {
+  }
 
+  .day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h4 {
+      color: $white;
+      text-align: center;
+      margin: 10px;
+    }
+
+  }
+
+  hr {
+    width: 90%;
   }
 }
