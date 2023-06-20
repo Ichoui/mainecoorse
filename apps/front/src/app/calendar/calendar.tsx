@@ -1,5 +1,5 @@
 import './calendar.scss';
-import { ItemBase, ItemType, Tags } from '@shared-interfaces/items';
+import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { Chip } from '@mui/material';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import React, { useState } from 'react';
@@ -12,7 +12,7 @@ export const Calendar = () => {
       itemType: ItemType.ARTICLE,
       description: 'Ma description',
       webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-      tags: [Tags.FRAIS, Tags.POISSON],
+      tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
     },
     {
       id: 2,
@@ -21,14 +21,14 @@ export const Calendar = () => {
       description:
         'Je suis un castor né au canada, ca t en bouche un coin ? Moi aussi, et je vais te le ronger ton coin ! Allez, crocs!',
       webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-      tags: [Tags.FRAIS, Tags.VIANDE],
+      tags: [RecetteTags.ENTREE, RecetteTags.LONG, RecetteTags.DESSERT],
       articlesList: [
         {
           id: 7,
           label: 'Frites',
           quantity: 5,
           description: 'Les frites belges ou les frites ricaines ?',
-          tags: [Tags.FRAIS, Tags.VIANDE],
+          tags: [RecetteTags.COURT],
           webImage:
             'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
         },
@@ -37,7 +37,7 @@ export const Calendar = () => {
           label: 'Oignon',
           quantity: 2,
           description: 'C est pas bon',
-          tags: [Tags.POISSON],
+          tags: [RecetteTags.PLAT],
           webImage: 'https://jardinage.lemonde.fr/images/dossiers/historique/oignons2-155448.jpg',
         },
         {
@@ -45,7 +45,7 @@ export const Calendar = () => {
           label: 'Frites',
           quantity: 3,
           description: 'C est vraiment pas bon ça!',
-          tags: [Tags.VIANDE],
+          tags: [RecetteTags.ETE],
           webImage:
             'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Carrots_on_Display.jpg/800px-Carrots_on_Display.jpg',
         },
@@ -54,13 +54,13 @@ export const Calendar = () => {
   ];
 
   const days = [
-    { label: 'Samedi', slug: 'sunday', items: [divers[1]] },
-    { label: 'Dimanche', slug: 'sunday', items: [divers[0]] },
-    { label: 'Lundi', slug: 'sunday', items: [divers[0]] },
-    { label: 'Mardi', slug: 'sunday', items: [divers[1]] },
-    { label: 'Mercredi', slug: 'sunday', items: [divers[0]] },
-    { label: 'Jeudi', slug: 'sunday', items: [divers[1]] },
-    { label: 'Vendredi', slug: 'sunday', items: [divers[1]] },
+    { label: 'Samedi', slug: 'azf', items: [divers[1]] },
+    { label: 'Dimanche', slug: 'sqsqs', items: [divers[0]] },
+    { label: 'Lundi', slug: 'ggbh', items: [divers[0]] },
+    { label: 'Mardi', slug: 'ghf', items: [divers[1]] },
+    { label: 'Mercredi', slug: 'cxv', items: [divers[0]] },
+    { label: 'Jeudi', slug: 'rth', items: [divers[1]] },
+    { label: 'Vendredi', slug: 'opk', items: [divers[1]] },
   ];
 
   // Dialog inspect item

@@ -39,7 +39,8 @@ export interface IIngredient {
 // }
 
 // https://stackoverflow.com/questions/48478361/how-to-merge-two-enums-in-typescript
-export type Tags = ( typeof ArticleTags) & ( typeof RecetteTags)
+export type Tags = ArticleTags | RecetteTags
+// export type Tags = ( typeof ArticleTags) & ( typeof RecetteTags)
 
 
 export const enum ArticleTags {

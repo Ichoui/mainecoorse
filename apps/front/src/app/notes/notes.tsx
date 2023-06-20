@@ -1,7 +1,7 @@
-import './tags.scss';
+import './notes.scss';
 
-export const Tags = () => {
-  return (<div>here its tags
+export const Notes = () => {
+  return (<div>here its Notes!
 
     {/*      <Autocomplete
         multiple

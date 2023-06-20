@@ -1,9 +1,5 @@
 @import '@styles/shared';
 
-.MuiPaper-root  {
-  //background-color: $backgroundColor;
-}
-
 .dialog-content {
   display: flex;
   flex-direction: column;
@@ -17,9 +13,9 @@
     display: flex;
     gap: 5px;
   }
-  ul.ingredients-listing {
-    li {
-      list-style-type: none;
+  .ingredients-listing {
+    p {
+      margin: 0;
       padding-left: 10px;
     }
   }

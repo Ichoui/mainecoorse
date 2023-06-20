@@ -31,13 +31,13 @@ export const DialogInspectItem = (props: {
           )}
 
           {!isArticle && (
-            <ul className='ingredients-listing'>
+            <div className='ingredients-listing'>
               {item.articlesList!.map((art, i) => (
-                <li key={i}>
+                <p key={i}>
                   {art.quantity} {art.label}
-                </li>
+                </p>
               ))}
-            </ul>
+            </div>
           )}
         </div>
       </DialogContent>

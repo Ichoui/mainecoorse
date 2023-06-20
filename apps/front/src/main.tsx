@@ -8,7 +8,7 @@ import { Calendar } from '@app/calendar/calendar';
 import { Recettes } from '@app/recettes/recettes';
 import { Courses } from '@app/courses/courses';
 import { EditArticle } from '@app/articles/editArticle/editArticle';
-import { Tags } from '@app/tags/tags';
+import { Notes } from '@app/notes/notes';
 import { EditRecette } from '@app/recettes/editRecette/editRecette';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -44,8 +44,8 @@ const router = createBrowserRouter([
         Component: Courses,
       },
       {
-        path: 'tags',
-        Component: Tags,
+        path: 'notes',
+        Component: Notes,
       },
       {
         path: 'article/:articleId',

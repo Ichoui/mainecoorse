@@ -3,12 +3,12 @@
 import React, { SyntheticEvent, useState } from 'react';
 import { Fab, IconButton, Tab, Tabs, ThemeProvider } from '@mui/material';
 import {
-  CalendarMonthRounded,
+  CalendarMonthRounded, EditNoteRounded,
   FormatListBulletedRounded,
   RestaurantMenuRounded,
   ShoppingCartRounded,
   TagRounded
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 import './app.scss';
 import maple from '/logo.png';
 import { backgroundThemeColor, headerThemeColor, themeOptions } from '@styles/theme';
@@ -33,8 +33,8 @@ export const App = (): JSX.Element => {
     <ThemeProvider theme={themeOptions}>
       {/* HEADER */}
       <header className='header' style={headerThemeColor}>
-        <IconButton component={Link} to='/tags' onClick={() => setValue(false)}>
-          <TagRounded />
+        <IconButton component={Link} to='/notes' onClick={() => setValue(false)}>
+          <EditNoteRounded />
         </IconButton>
 
         <span className='logo'>
