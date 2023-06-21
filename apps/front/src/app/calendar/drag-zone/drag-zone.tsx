@@ -1,62 +1,35 @@
 import { DraggedChips } from '@app/calendar/dragged-chips/dragged-chips';
 import { ItemBase } from '@shared-interfaces/items';
-import { DropTargetMonitor, useDrop } from 'react-dnd';
-import { DragTypes } from '@shared/interfaces/DragTypes';
 import '../calendar.scss';
-import { useState } from 'react';
+import { useDroppable } from '@dnd-kit/core';
 
 export const DragZone = (props: {
   items?: ItemBase[];
-  type: string;
-  initialIndex: number;
   onClick: (confirm: boolean, item: ItemBase) => void;
   onDelete?: (remove: boolean) => void | undefined;
-  onDrop: (item: ItemBase, fromIndex: number, toIndex: number) => void;
+  identifier: string;
 }) => {
-  const { items, type, initialIndex, onClick, onDelete, onDrop } = props;
-  const [canDrop, setCanDrop] = useState<boolean>(false);
-  const [fromIndex, setFromIndex] = useState<number>();
-  const [{ isOver }, drop] = useDrop(
-    () => ({
-      accept: [DragTypes.DIVERS, DragTypes.ITEM],
-      collect: monitor => ({
-        isOver: monitor?.isOver({ shallow: true }),
-      }),
-      hover: (item, monitor) => {
-        setCanDrop(monitor.canDrop());
-      },
-      drop: (item: ItemBase, monitor: DropTargetMonitor) => {
-        console.log(initialIndex);
-        // This is after drag!
-        // console.log('to', toIndex);
-        // Pour compréhension : initialIndex est l'index de la zone de base, drop est invoqué sur une nouvelle zone après avoir drop
-        // return onDrop(item, initialIndex, fromIndex!);
-      },
-    }),
-    [items],
-  );
-  // console.log(toIndex);
-  const isActive = isOver && canDrop;
+  const { items, identifier, onClick, onDelete } = props;
+  const { isOver, setNodeRef } = useDroppable({
+    id: identifier,
+  });
+  const touchAction = 'none'
+
 
   return (
-    <div className='chips' ref={drop}>
-      <div className={`${isActive ? 'active' : ''}`}>
+    <div className='chips' ref={setNodeRef} >
+      <div className={`${isOver ? 'active' : ''}`}>
         {items!.map((item, index) => (
+          <div
+            style={{touchAction}}
+            key={identifier + item.id}
+          >
           <DraggedChips
-            initialIndex={initialIndex}
-            key={Math.random()} // TODO ID from API à rajouter !
             item={item}
-            type={type}
             onClick={(confirm, item) => onClick(confirm, item)}
             onDelete={onDelete ? (remove: boolean) => onDelete(remove) : onDelete}
-            onDragEnd={index => {
-              console.log(index);
-              setFromIndex(index);
-              console.log(initialIndex);
-              console.log(fromIndex);
-              onDrop(item, initialIndex, index)
-            }}
           />
+          </div>
         ))}
       </div>
     </div>

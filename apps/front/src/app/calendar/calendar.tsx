@@ -2,11 +2,19 @@ import './calendar.scss';
 import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import { useCallback, useState } from 'react';
-import { DragTypes } from '@shared/interfaces/DragTypes';
-import { DndProvider } from 'react-dnd';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
-import { MultiBackend } from 'react-dnd-multi-backend';
-import { HTML5toTouch } from 'rdndmb-html5-to-touch';
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  MouseSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import { Chip } from '@mui/material';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -98,8 +106,8 @@ export const Calendar = () => {
     (item: ItemBase, fromIndex: number, toIndex: number) => {
       // console.log('calendar to update', item);
       //
-      console.log('calendar from',fromIndex);
-      console.log('calendar to',toIndex);
+      console.log('calendar from', fromIndex);
+      console.log('calendar to', toIndex);
 
       /*      setDivers(
         update(divers, {
@@ -119,37 +127,68 @@ export const Calendar = () => {
   const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
   const [itemToInspect, setItemToInspect] = useState<ItemBase>();
   const handleDialogInspectItem = (open = false, item: ItemBase) => {
+    console.log('CLIC');
     setOpenDialogInspectItem(open);
     setItemToInspect(item);
   };
 
+  const sensors = useSensors(
+    // useSensor(PointerSensor, {
+    //   activationConstraint: {delay: 2, tolerance:5}
+    // })
+    // useSensor(TouchSensor),
+    // useSensor(MouseSensor)
+    // useSensor(TouchSensor, {
+    //   activationConstraint: {
+    //     delay: 400,
+    //     tolerance: 5,
+    //   },
+    // }),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 50,
+        tolerance: 5
+      },
+    })
+  );
+
+  const handleDragEnd = (e: any) => {
+    console.log('end');
+    console.log(e);
+  };
+  const handleDragStart = () => {
+    console.log('start');
+  };
+
   return (
     <div className='Calendar'>
-      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+      >
         <DragZone
           items={divers}
-          initialIndex={4467}
-          type={DragTypes.DIVERS}
+          identifier='divers'
           onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-          onDrop={(item, fromIndex, toIndex) => handleDrop(item, fromIndex, toIndex)}
         />
 
         {days.map((day, index) => (
           <div key={day.slug} className='day'>
             <h4>{day.label}</h4>
             <DragZone
-              key={Math.random()} // TODO ID from API à rajouter !
-              initialIndex={index}
+              key={day + '-' + index}
+              identifier={day + '-' + index}
               items={day?.items}
-              type={DragTypes.ITEM}
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
               onDelete={remove => undefined}
-              onDrop={(item, fromIndex, toIndex) => handleDrop(item, fromIndex, toIndex)}
             />
             <hr />
           </div>
         ))}
-      </DndProvider>
+{/*        <DragOverlay>
+          <Chip variant='outlined' label={'teee'} />
+        </DragOverlay>*/}
+      </DndContext>
 
       {/*OPEN DIALOG TON INSPECT ITEM IN READONLY*/}
       {openDialogInspectItem && (
