@@ -121,28 +121,10 @@ export const Calendar = () => {
     setOpenDialogInspectItem(open);
     setItemToInspect(item);
   };
-  const TEST = {
-    backends: [
-      {
-        id: 'html5',
-        backend: HTML5Backend,
-        preview: true,
-        transition: MouseTransition,
-      },
-      {
-        id: 'touch',
-        backend: TouchBackend,
-        options: {enableMouseEvents: true},
-        preview: true,
-        transition: TouchTransition,
-      },
-    ],
-  }
-  // const isTouchScreen = isTouchDevice() ? TouchBackend : HTML5Backend;
+
   return (
-    // options={HTML5toTouch}
     <div className='Calendar'>
-      <DndProvider backend={MultiBackend} options={TEST} >
+      <DndProvider backend={MultiBackend} options={HTML5toTouch} >
         <DragZone
           items={divers}
           type={DragTypes.DIVERS}
