@@ -1,6 +1,7 @@
 import { Chip } from '@mui/material';
 import { ItemBase } from '@shared-interfaces/items';
 import { useDrag } from 'react-dnd';
+import '../calendar.scss';
 
 export const DraggedChips = (props: {
   item: ItemBase;
@@ -11,29 +12,21 @@ export const DraggedChips = (props: {
   const { item, type, onClick, onDelete } = props;
   const [{ isDragging }, drag] = useDrag({
     type,
-    item: item.label,
+    item: item,
+    canDrag: true,
     isDragging(monitor) {
-      const i = monitor.getItem();
-      console.log(i);
-      // return name === i.name;
-      return true;
+      const itemLocal = monitor.getItem();
+      return item.id === itemLocal.id;
     },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
   });
-
   const opacity = isDragging ? 0.4 : 1;
+  // Checker que la clef soit === à l'id pour l'opacité par exemple ?
   return (
-    <div style={{ opacity }}>
-      <Chip
-        key={item.id}
-        ref={drag}
-        label={item.label}
-        variant='outlined'
-        onClick={() => onClick(true, item)}
-        onDelete={onDelete}
-      />
+    <div style={{ opacity }} ref={drag} key={Math.random()}>
+      <Chip label={item.label} variant='outlined' onClick={() => onClick(true, item)} onDelete={onDelete} />
     </div>
   );
 };

@@ -4,13 +4,7 @@
   height: 100%;
   overflow-y: scroll;
 
- .divers {
-    display: flex;
-    width: 100%;
-    align-content: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 5px;
+  .divers {
   }
 
   .day {
@@ -19,19 +13,41 @@
       text-align: center;
       margin: 10px;
       text-transform: uppercase;
-
-    }
-    .chip {
-      display: flex;
-      width: 100%;
-      align-content: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 5px;
     }
   }
 
   hr {
     width: 90%;
+  }
+
+  .chips {
+    width: 100%;
+      display: flex;
+      justify-content: center;
+    > div {
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px;
+
+      &.active {
+        border: 1px white dotted;
+        border-radius: $radius;
+        background-color: lighten($backgroundColor, 5%);
+        width: 90%;
+        text-align: center;
+      }
+      .MuiChip-root {
+        display: flex;
+        justify-content: space-between;
+        width: 8em;
+        span {
+          padding: 0 5px;
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
   }
 }

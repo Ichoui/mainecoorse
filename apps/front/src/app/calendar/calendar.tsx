@@ -2,7 +2,6 @@ import './calendar.scss';
 import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import { useCallback, useState } from 'react';
-import { DraggedChips } from '@app/calendar/dragged-chips/dragged-chips';
 import { DragTypes } from '@shared/interfaces/DragTypes';
 import { DndProvider } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
@@ -72,15 +71,16 @@ export const Calendar = () => {
   ]);
 
   const handleDrop = useCallback(
-    (index: number, item: { name: string }) => {
-      const { name } = item;
+    (item: ItemBase) => {
+      const { label } = item;
+      console.log(item);
       setDivers(
         update(divers, {
-          [index]: {
-            // lastDroppedItem: {
-            //   $set: item,
-            // },
-          },
+          // [index]: {
+          // lastDroppedItem: {
+          //   $set: item,
+          // },
+          // },
         }),
       );
       setDays(update(days, {}));
@@ -98,27 +98,25 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-      <DndProvider backend={TouchBackend}>
-        <div className='divers'>
-          <DragZone
-            items={divers}
-            type={DragTypes.DIVERS}
-            onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-          />
-        </div>
+      <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
+        <DragZone
+          items={divers}
+          type={DragTypes.DIVERS}
+          onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+          onDrop={item => handleDrop(item)}
+        />
 
         {days.map(day => (
           <div key={day.slug} className='day'>
             <h4>{day.label}</h4>
-            <div className='chip'>
-              <DragZone
-                key={Math.random()} // TODO ID from API à rajouter !
-                items={day.items}
-                type={DragTypes.ITEM}
-                onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-                onDelete={(remove) => undefined}
-              />
-            </div>
+            <DragZone
+              key={Math.random()} // TODO ID from API à rajouter !
+              items={day.items}
+              type={DragTypes.ITEM}
+              onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+              onDelete={remove => undefined}
+              onDrop={item => handleDrop(item)}
+            />
             <hr />
           </div>
         ))}
