@@ -16,8 +16,8 @@ export const DragZone = (props: {
     () => ({
       accept: [DragTypes.DIVERS, DragTypes.ITEM],
       collect: monitor => ({
-        isOver: monitor.isOver(),
-        canDrop: monitor.canDrop(),
+        // isOver: monitor.isOver(),
+        // canDrop: monitor.canDrop(),
       }),
       drop: (item: ItemBase) => {
         console.log('dragzone', item);

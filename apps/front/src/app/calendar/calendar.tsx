@@ -8,7 +8,7 @@ import { TouchBackend } from 'react-dnd-touch-backend';
 import update from 'immutability-helper2';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { MultiBackend } from 'react-dnd-multi-backend';
+import { MouseTransition, MultiBackend, TouchTransition } from 'react-dnd-multi-backend';
 import { HTML5toTouch } from 'rdndmb-html5-to-touch';
 
 // https://www.npmjs.com/package/react-draggable
@@ -121,11 +121,28 @@ export const Calendar = () => {
     setOpenDialogInspectItem(open);
     setItemToInspect(item);
   };
-
+  const TEST = {
+    backends: [
+      {
+        id: 'html5',
+        backend: HTML5Backend,
+        preview: true,
+        transition: MouseTransition,
+      },
+      {
+        id: 'touch',
+        backend: TouchBackend,
+        options: {enableMouseEvents: true},
+        preview: true,
+        transition: TouchTransition,
+      },
+    ],
+  }
   // const isTouchScreen = isTouchDevice() ? TouchBackend : HTML5Backend;
   return (
+    // options={HTML5toTouch}
     <div className='Calendar'>
-      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+      <DndProvider backend={MultiBackend} options={TEST} >
         <DragZone
           items={divers}
           type={DragTypes.DIVERS}
