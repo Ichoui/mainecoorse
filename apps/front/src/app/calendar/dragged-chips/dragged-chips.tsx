@@ -6,7 +6,7 @@ export const DraggedChips = (props: {
   item: ItemBase;
   type: string;
   onClick: (confirm: boolean, item: ItemBase) => void;
-  onDelete?: () => void;
+  onDelete?: (remove: boolean) => void | undefined;
 }) => {
   const { item, type, onClick, onDelete } = props;
   const [{ isDragging }, drag] = useDrag({
@@ -24,7 +24,6 @@ export const DraggedChips = (props: {
   });
 
   const opacity = isDragging ? 0.4 : 1;
-
   return (
     <div style={{ opacity }}>
       <Chip

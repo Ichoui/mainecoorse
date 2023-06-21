@@ -100,24 +100,25 @@ export const Calendar = () => {
     <div className='Calendar'>
       <DndProvider backend={TouchBackend}>
         <div className='divers'>
-            <DragZone
-              items={divers}
-              type={DragTypes.DIVERS}
-              onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-            />
+          <DragZone
+            items={divers}
+            type={DragTypes.DIVERS}
+            onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+          />
         </div>
 
         {days.map(day => (
           <div key={day.slug} className='day'>
             <h4>{day.label}</h4>
-            <div className='chip'></div>
-            <DragZone
-              key={Math.random()} // TODO ID from API à rajouter !
-              items={day.items}
-              type={DragTypes.ITEM}
-              onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-              onDelete={() => null}
-            />
+            <div className='chip'>
+              <DragZone
+                key={Math.random()} // TODO ID from API à rajouter !
+                items={day.items}
+                type={DragTypes.ITEM}
+                onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+                onDelete={(remove) => null}
+              />
+            </div>
             <hr />
           </div>
         ))}
