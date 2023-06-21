@@ -18,6 +18,8 @@
       color: $white;
       text-align: center;
       margin: 10px;
+      text-transform: uppercase;
+
     }
     .chip {
       display: flex;
@@ -27,7 +29,6 @@
       flex-wrap: wrap;
       gap: 5px;
     }
-
   }
 
   hr {

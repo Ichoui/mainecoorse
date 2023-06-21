@@ -1,12 +1,18 @@
 import './calendar.scss';
 import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
-import { Chip } from '@mui/material';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
-import React, { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { DraggedChips } from '@app/calendar/dragged-chips/dragged-chips';
+import { DragTypes } from '@shared/interfaces/DragTypes';
+import { DndProvider } from 'react-dnd';
+import { TouchBackend } from 'react-dnd-touch-backend';
+import update from 'immutability-helper2';
+import { DragZone } from '@app/calendar/drag-zone/drag-zone';
+
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
-  const divers: ItemBase[] = [
+  // TODO FROM API
+  const [divers, setDivers] = useState<ItemBase[]>([
     {
       id: 1,
       label: 'Article 1',
@@ -52,9 +58,10 @@ export const Calendar = () => {
         },
       ],
     },
-  ];
+  ]);
 
-  const days = [
+  // TODO FROM API
+  const [days, setDays] = useState([
     { label: 'Samedi', slug: 'azf', items: [divers[1], divers[0], divers[1], divers[0], divers[0], divers[0]] },
     { label: 'Dimanche', slug: 'sqsqs', items: [divers[0]] },
     { label: 'Lundi', slug: 'ggbh', items: [divers[0], divers[1]] },
@@ -62,26 +69,24 @@ export const Calendar = () => {
     { label: 'Mercredi', slug: 'cxv', items: [divers[0], divers[1]] },
     { label: 'Jeudi', slug: 'rth', items: [divers[1], divers[0], divers[1], divers[0], divers[0]] },
     { label: 'Vendredi', slug: 'opk', items: [divers[1]] },
-  ];
+  ]);
 
-  const [droppedBoxNames, setDroppedBoxNames] = useState<string[]>([]);
-
-  /*
-  const [dustbins, setDustbins] = useState<DustbinBox[]>([
-    { accepts: [ItemTypes.GLASS], lastDroppedItem: null },
-    { accepts: [ItemTypes.FOOD], lastDroppedItem: null },
-    {
-      accepts: [ItemTypes.PAPER, ItemTypes.GLASS, NativeTypes.URL],
-      lastDroppedItem: null,
+  const handleDrop = useCallback(
+    (index: number, item: { name: string }) => {
+      const { name } = item;
+      setDivers(
+        update(divers, {
+          [index]: {
+            // lastDroppedItem: {
+            //   $set: item,
+            // },
+          },
+        }),
+      );
+      setDays(update(days, {}));
     },
-    { accepts: [ItemTypes.PAPER, NativeTypes.FILE], lastDroppedItem: null },
-  ])
-  const [boxes, setBoxes] = useState<SourceBox[]>([
-    { name: 'Bottle', type: ItemTypes.GLASS },
-    { name: 'Banana', type: ItemTypes.FOOD },
-    { name: 'Magazine', type: ItemTypes.PAPER },
-  ])
-*/
+    [divers, days],
+  );
 
   // Dialog inspect item
   const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
@@ -93,48 +98,30 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-      <div className='divers'>
-        {divers.map(item => (
-          // <Chip
-          //   key={item.id}
-          //   label={item.label}
-          //   variant='outlined'
-          //   onClick={() => handleDialogInspectItem(true, item)}
-          // />
-
-          <DraggedChips
-            key={Math.random()} // ID à rajouter !
-            item={item}
-            onClick={() => handleDialogInspectItem(true, item)}
-          />
-
-        ))}
-      </div>
-
-      {days.map(day => (
-        <div key={day.slug} className='day'>
-          <h4>{day.label}</h4>
-          <div className='chip'>
-            {day.items.map(item => (
-              // <Chip
-              //   key={item.id}
-              //   label={item.label}
-              //   variant='outlined'
-              //   onClick={() => handleDialogInspectItem(true, item)}
-              //   onDelete={() => null}
-              // />
-
-              <DraggedChips
-                key={Math.random()} // ID à rajouter !
-                item={item}
-                onClick={() => handleDialogInspectItem(true, item)}
-                onDelete={() => null}
-              />
-            ))}
-          </div>
-          <hr />
+      <DndProvider backend={TouchBackend}>
+        <div className='divers'>
+            <DragZone
+              items={divers}
+              type={DragTypes.DIVERS}
+              onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+            />
         </div>
-      ))}
+
+        {days.map(day => (
+          <div key={day.slug} className='day'>
+            <h4>{day.label}</h4>
+            <div className='chip'></div>
+            <DragZone
+              key={Math.random()} // TODO ID from API à rajouter !
+              items={day.items}
+              type={DragTypes.ITEM}
+              onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+              onDelete={() => null}
+            />
+            <hr />
+          </div>
+        ))}
+      </DndProvider>
 
       {/*OPEN DIALOG TON INSPECT ITEM IN READONLY*/}
       {openDialogInspectItem && (

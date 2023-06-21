@@ -1,6 +1,5 @@
 import '../dialog.scss';
 import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import React from 'react';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
 import { ItemBase } from '@shared-interfaces/items';
 
