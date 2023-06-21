@@ -3,6 +3,7 @@ import { ItemBase } from '@shared-interfaces/items';
 import { useDrop } from 'react-dnd';
 import { DragTypes } from '@shared/interfaces/DragTypes';
 import '../calendar.scss';
+import { useState } from 'react';
 
 export const DragZone = (props: {
   items?: ItemBase[];
@@ -12,13 +13,16 @@ export const DragZone = (props: {
   onDrop: (item: ItemBase) => void;
 }) => {
   const { items, type, onClick, onDelete, onDrop } = props;
-  const [{ isOver, canDrop }, drop] = useDrop(
+  const [canDrop, setCanDrop] = useState<boolean>(false);
+  const [{ isOver }, drop] = useDrop(
     () => ({
       accept: [DragTypes.DIVERS, DragTypes.ITEM],
       collect: monitor => ({
-        // isOver: monitor.isOver(),
-        // canDrop: monitor.canDrop(),
+        isOver: monitor?.isOver({ shallow: true }),
       }),
+      hover: (item, monitor) => {
+        setCanDrop(monitor.canDrop());
+      },
       drop: (item: ItemBase) => {
         console.log('dragzone', item);
         return onDrop(item);
