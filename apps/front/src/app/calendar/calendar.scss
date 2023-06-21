@@ -4,18 +4,7 @@
   height: 100%;
   overflow-y: scroll;
 
-  .MuiChip-root {
-    display: flex;
-    justify-content: space-between;
-    width: 8em;
-    span {
-      padding: 0 5px;
-      width: 100%;
-      text-align: center;
-    }
-  }
-
-  .divers {
+ .divers {
     display: flex;
     width: 100%;
     align-content: center;

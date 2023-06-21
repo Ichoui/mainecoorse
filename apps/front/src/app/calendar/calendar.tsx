@@ -3,6 +3,7 @@ import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces
 import { Chip } from '@mui/material';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import React, { useState } from 'react';
+import { DraggedChips } from '@app/calendar/dragged-chips/dragged-chips';
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
   const divers: ItemBase[] = [
@@ -63,6 +64,25 @@ export const Calendar = () => {
     { label: 'Vendredi', slug: 'opk', items: [divers[1]] },
   ];
 
+  const [droppedBoxNames, setDroppedBoxNames] = useState<string[]>([]);
+
+  /*
+  const [dustbins, setDustbins] = useState<DustbinBox[]>([
+    { accepts: [ItemTypes.GLASS], lastDroppedItem: null },
+    { accepts: [ItemTypes.FOOD], lastDroppedItem: null },
+    {
+      accepts: [ItemTypes.PAPER, ItemTypes.GLASS, NativeTypes.URL],
+      lastDroppedItem: null,
+    },
+    { accepts: [ItemTypes.PAPER, NativeTypes.FILE], lastDroppedItem: null },
+  ])
+  const [boxes, setBoxes] = useState<SourceBox[]>([
+    { name: 'Bottle', type: ItemTypes.GLASS },
+    { name: 'Banana', type: ItemTypes.FOOD },
+    { name: 'Magazine', type: ItemTypes.PAPER },
+  ])
+*/
+
   // Dialog inspect item
   const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
   const [itemToInspect, setItemToInspect] = useState<ItemBase>();
@@ -73,26 +93,44 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-        <div className='divers'>
-      {divers.map(item => (
-          <Chip key={item.id} label={item.label} variant='outlined' onClick={() => handleDialogInspectItem(true, item)} />
-      ))}
-        </div>
+      <div className='divers'>
+        {divers.map(item => (
+          // <Chip
+          //   key={item.id}
+          //   label={item.label}
+          //   variant='outlined'
+          //   onClick={() => handleDialogInspectItem(true, item)}
+          // />
+
+          <DraggedChips
+            key={Math.random()} // ID à rajouter !
+            item={item}
+            onClick={() => handleDialogInspectItem(true, item)}
+          />
+
+        ))}
+      </div>
 
       {days.map(day => (
         <div key={day.slug} className='day'>
           <h4>{day.label}</h4>
           <div className='chip'>
+            {day.items.map(item => (
+              // <Chip
+              //   key={item.id}
+              //   label={item.label}
+              //   variant='outlined'
+              //   onClick={() => handleDialogInspectItem(true, item)}
+              //   onDelete={() => null}
+              // />
 
-          {day.items.map(item => (
-            <Chip
-              key={item.id}
-              label={item.label}
-              variant='outlined'
-              onClick={() => handleDialogInspectItem(true, item)}
-              onDelete={() => null}
-            />
-          ))}
+              <DraggedChips
+                key={Math.random()} // ID à rajouter !
+                item={item}
+                onClick={() => handleDialogInspectItem(true, item)}
+                onDelete={() => null}
+              />
+            ))}
           </div>
           <hr />
         </div>
