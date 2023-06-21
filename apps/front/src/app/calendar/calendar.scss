@@ -24,6 +24,7 @@
     width: 100%;
       display: flex;
       justify-content: center;
+    height: 3em;
     > div {
       display: flex;
       align-content: center;
@@ -31,6 +32,8 @@
       flex-wrap: wrap;
       gap: 5px;
 
+    width: 100%;
+      height: 100%;
       &.active {
         border: 1px white dotted;
         border-radius: $radius;

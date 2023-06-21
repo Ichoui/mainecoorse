@@ -7,6 +7,9 @@ import { DndProvider } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import update from 'immutability-helper2';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { MultiBackend } from 'react-dnd-multi-backend';
+import { HTML5toTouch } from 'rdndmb-html5-to-touch';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -15,6 +18,30 @@ export const Calendar = () => {
     {
       id: 1,
       label: 'Article 1',
+      itemType: ItemType.ARTICLE,
+      description: 'Ma description',
+      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+    },
+    {
+      id: 3,
+      label: 'Article 2',
+      itemType: ItemType.ARTICLE,
+      description: 'Ma description',
+      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+    },
+    {
+      id: 4,
+      label: 'Article 3',
+      itemType: ItemType.ARTICLE,
+      description: 'Ma description',
+      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+    },
+    {
+      id: 5,
+      label: 'Article 4',
       itemType: ItemType.ARTICLE,
       description: 'Ma description',
       webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
@@ -61,19 +88,18 @@ export const Calendar = () => {
 
   // TODO FROM API
   const [days, setDays] = useState([
-    { label: 'Samedi', slug: 'azf', items: [divers[1], divers[0], divers[1], divers[0], divers[0], divers[0]] },
-    { label: 'Dimanche', slug: 'sqsqs', items: [divers[0]] },
-    { label: 'Lundi', slug: 'ggbh', items: [divers[0], divers[1]] },
-    { label: 'Mardi', slug: 'ghf', items: [divers[1]] },
-    { label: 'Mercredi', slug: 'cxv', items: [divers[0], divers[1]] },
-    { label: 'Jeudi', slug: 'rth', items: [divers[1], divers[0], divers[1], divers[0], divers[0]] },
-    { label: 'Vendredi', slug: 'opk', items: [divers[1]] },
+    { label: 'Samedi', slug: 'azf', items: [divers[0]] },
+    { label: 'Dimanche', slug: 'sqsqs', items: [] },
+    { label: 'Lundi', slug: 'ggbh', items: [divers[2]] },
+    { label: 'Mardi', slug: 'ghf', items: [] },
+    { label: 'Mercredi', slug: 'cxv', items: [] },
+    { label: 'Jeudi', slug: 'rth', items: [] },
+    { label: 'Vendredi', slug: 'opk', items: [] },
   ]);
 
   const handleDrop = useCallback(
     (item: ItemBase) => {
-      const { label } = item;
-      console.log(item);
+      console.log('calendar to update',item);
       setDivers(
         update(divers, {
           // [index]: {
@@ -96,9 +122,10 @@ export const Calendar = () => {
     setItemToInspect(item);
   };
 
+  // const isTouchScreen = isTouchDevice() ? TouchBackend : HTML5Backend;
   return (
     <div className='Calendar'>
-      <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
+      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
         <DragZone
           items={divers}
           type={DragTypes.DIVERS}
@@ -111,7 +138,7 @@ export const Calendar = () => {
             <h4>{day.label}</h4>
             <DragZone
               key={Math.random()} // TODO ID from API à rajouter !
-              items={day.items}
+              items={day?.items}
               type={DragTypes.ITEM}
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
               onDelete={remove => undefined}

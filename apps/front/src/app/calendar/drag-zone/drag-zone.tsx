@@ -5,7 +5,7 @@ import { DragTypes } from '@shared/interfaces/DragTypes';
 import '../calendar.scss';
 
 export const DragZone = (props: {
-  items: ItemBase[];
+  items?: ItemBase[];
   type: string;
   onClick: (confirm: boolean, item: ItemBase) => void;
   onDelete?: (remove: boolean) => void | undefined;
@@ -32,7 +32,7 @@ export const DragZone = (props: {
   return (
     <div className={`chips`} ref={drop}>
       <div className={`${isActive ? 'active' : ''}`}>
-        {items.map(item => (
+        {items!.map(item => (
           <DraggedChips
             key={Math.random()} // TODO ID from API à rajouter !
             item={item}
