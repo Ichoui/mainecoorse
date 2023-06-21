@@ -116,7 +116,7 @@ export const Calendar = () => {
                 items={day.items}
                 type={DragTypes.ITEM}
                 onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-                onDelete={(remove) => null}
+                onDelete={(remove) => undefined}
               />
             </div>
             <hr />
