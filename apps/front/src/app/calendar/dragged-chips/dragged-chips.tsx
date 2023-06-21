@@ -7,23 +7,24 @@ import { usePreview } from 'react-dnd-preview';
 export const DraggedChips = (props: {
   item: ItemBase;
   type: string;
+  initialIndex: number;
+  onDragEnd: (index: number) => void;
   onClick: (confirm: boolean, item: ItemBase) => void;
   onDelete?: (remove: boolean) => void | undefined;
 }) => {
-  const { item, type, onClick, onDelete } = props;
+  const { item, type, initialIndex, onClick, onDelete, onDragEnd } = props;
   const [{ isDragging }, drag] = useDrag({
     type,
     item: item,
     canDrag: true,
     isDragging(monitor) {
       const itemLocal = monitor.getItem();
-      console.log(itemLocal);
       return item?.id === itemLocal?.id;
     },
-
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
+    end: () => onDragEnd(initialIndex),
   });
   const opacity = isDragging ? 0.4 : 1;
 

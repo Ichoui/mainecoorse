@@ -4,11 +4,8 @@ import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialo
 import { useCallback, useState } from 'react';
 import { DragTypes } from '@shared/interfaces/DragTypes';
 import { DndProvider } from 'react-dnd';
-import { TouchBackend } from 'react-dnd-touch-backend';
-import update from 'immutability-helper2';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { MouseTransition, MultiBackend, TouchTransition } from 'react-dnd-multi-backend';
+import { MultiBackend } from 'react-dnd-multi-backend';
 import { HTML5toTouch } from 'rdndmb-html5-to-touch';
 
 // https://www.npmjs.com/package/react-draggable
@@ -88,9 +85,9 @@ export const Calendar = () => {
 
   // TODO FROM API
   const [days, setDays] = useState([
-    { label: 'Samedi', slug: 'azf', items: [divers[0]] },
-    { label: 'Dimanche', slug: 'sqsqs', items: [] },
-    { label: 'Lundi', slug: 'ggbh', items: [divers[2]] },
+    { label: 'Samedi', slug: 'saturday', items: [divers[0]] },
+    { label: 'Dimanche', slug: 'sunday', items: [] },
+    { label: 'Lundi', slug: 'monday', items: [divers[2]] },
     { label: 'Mardi', slug: 'ghf', items: [] },
     { label: 'Mercredi', slug: 'cxv', items: [] },
     { label: 'Jeudi', slug: 'rth', items: [] },
@@ -98,9 +95,13 @@ export const Calendar = () => {
   ]);
 
   const handleDrop = useCallback(
-    (item: ItemBase) => {
-      console.log('calendar to update',item);
-      setDivers(
+    (item: ItemBase, fromIndex: number, toIndex: number) => {
+      // console.log('calendar to update', item);
+      //
+      console.log('calendar from',fromIndex);
+      console.log('calendar to',toIndex);
+
+      /*      setDivers(
         update(divers, {
           // [index]: {
           // lastDroppedItem: {
@@ -109,7 +110,7 @@ export const Calendar = () => {
           // },
         }),
       );
-      setDays(update(days, {}));
+      setDays(update(days, {}));*/
     },
     [divers, days],
   );
@@ -124,24 +125,26 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-      <DndProvider backend={MultiBackend} options={HTML5toTouch} >
+      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
         <DragZone
           items={divers}
+          initialIndex={4467}
           type={DragTypes.DIVERS}
           onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-          onDrop={item => handleDrop(item)}
+          onDrop={(item, fromIndex, toIndex) => handleDrop(item, fromIndex, toIndex)}
         />
 
-        {days.map(day => (
+        {days.map((day, index) => (
           <div key={day.slug} className='day'>
             <h4>{day.label}</h4>
             <DragZone
               key={Math.random()} // TODO ID from API à rajouter !
+              initialIndex={index}
               items={day?.items}
               type={DragTypes.ITEM}
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
               onDelete={remove => undefined}
-              onDrop={item => handleDrop(item)}
+              onDrop={(item, fromIndex, toIndex) => handleDrop(item, fromIndex, toIndex)}
             />
             <hr />
           </div>
