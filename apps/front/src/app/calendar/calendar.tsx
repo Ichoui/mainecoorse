@@ -8,6 +8,7 @@ import { DragZone } from '@app/calendar/drag-zone/drag-zone';
 import { MultiBackend } from 'react-dnd-multi-backend';
 import { HTML5toTouch } from 'rdndmb-html5-to-touch';
 import { from } from 'rxjs';
+import { DragDropContext } from '@hello-pangea/dnd';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -46,6 +47,14 @@ export const Calendar = () => {
       tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
     },
     {
+      id: 8,
+      label: 'Article 4',
+      itemType: ItemType.ARTICLE,
+      description: 'Ma description',
+      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+    },
+    {
       id: 2,
       label: 'Recette1 1',
       itemType: ItemType.RECETTE,
@@ -63,6 +72,16 @@ export const Calendar = () => {
           webImage:
             'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
         },
+      ],
+    },
+  ]);
+
+  // TODO FROM API
+  const [days, setDays] = useState([
+    {
+      label: 'Samedi',
+      slug: 'saturday',
+      items: [
         {
           id: 8,
           label: 'Oignon',
@@ -71,39 +90,57 @@ export const Calendar = () => {
           tags: [RecetteTags.PLAT],
           webImage: 'https://jardinage.lemonde.fr/images/dossiers/historique/oignons2-155448.jpg',
         },
+      ],
+    },
+    { label: 'Dimanche', slug: 'sunday', items: [] },
+    {
+      label: 'Lundi',
+      slug: 'monday',
+      items: [
         {
           id: 9,
           label: 'Frites',
-          quantity: 3,
-          description: 'C est vraiment pas bon ça!',
-          tags: [RecetteTags.ETE],
-          webImage:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Carrots_on_Display.jpg/800px-Carrots_on_Display.jpg',
+          description: 'Ma description',
+          webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+          tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
         },
       ],
     },
-  ]);
+    { label: 'Mardi', slug: 'ghf', items: [
+        {
+          id: 10,
+          label: 'Recette2',
+          itemType: ItemType.RECETTE,
+          description:
+              'Je suis un castor né au canada, ca t en bouche un coin ? Moi aussi, et je vais te le ronger ton coin ! Allez, crocs!',
+          webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+          tags: [RecetteTags.ENTREE, RecetteTags.LONG, RecetteTags.DESSERT],
+          articlesList: [
+            {
+              id: 9,
+              label: 'frater',
+              quantity: 5,
+              description: 'azerdftghjklm',
+              tags: [RecetteTags.COURT],
+              webImage:
+                  'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
+            },
+          ],
+        },
 
-  // TODO FROM API
-  const [days, setDays] = useState([
-    { label: 'Samedi', slug: 'saturday', items: [divers[0]] },
-    { label: 'Dimanche', slug: 'sunday', items: [] },
-    { label: 'Lundi', slug: 'monday', items: [divers[2]] },
-    { label: 'Mardi', slug: 'ghf', items: [] },
+      ] },
     { label: 'Mercredi', slug: 'cxv', items: [] },
     { label: 'Jeudi', slug: 'rth', items: [] },
     { label: 'Vendredi', slug: 'opk', items: [] },
   ]);
 
-  const handleDrop = useCallback(
-    (item: ItemBase, fromIndex: number, toIndex: number) => {
-      // console.log('calendar to update', item);
-      //
-      console.log('calendar from', fromIndex);
-      console.log('calendar to', toIndex);
-      // console.log('target', targetChange);
-
-      /*      setDivers(
+  const handleDrop = useCallback((item: ItemBase, fromIndex: number, toIndex: number) => {
+    // console.log('calendar to update', item);
+    //
+    // console.log('calendar from', fromIndex);
+    // console.log('calendar to', toIndex);
+    // console.log('target', targetChange);
+    /*      setDivers(
         update(divers, {
           // [index]: {
           // lastDroppedItem: {
@@ -113,11 +150,7 @@ export const Calendar = () => {
         }),
       );
       setDays(update(days, {}));*/
-    },
-    [],
-  );
-
-  const [targetChange, setTargetChange] = useState<number>(0);
+  }, []);
 
   // Dialog inspect item
   const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
@@ -127,36 +160,39 @@ export const Calendar = () => {
     setItemToInspect(item);
   };
 
+  const handleOnDragEnd = (e: any) => {
+    console.log(e);
+  };
+
+  const handleOnDragStart = (e: any) => {
+    console.log(e);
+  };
+
   return (
     <div className='Calendar'>
-      <DndProvider backend={MultiBackend} options={HTML5toTouch} >
+      <DragDropContext onDragStart={handleOnDragStart} onDragEnd={handleOnDragEnd}>
         <DragZone
           key={Math.random()} // TODO ID from API à rajouter !
           items={divers}
-          initialIndex={4467}
-          type={DragTypes.DIVERS}
+          identifier='divers'
           onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
           onDrop={(item, fromIndex, toIndex) => handleDrop(item, 8888, 4467)}
-          onChange={ii => setTargetChange(ii)}
         />
-        {targetChange}
         {days.map((day, index) => (
           <div key={day.slug} className='day'>
             <h4>{day.label}</h4>
             <DragZone
               key={Math.random()} // TODO ID from API à rajouter !
-              initialIndex={index}
-              items={day?.items}
-              type={DragTypes.ITEM}
+              items={day.items}
+              identifier={day.slug}
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
               onDelete={remove => undefined}
-              onDrop={(item, fromIndex, toIndex) => handleDrop(item, targetChange, index)}
-              onChange={ii => setTargetChange(ii)}
+              onDrop={(item, fromIndex, toIndex) => handleDrop(item, 77, index)}
             />
             <hr />
           </div>
         ))}
-      </DndProvider>
+      </DragDropContext>
 
       {/*OPEN DIALOG TON INSPECT ITEM IN READONLY*/}
       {openDialogInspectItem && (
