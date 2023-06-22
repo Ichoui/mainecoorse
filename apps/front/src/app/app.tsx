@@ -1,14 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-
 import React, { SyntheticEvent, useState } from 'react';
-import { Fab, IconButton, Tab, Tabs, ThemeProvider } from '@mui/material';
-import {
-  CalendarMonthRounded, EditNoteRounded,
-  FormatListBulletedRounded,
-  RestaurantMenuRounded,
-  ShoppingCartRounded,
-  TagRounded
-} from '@mui/icons-material';
+import { IconButton, Tab, Tabs, ThemeProvider } from '@mui/material';
+import { CalendarMonthRounded, EditNoteRounded, FormatListBulletedRounded, RestaurantMenuRounded, ShoppingCartRounded } from '@mui/icons-material';
 import './app.scss';
 import maple from '/logo.png';
 import { backgroundThemeColor, headerThemeColor, themeOptions } from '@styles/theme';

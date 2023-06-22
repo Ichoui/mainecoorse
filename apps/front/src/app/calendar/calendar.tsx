@@ -1,12 +1,13 @@
 import './calendar.scss';
 import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DragTypes } from '@shared/interfaces/DragTypes';
 import { DndProvider } from 'react-dnd';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
 import { MultiBackend } from 'react-dnd-multi-backend';
 import { HTML5toTouch } from 'rdndmb-html5-to-touch';
+import { from } from 'rxjs';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -98,8 +99,9 @@ export const Calendar = () => {
     (item: ItemBase, fromIndex: number, toIndex: number) => {
       // console.log('calendar to update', item);
       //
-      console.log('calendar from',fromIndex);
-      console.log('calendar to',toIndex);
+      console.log('calendar from', fromIndex);
+      console.log('calendar to', toIndex);
+      // console.log('target', targetChange);
 
       /*      setDivers(
         update(divers, {
@@ -112,8 +114,10 @@ export const Calendar = () => {
       );
       setDays(update(days, {}));*/
     },
-    [divers, days],
+    [],
   );
+
+  const [targetChange, setTargetChange] = useState<number>(0);
 
   // Dialog inspect item
   const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
@@ -125,15 +129,17 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+      <DndProvider backend={MultiBackend} options={HTML5toTouch} >
         <DragZone
+          key={Math.random()} // TODO ID from API à rajouter !
           items={divers}
           initialIndex={4467}
           type={DragTypes.DIVERS}
           onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-          onDrop={(item, fromIndex, toIndex) => handleDrop(item, fromIndex, toIndex)}
+          onDrop={(item, fromIndex, toIndex) => handleDrop(item, 8888, 4467)}
+          onChange={ii => setTargetChange(ii)}
         />
-
+        {targetChange}
         {days.map((day, index) => (
           <div key={day.slug} className='day'>
             <h4>{day.label}</h4>
@@ -144,7 +150,8 @@ export const Calendar = () => {
               type={DragTypes.ITEM}
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
               onDelete={remove => undefined}
-              onDrop={(item, fromIndex, toIndex) => handleDrop(item, fromIndex, toIndex)}
+              onDrop={(item, fromIndex, toIndex) => handleDrop(item, targetChange, index)}
+              onChange={ii => setTargetChange(ii)}
             />
             <hr />
           </div>
