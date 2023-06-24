@@ -173,11 +173,11 @@ export const Calendar = () => {
   };
 
   const handleOnDragEnd = (e: any) => {
-    console.log(e);
+    // console.log(e);
   };
 
   const handleOnDragStart = (e: any) => {
-    console.log(e);
+    // console.log(e);
   };
 
   return (

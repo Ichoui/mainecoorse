@@ -6,28 +6,21 @@ import { Draggable } from '@hello-pangea/dnd';
 export const DraggedChips = (props: {
   item: ItemBase;
   identifier: string;
-  index: string;
-  onDrop: (index: number) => void;
+  index: number;
   onClick: (confirm: boolean, item: ItemBase) => void;
   onDelete?: (remove: boolean) => void | undefined;
 }) => {
-  const { item, identifier, index, onClick, onDelete, onDrop } = props;
+  const { item, identifier, index, onClick, onDelete } = props;
 
-  // isDragging
-  const opacity = false ? 0.4 : 1;
-  console.log(identifier);
   return (
-    <Draggable draggableId={identifier} index={item.id} key={Math.random()}>
+    <Draggable draggableId={identifier} index={index} key={Math.random()}>
       {(provided, snapshot) => (
         <div
-          style={{ opacity }}
-          key={Math.random()}
+          style={{ opacity: snapshot.isDragging ? 0.4 : 1 }}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-
-
           <Chip
             label={item?.label}
             variant='outlined'
