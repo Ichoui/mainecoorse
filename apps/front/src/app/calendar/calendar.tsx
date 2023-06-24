@@ -164,24 +164,6 @@ export const Calendar = () => {
     { label: 'Vendredi', id: 6, slug: 'friday', items: [] },
   ]);
 
-  const handleDrop = useCallback((item: ItemBase, fromIndex: number, toIndex: number) => {
-    // console.log('calendar to update', item);
-    //
-    // console.log('calendar from', fromIndex);
-    // console.log('calendar to', toIndex);
-    // console.log('target', targetChange);
-    /*      setDivers(
-        update(divers, {
-          // [index]: {
-          // lastDroppedItem: {
-          //   $set: item,
-          // },
-          // },
-        }),
-      );
-      setDays(update(days, {}));*/
-  }, []);
-
   // Dialog inspect item
   const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
   const [itemToInspect, setItemToInspect] = useState<ItemBase>();
@@ -225,24 +207,17 @@ export const Calendar = () => {
         } else {
           // Depuis un jour vers un jour
           const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
-          console.log(e);
-          console.log(item);
-          console.log(days);
-          // add
           setDays(
             update(days, {
               [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } }, // add
               [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } }, // remove
             }),
           );
-
-          console.log(days);
         }
       }
     },
     [days, divers],
   );
-
   return (
     <div className='Calendar'>
       <DragDropContext onDragEnd={handleOnDragEnd} enableDefaultSensors={true}>

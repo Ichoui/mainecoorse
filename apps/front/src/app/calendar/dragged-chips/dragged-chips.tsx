@@ -26,7 +26,7 @@ export const DraggedChips = (props: {
             variant='outlined'
             onClick={() => onClick(true, item)}
             onDelete={onDelete}
-            draggable={true}
+            // draggable={true}
           />
         </div>
       )}
