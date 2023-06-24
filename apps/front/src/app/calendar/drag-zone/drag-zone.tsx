@@ -2,7 +2,6 @@ import { DraggedChips } from '@app/calendar/dragged-chips/dragged-chips';
 import { ItemBase } from '@shared-interfaces/items';
 import '../calendar.scss';
 import { Droppable } from '@hello-pangea/dnd';
-import { Fragment } from 'react';
 import { Chip } from '@mui/material';
 
 export const DragZone = (props: {

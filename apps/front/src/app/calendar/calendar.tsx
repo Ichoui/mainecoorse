@@ -1,14 +1,10 @@
 import './calendar.scss';
 import { ArticleTags, Days, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
-import { useCallback, useEffect, useState } from 'react';
-import { DragTypes } from '@shared/interfaces/DragTypes';
-import { DndProvider } from 'react-dnd';
+import { useCallback, useState } from 'react';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
-import { MultiBackend } from 'react-dnd-multi-backend';
-import { HTML5toTouch } from 'rdndmb-html5-to-touch';
-import { from } from 'rxjs';
 import { DragDropContext } from '@hello-pangea/dnd';
+import update from 'immutability-helper';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -83,9 +79,25 @@ export const Calendar = () => {
       slug: 'saturday',
       items: [
         {
+          id: 14,
+          label: 'boule',
+          itemType: ItemType.ARTICLE,
+          description: 'Ma description',
+          webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+          tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+        },
+        {
+          id: 13,
+          label: 'djak',
+          itemType: ItemType.ARTICLE,
+          description: 'Ma description',
+          webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+          tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+        },
+        {
           id: 8,
           label: 'Oignon',
-          itemType:ItemType.RECETTE,
+          itemType: ItemType.RECETTE,
           description: 'C est pas bon',
           tags: [RecetteTags.PLAT],
           webImage: 'https://jardinage.lemonde.fr/images/dossiers/historique/oignons2-155448.jpg',
@@ -111,20 +123,23 @@ export const Calendar = () => {
         {
           id: 9,
           label: 'Frites',
-          itemType:ItemType.ARTICLE,
+          itemType: ItemType.ARTICLE,
           description: 'Ma description',
           webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
           tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
         },
       ],
     },
-    { label: 'Mardi', slug: 'tuesday', items: [
+    {
+      label: 'Mardi',
+      slug: 'tuesday',
+      items: [
         {
           id: 10,
           label: 'Recette2',
           itemType: ItemType.RECETTE,
           description:
-              'Je suis un castor né au canada, ca t en bouche un coin ? Moi aussi, et je vais te le ronger ton coin ! Allez, crocs!',
+            'Je suis un castor né au canada, ca t en bouche un coin ? Moi aussi, et je vais te le ronger ton coin ! Allez, crocs!',
           webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
           tags: [RecetteTags.ENTREE, RecetteTags.LONG, RecetteTags.DESSERT],
           articlesList: [
@@ -135,12 +150,12 @@ export const Calendar = () => {
               description: 'azerdftghjklm',
               tags: [RecetteTags.COURT],
               webImage:
-                  'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
+                'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
             },
           ],
         },
-
-      ] },
+      ],
+    },
     { label: 'Mercredi', slug: 'wednesday', items: [] },
     { label: 'Jeudi', slug: 'thursday', items: [] },
     { label: 'Vendredi', slug: 'friday', items: [] },
@@ -172,9 +187,38 @@ export const Calendar = () => {
     setItemToInspect(item);
   };
 
-  const handleOnDragEnd = (e: any) => {
-    // console.log(e);
-  };
+  const handleOnDragEnd = useCallback(
+    (e: any) => {
+      console.log(e);
+      const source = e.source;
+      const destination = e.destination;
+      if (destination.droppableId === 'divers') {
+        setDivers(
+          update(divers, {
+            $push: [
+              {
+                id: 19,
+                label: 'ALLEY',
+                itemType: ItemType.ARTICLE,
+                description: 'Ma description',
+                webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+                tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+              },
+            ],
+          }),
+        );
+
+        console.log(days);
+
+        setDays(
+          update(days, {
+            0: { items: { $splice: [[source.index, 1]] } },
+          }),
+        );
+      }
+    },
+    [days, divers],
+  );
 
   const handleOnDragStart = (e: any) => {
     // console.log(e);
@@ -182,13 +226,12 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-      <DragDropContext onDragStart={handleOnDragStart} onDragEnd={handleOnDragEnd}>
+      <DragDropContext onDragStart={handleOnDragStart} onDragEnd={handleOnDragEnd} enableDefaultSensors={true}>
         <DragZone
           key={Math.random()} // TODO ID from API à rajouter !
           items={divers}
           identifier='divers'
           onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-          onDrop={(item, fromIndex, toIndex) => handleDrop(item, 8888, 4467)}
         />
         {days.map((day, index) => (
           <div key={day.slug} className='day'>
@@ -199,7 +242,6 @@ export const Calendar = () => {
               identifier={day.slug}
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
               onDelete={remove => undefined}
-              onDrop={(item, fromIndex, toIndex) => handleDrop(item, 77, index)}
             />
             <hr />
           </div>
