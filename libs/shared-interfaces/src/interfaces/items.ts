@@ -15,11 +15,9 @@ export interface ItemBase {
 
 export type ArticleList = Omit<ItemBase, 'articlesList' | 'itemType'> & { quantity: number };
 
-export interface Courses {
-  id: number;
-  articlesList: ArticleList[];
-  tags: Tags[];
-}
+export interface Days {label: string; slug: string; items: ItemBase[] | never[]}
+
+
 
 export interface IIngredientsWithQte {
   ingredient: IIngredient;
@@ -33,7 +31,6 @@ export interface IIngredient {
 
 // https://stackoverflow.com/questions/48478361/how-to-merge-two-enums-in-typescript
 export type Tags = ArticleTags | RecetteTags
-// export type Tags = ( typeof ArticleTags) & ( typeof RecetteTags)
 
 
 export const enum ArticleTags {
@@ -61,4 +58,11 @@ export const enum RecetteTags {
   COURT = 'court',
   MOYEN = 'moyen',
   LONG = 'long',
+}
+
+
+export interface Courses {
+  id: number;
+  articlesList: ArticleList[];
+  tags: Tags[];
 }

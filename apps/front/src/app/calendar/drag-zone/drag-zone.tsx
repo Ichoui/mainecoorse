@@ -26,7 +26,7 @@ export const DragZone = (props: {
                 key={Math.random()} // TODO ID from API à rajouter !
                 item={item}
                 identifier={identifier + '-' + index}
-                index={index}
+                index={identifier + '-' + index}
                 onClick={(confirm, item) => onClick(confirm, item)}
                 onDelete={onDelete ? (remove: boolean) => onDelete(remove) : onDelete}
                 onDrop={index => {

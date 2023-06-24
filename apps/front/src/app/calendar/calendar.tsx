@@ -1,5 +1,5 @@
 import './calendar.scss';
-import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
+import { ArticleTags, Days, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import { useCallback, useEffect, useState } from 'react';
 import { DragTypes } from '@shared/interfaces/DragTypes';
@@ -77,7 +77,7 @@ export const Calendar = () => {
   ]);
 
   // TODO FROM API
-  const [days, setDays] = useState([
+  const [days, setDays] = useState<Days[]>([
     {
       label: 'Samedi',
       slug: 'saturday',
@@ -85,10 +85,21 @@ export const Calendar = () => {
         {
           id: 8,
           label: 'Oignon',
-          quantity: 2,
+          itemType:ItemType.RECETTE,
           description: 'C est pas bon',
           tags: [RecetteTags.PLAT],
           webImage: 'https://jardinage.lemonde.fr/images/dossiers/historique/oignons2-155448.jpg',
+          articlesList: [
+            {
+              id: 12,
+              label: 'Sympa hnon?',
+              quantity: 5,
+              description: 'azerdftghjklm',
+              tags: [RecetteTags.COURT],
+              webImage:
+                'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
+            },
+          ],
         },
       ],
     },
@@ -100,13 +111,14 @@ export const Calendar = () => {
         {
           id: 9,
           label: 'Frites',
+          itemType:ItemType.ARTICLE,
           description: 'Ma description',
           webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
           tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
         },
       ],
     },
-    { label: 'Mardi', slug: 'ghf', items: [
+    { label: 'Mardi', slug: 'tuesday', items: [
         {
           id: 10,
           label: 'Recette2',
@@ -129,9 +141,9 @@ export const Calendar = () => {
         },
 
       ] },
-    { label: 'Mercredi', slug: 'cxv', items: [] },
-    { label: 'Jeudi', slug: 'rth', items: [] },
-    { label: 'Vendredi', slug: 'opk', items: [] },
+    { label: 'Mercredi', slug: 'wednesday', items: [] },
+    { label: 'Jeudi', slug: 'thursday', items: [] },
+    { label: 'Vendredi', slug: 'friday', items: [] },
   ]);
 
   const handleDrop = useCallback((item: ItemBase, fromIndex: number, toIndex: number) => {

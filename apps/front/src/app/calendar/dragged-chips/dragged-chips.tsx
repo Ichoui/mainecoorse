@@ -6,7 +6,7 @@ import { Draggable } from '@hello-pangea/dnd';
 export const DraggedChips = (props: {
   item: ItemBase;
   identifier: string;
-  index: number;
+  index: string;
   onDrop: (index: number) => void;
   onClick: (confirm: boolean, item: ItemBase) => void;
   onDelete?: (remove: boolean) => void | undefined;
@@ -17,7 +17,7 @@ export const DraggedChips = (props: {
   const opacity = false ? 0.4 : 1;
   console.log(identifier);
   return (
-    <Draggable draggableId={identifier} index={item.id} key={identifier}>
+    <Draggable draggableId={identifier} index={item.id} key={Math.random()}>
       {(provided, snapshot) => (
         <div
           style={{ opacity }}
