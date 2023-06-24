@@ -15,7 +15,7 @@ export interface ItemBase {
 
 export type ArticleList = Omit<ItemBase, 'articlesList' | 'itemType'> & { quantity: number };
 
-export interface Days {label: string; slug: string; items: ItemBase[] | never[]}
+export interface Days {label: string; id: number; slug: string; items: ItemBase[] | never[]}
 
 
 

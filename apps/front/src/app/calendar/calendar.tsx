@@ -76,6 +76,7 @@ export const Calendar = () => {
   const [days, setDays] = useState<Days[]>([
     {
       label: 'Samedi',
+      id: 0,
       slug: 'saturday',
       items: [
         {
@@ -115,9 +116,10 @@ export const Calendar = () => {
         },
       ],
     },
-    { label: 'Dimanche', slug: 'sunday', items: [] },
+    { label: 'Dimanche', id: 1, slug: 'sunday', items: [] },
     {
       label: 'Lundi',
+      id: 2,
       slug: 'monday',
       items: [
         {
@@ -132,6 +134,7 @@ export const Calendar = () => {
     },
     {
       label: 'Mardi',
+      id: 3,
       slug: 'tuesday',
       items: [
         {
@@ -156,9 +159,9 @@ export const Calendar = () => {
         },
       ],
     },
-    { label: 'Mercredi', slug: 'wednesday', items: [] },
-    { label: 'Jeudi', slug: 'thursday', items: [] },
-    { label: 'Vendredi', slug: 'friday', items: [] },
+    { label: 'Mercredi', id: 4, slug: 'wednesday', items: [] },
+    { label: 'Jeudi', id: 5, slug: 'thursday', items: [] },
+    { label: 'Vendredi', id: 6, slug: 'friday', items: [] },
   ]);
 
   const handleDrop = useCallback((item: ItemBase, fromIndex: number, toIndex: number) => {
@@ -189,49 +192,66 @@ export const Calendar = () => {
 
   const handleOnDragEnd = useCallback(
     (e: any) => {
-      console.log(e);
+      if (!e.destination) {
+        return;
+      }
       const source = e.source;
       const destination = e.destination;
+      const dragZoneIndex = (droppableId: string) => days.findIndex(d => d.slug === droppableId);
       if (destination.droppableId === 'divers') {
+        const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
+        // Vers divers
         setDivers(
           update(divers, {
-            $push: [
-              {
-                id: 19,
-                label: 'ALLEY',
-                itemType: ItemType.ARTICLE,
-                description: 'Ma description',
-                webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-                tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
-              },
-            ],
+            $push: [item],
           }),
         );
-
-        console.log(days);
-
         setDays(
           update(days, {
-            0: { items: { $splice: [[source.index, 1]] } },
+            [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
           }),
         );
+      } else {
+        // Depuis divers vers un jour
+        if (source.droppableId === 'divers') {
+          const item = divers[e.source.index];
+          setDays(
+            update(days, {
+              [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } },
+            }),
+          );
+
+          setDivers(update(divers, { $splice: [[source.index, 1]] }));
+        } else {
+          // Depuis un jour vers un jour
+          const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
+          console.log(e);
+          console.log(item);
+          console.log(days);
+          // add
+          setDays(
+            update(days, {
+              [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } }, // add
+              [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } }, // remove
+            }),
+          );
+
+          console.log(days);
+        }
       }
     },
     [days, divers],
   );
 
-  const handleOnDragStart = (e: any) => {
-    // console.log(e);
-  };
-
   return (
     <div className='Calendar'>
-      <DragDropContext onDragStart={handleOnDragStart} onDragEnd={handleOnDragEnd} enableDefaultSensors={true}>
+      <DragDropContext onDragEnd={handleOnDragEnd} enableDefaultSensors={true}>
         <DragZone
           key={Math.random()} // TODO ID from API à rajouter !
           items={divers}
           identifier='divers'
           onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+          onDelete={remove => undefined}
         />
         {days.map((day, index) => (
           <div key={day.slug} className='day'>
@@ -241,7 +261,6 @@ export const Calendar = () => {
               items={day.items}
               identifier={day.slug}
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-              onDelete={remove => undefined}
             />
             <hr />
           </div>
