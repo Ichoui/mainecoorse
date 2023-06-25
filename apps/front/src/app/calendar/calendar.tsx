@@ -5,7 +5,6 @@ import { useCallback, useState } from 'react';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
 import { DragDropContext } from '@hello-pangea/dnd';
 import update from 'immutability-helper';
-
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
   // TODO FROM API
@@ -174,12 +173,13 @@ export const Calendar = () => {
 
   const handleOnDragEnd = useCallback(
     (e: any) => {
-      if (!e.destination) {
+      if (!e.destination || e.source.droppableId === e.destination.droppableId) {
         return;
       }
       const source = e.source;
       const destination = e.destination;
       const dragZoneIndex = (droppableId: string) => days.findIndex(d => d.slug === droppableId);
+
       if (destination.droppableId === 'divers') {
         const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
         // Vers divers
@@ -209,8 +209,8 @@ export const Calendar = () => {
           const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
           setDays(
             update(days, {
-              [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } }, // add
               [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } }, // remove
+              [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } }, // add
             }),
           );
         }
@@ -218,16 +218,25 @@ export const Calendar = () => {
     },
     [days, divers],
   );
+
+  const handleOnDragStart = () => {
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(200);
+    }
+  }
+
   return (
     <div className='Calendar'>
-      <DragDropContext onDragEnd={handleOnDragEnd} enableDefaultSensors={true}>
-        <DragZone
-          key={Math.random()} // TODO ID from API à rajouter !
-          items={divers}
-          identifier='divers'
-          onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-          onDelete={remove => undefined}
-        />
+      <DragDropContext onDragStart={handleOnDragStart} onDragEnd={handleOnDragEnd} enableDefaultSensors={true}>
+        <div className='divers'>
+          <DragZone
+            key={Math.random()} // TODO ID from API à rajouter !
+            items={divers}
+            identifier='divers'
+            onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+            onDelete={remove => undefined}
+          />
+        </div>
         {days.map((day, index) => (
           <div key={day.slug} className='day'>
             <h4>{day.label}</h4>

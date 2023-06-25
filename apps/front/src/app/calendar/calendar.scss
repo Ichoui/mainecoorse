@@ -1,10 +1,25 @@
 @import '@styles/shared';
 
+.allez-le-portail {
+  position: fixed;
+  > div {
+
+  }
+  .is-dragging {
+    background-color: $mainText;
+    color: $backgroundColor;
+  }
+}
+
 .Calendar {
   height: 100%;
   overflow-y: scroll;
 
   .divers {
+    height: 125px;
+    .chips {
+      height: 100%;
+    }
   }
 
   .day {
@@ -48,6 +63,9 @@
         display: flex;
         justify-content: space-between;
         width: 8em;
+        -webkit-user-drag: element;
+
+
         span {
           padding: 0 5px;
           width: 100%;

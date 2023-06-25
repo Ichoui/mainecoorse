@@ -2,7 +2,7 @@ import { DraggedChips } from '@app/calendar/dragged-chips/dragged-chips';
 import { ItemBase } from '@shared-interfaces/items';
 import '../calendar.scss';
 import { Droppable } from '@hello-pangea/dnd';
-import { Chip } from '@mui/material';
+import { ReparentingPortal } from '@app/calendar/portal/portal';
 
 export const DragZone = (props: {
   items: ItemBase[];
@@ -15,15 +15,16 @@ export const DragZone = (props: {
   return (
     <Droppable
       droppableId={identifier}
+      // getContainerForClone={(e)=> (<Testt/>)}
       mode='virtual'
       renderClone={(provided, snapshot, rubric) => (
-        <Chip
-          label={items[rubric.source.index].label}
-          variant='outlined'
+        <ReparentingPortal
+          item={items[rubric.source.index]}
+          provided={provided}
+          snapshot={snapshot}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        />
+        ></ReparentingPortal>
       )}
     >
       {(provided, snapshot) => (
@@ -31,7 +32,7 @@ export const DragZone = (props: {
           <div className={`${snapshot.isDraggingOver ? 'active' : ''}`}>
             {items.map((item, index) => (
               <DraggedChips
-                key={Math.random()} // TODO ID from API à rajouter !
+                key={identifier + '-' + index} // TODO ID from API à rajouter !
                 item={item}
                 identifier={identifier + '-' + index}
                 index={index}
@@ -39,6 +40,7 @@ export const DragZone = (props: {
                 onDelete={onDelete ? (remove: boolean) => onDelete(remove) : onDelete}
               />
             ))}
+            {/*{provided.placeholder}*/}
           </div>
         </div>
       )}
