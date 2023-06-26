@@ -15,8 +15,8 @@ export const DragZone = (props: {
   return (
     <Droppable
       droppableId={identifier}
-      // getContainerForClone={(e)=> (<Testt/>)}
       mode='virtual'
+      direction='horizontal'
       renderClone={(provided, snapshot, rubric) => (
         <ReparentingPortal
           item={items[rubric.source.index]}
@@ -40,7 +40,6 @@ export const DragZone = (props: {
                 onDelete={onDelete ? (remove: boolean) => onDelete(remove) : onDelete}
               />
             ))}
-            {/*{provided.placeholder}*/}
           </div>
         </div>
       )}

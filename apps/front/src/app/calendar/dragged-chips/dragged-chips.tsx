@@ -13,7 +13,7 @@ export const DraggedChips = (props: {
   const { item, identifier, index, onClick, onDelete } = props;
 
   return (
-    <Draggable draggableId={identifier} index={index} key={identifier} shouldRespectForcePress={true}>
+    <Draggable draggableId={identifier} index={index} key={identifier} shouldRespectForcePress={true} disableInteractiveElementBlocking>
       {(provided, snapshot) => (
         <div
           style={{ opacity: snapshot.isDragging ? 0.4 : 1 }}
@@ -21,12 +21,6 @@ export const DraggedChips = (props: {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {/*<Chip*/}
-          {/*  label={item?.label}*/}
-          {/*  variant='outlined'*/}
-          {/*  onClick={() => onClick(true, item)}*/}
-          {/*  onDelete={onDelete}*/}
-          {/*/>*/}
           <ReparentingPortal
             item={item}
             provided={provided}
