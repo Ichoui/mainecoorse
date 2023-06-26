@@ -3,8 +3,10 @@ import { ArticleTags, Days, ItemBase, ItemType, RecetteTags } from '@shared-inte
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import { useCallback, useState } from 'react';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
-import { DragDropContext } from '@hello-pangea/dnd';
+import { DragDropContext, useKeyboardSensor, useMouseSensor } from '@hello-pangea/dnd';
 import update from 'immutability-helper';
+import useTouchSensor from './use-touch-sensor';
+
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
   // TODO FROM API
@@ -227,7 +229,8 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-      <DragDropContext onDragStart={handleOnDragStart} onDragEnd={handleOnDragEnd} enableDefaultSensors={true}>
+      {/*enableDefaultSensors={true}*/}
+      <DragDropContext onDragStart={handleOnDragStart} onDragEnd={handleOnDragEnd}  enableDefaultSensors={false} sensors={[useTouchSensor, useKeyboardSensor, useMouseSensor]} >
         <div className='divers'>
           <DragZone
             key={Math.random()} // TODO ID from API à rajouter !
