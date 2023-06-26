@@ -66,9 +66,8 @@ const SortByTags = (items: ItemBase[]): ArticleTags[] => {
   const tags = extractAllTags.filter((value, index) => extractAllTags.indexOf(value) === index);
 
   // Each tag should be an index !
-  const test =items.map(item => {
+  const test = items.reduce((previousValue, currentValue, currentIndex) => {});
 
-  })
   console.log(test);
   return tags;
 };
