@@ -46,7 +46,7 @@ export const Calendar = () => {
     },
     {
       id: 8,
-      label: 'Article 4',
+      label: 'Article 14',
       itemType: ItemType.ARTICLE,
       description: 'Ma description',
       webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
