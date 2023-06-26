@@ -6,6 +6,7 @@ import { DragZone } from '@app/calendar/drag-zone/drag-zone';
 import { DragDropContext, useKeyboardSensor, useMouseSensor } from '@hello-pangea/dnd';
 import update from 'immutability-helper';
 import useTouchSensor from './use-touch-sensor';
+import { BinZone } from '@app/calendar/drag-zone/bin-zone';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -172,9 +173,11 @@ export const Calendar = () => {
     setOpenDialogInspectItem(open);
     setItemToInspect(item);
   };
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleOnDragEnd = useCallback(
     (e: any) => {
+      setIsDragging(false);
       if (!e.destination || e.source.droppableId === e.destination.droppableId) {
         return;
       }
@@ -195,6 +198,18 @@ export const Calendar = () => {
             [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
           }),
         );
+      } else if (destination.droppableId === 'bin') {
+        // Supprimer un item depuis divers
+        if (source.droppableId === 'divers') {
+          setDivers(update(divers, { $splice: [[source.index, 1]] }));
+        } else {
+          // Supprimer un item depuis un jour
+          setDays(
+            update(days, {
+              [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
+            }),
+          );
+        }
       } else {
         // Depuis divers vers un jour
         if (source.droppableId === 'divers') {
@@ -221,30 +236,39 @@ export const Calendar = () => {
     [days, divers],
   );
 
+  const handleOnBeforeCapture = () => {
+    setIsDragging(true);
+  };
+
   const handleOnDragStart = () => {
     if (window.navigator.vibrate) {
       window.navigator.vibrate(200);
     }
-  }
+  };
 
   return (
     <div className='Calendar'>
-      {/*enableDefaultSensors={true}*/}
-      <DragDropContext onDragStart={handleOnDragStart} onDragEnd={handleOnDragEnd}  enableDefaultSensors={false} sensors={[useTouchSensor, useKeyboardSensor, useMouseSensor]} >
+      <DragDropContext
+        onBeforeCapture={handleOnBeforeCapture}
+        onDragStart={handleOnDragStart}
+        onDragEnd={handleOnDragEnd}
+        enableDefaultSensors={false}
+        sensors={[useTouchSensor, useKeyboardSensor, useMouseSensor]}
+      >
         <div className='divers'>
           <DragZone
-            key={Math.random()} // TODO ID from API à rajouter !
+            key={Math.random()}
             items={divers}
             identifier='divers'
             onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-            onDelete={remove => undefined}
           />
         </div>
-        {days.map((day, index) => (
+        <hr className='separator-divers-day' />
+        {days.map(day => (
           <div key={day.slug} className='day'>
             <h4>{day.label}</h4>
             <DragZone
-              key={Math.random()} // TODO ID from API à rajouter !
+              key={Math.random()}
               items={day.items}
               identifier={day.slug}
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
@@ -252,6 +276,10 @@ export const Calendar = () => {
             <hr />
           </div>
         ))}
+
+        <div className='bin'>
+          <BinZone key={Math.random()} identifier='bin' isDragging={isDragging} />
+        </div>
       </DragDropContext>
 
       {/*OPEN DIALOG TON INSPECT ITEM IN READONLY*/}

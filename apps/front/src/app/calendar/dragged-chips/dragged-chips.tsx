@@ -13,8 +13,7 @@ export const DraggedChips = (props: {
   const { item, identifier, index, onClick, onDelete } = props;
 
   return (
-      // shouldRespectForcePress={true} disableInteractiveElementBlocking
-    <Draggable draggableId={identifier} index={index} key={identifier} >
+    <Draggable draggableId={identifier} index={index} key={identifier}>
       {(provided, snapshot) => (
         <div
           style={{ opacity: snapshot.isDragging ? 0.4 : 1 }}
@@ -34,5 +33,3 @@ export const DraggedChips = (props: {
     </Draggable>
   );
 };
-
-

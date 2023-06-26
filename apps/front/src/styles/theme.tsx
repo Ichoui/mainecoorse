@@ -1,7 +1,7 @@
 import './shared.scss';
 import { createTheme, ThemeOptions } from '@mui/material/styles';
 import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
-import { purple, yellow } from '@mui/material/colors';
+import { yellow } from '@mui/material/colors';
 
 // https://zenoo.github.io/mui-theme-creator/#Switch
 // https://mui.com/material-ui/customization/color/
