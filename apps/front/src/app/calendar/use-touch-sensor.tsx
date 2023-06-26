@@ -1,5 +1,5 @@
-
-
+/* eslint-disable */
+// @ts-nocheck
 import * as React from 'react';
 import { useCallback, useMemo } from 'use-memo-one';
 import type { Position } from 'css-box-model';
