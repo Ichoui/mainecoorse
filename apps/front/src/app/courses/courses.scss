@@ -1,5 +1,31 @@
 @import '@styles/shared';
 
 .Courses {
+  width: 90%;
+  margin: 0 auto;
+  .btn-purge {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+  }
+  .blocks {
+    h2 {
+      text-transform: uppercase;
+      color: $primary;
+      text-align: center;
+      margin: 10px auto;
+    }
+    hr {
+      border-color: $secondary;
+      background-color: $secondary;
+      margin: 10px auto;
+      width: 90%;
+      user-select: none;
+    }
 
+    .container-checkboxes {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }

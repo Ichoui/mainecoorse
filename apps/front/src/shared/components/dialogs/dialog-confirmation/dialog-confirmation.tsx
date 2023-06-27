@@ -4,10 +4,11 @@ import { DialogTransitionUp } from '@components/dialogs/dialog';
 
 export const DialogConfirmation = (props: {
   open: boolean;
-  isArticle: boolean;
+  isArticle?: boolean;
+  purge?: boolean;
   onClose: (confirm?: boolean) => void;
 }): JSX.Element => {
-  const { open, isArticle, onClose } = props;
+  const { open, isArticle, purge = false, onClose } = props;
   const handleClose = () => {
     onClose();
   };
@@ -17,7 +18,10 @@ export const DialogConfirmation = (props: {
 
   return (
     <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} maxWidth='xs'>
-      <DialogTitle>Supprimer&nbsp;{isArticle ? "l'article" : 'la recette'}</DialogTitle>
+      <DialogTitle>
+        {typeof isArticle !== 'undefined' && <div>Supprimer&nbsp;{isArticle ? "l'article" : 'la recette'}</div>}
+        {purge && <div>C'est l'heure de la Purge...</div>}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           🚧 ATTENTION 🚨 !<br />
