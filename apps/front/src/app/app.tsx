@@ -1,10 +1,10 @@
 import React, { SyntheticEvent, useState } from 'react';
 import { IconButton, Tab, Tabs, ThemeProvider } from '@mui/material';
-import { CalendarMonthRounded, EditNoteRounded, FormatListBulletedRounded, RestaurantMenuRounded, ShoppingCartRounded } from '@mui/icons-material';
+import { CalendarMonthRounded, EditNoteRounded, FormatListBulletedRounded, RestaurantMenuRounded, ShoppingCartRounded, } from '@mui/icons-material';
 import './app.scss';
 import maple from '/logo.png';
 import { backgroundThemeColor, headerThemeColor, themeOptions } from '@styles/theme';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 
 export const App = (): JSX.Element => {
   const loc = useLocation();
@@ -15,27 +15,32 @@ export const App = (): JSX.Element => {
     } else if (pathname === 'courses') {
       return false;
     } else {
-      return 'articles'
+      return 'articles';
     }
   };
   const [value, setValue] = useState<string | boolean>(location());
-  const handleChangeTab = (event: SyntheticEvent, newValue: 'articles' | 'calendar' | 'recettes' | 'courses') => setValue(newValue);
+  const handleChangeTab = (event: SyntheticEvent, newValue: 'articles' | 'calendar' | 'recettes' | 'courses') =>
+    setValue(newValue);
 
   return (
     <ThemeProvider theme={themeOptions}>
       {/* HEADER */}
       <header className='header' style={headerThemeColor}>
-        <IconButton component={Link} to='/notes' onClick={() => setValue(false)}>
-          <EditNoteRounded />
-        </IconButton>
+        <NavLink to='/notes' className={({ isActive }) => (isActive ? 'active' : '')} onClick={() => setValue(false)}>
+          <IconButton>
+            <EditNoteRounded />
+          </IconButton>
+        </NavLink>
 
         <span className='logo'>
           <img src={maple} alt='Logo mainecoorse' />
         </span>
 
-        <IconButton component={Link} to='/courses' onClick={() => setValue(false)}>
-          <ShoppingCartRounded />
-        </IconButton>
+        <NavLink to='/courses' className={({ isActive }) => (isActive ? 'active' : '')} onClick={() => setValue(false)}>
+          <IconButton>
+            <ShoppingCartRounded />
+          </IconButton>
+        </NavLink>
       </header>
 
       {/* CONTAINER + OUTLET ROUTAGE */}
@@ -54,9 +59,30 @@ export const App = (): JSX.Element => {
         aria-label='menu tab'
         style={backgroundThemeColor}
       >
-        <Tab value='articles' icon={<FormatListBulletedRounded />} iconPosition='top' label='Articles' component={Link} to='/articles' />
-        <Tab value='calendar' icon={<CalendarMonthRounded />} iconPosition='top' label='Calendrier' component={Link} to='/calendar' />
-        <Tab value='recettes' icon={<RestaurantMenuRounded />} iconPosition='top' label='Recette' component={Link} to='/recettes' />
+        <Tab
+          value='articles'
+          icon={<FormatListBulletedRounded />}
+          iconPosition='top'
+          label='Articles'
+          component={Link}
+          to='/articles'
+        />
+        <Tab
+          value='calendar'
+          icon={<CalendarMonthRounded />}
+          iconPosition='top'
+          label='Calendrier'
+          component={Link}
+          to='/calendar'
+        />
+        <Tab
+          value='recettes'
+          icon={<RestaurantMenuRounded />}
+          iconPosition='top'
+          label='Recette'
+          component={Link}
+          to='/recettes'
+        />
       </Tabs>
     </ThemeProvider>
   );

@@ -45,7 +45,8 @@ export const Courses = () => {
       tags: [ArticleTags.EPICERIE],
     },
   ];
-  const ItemsSortedByTags: ArticleTags[] = SortByTags(items);
+  let ItemsSortedByTags: (string | any)[][];
+  ItemsSortedByTags = SortByTags(items);
 
   console.log(ItemsSortedByTags);
 
@@ -61,13 +62,18 @@ export const Courses = () => {
   );
 };
 
-const SortByTags = (items: ItemBase[]): ArticleTags[] => {
+const SortByTags = (items: ItemBase[]) => {
   const extractAllTags = items.map(item => item.tags[0] as ArticleTags);
   const tags = extractAllTags.filter((value, index) => extractAllTags.indexOf(value) === index);
+  const sortedItems: Record<ArticleTags, ItemBase[]> | {} = {};
+  // @ts-ignore
+  tags.map(t => (sortedItems[t] = []));
+  items.map(item => {
+    const tag = item.tags[0];
+    // @ts-ignore
+    sortedItems[tag].push(item);
+  });
 
-  // Each tag should be an index !
-  const test = items.reduce((previousValue, currentValue, currentIndex) => {});
-
-  console.log(test);
-  return tags;
+  // @ts-ignore
+  return Object.keys(sortedItems).map((key) => [key, sortedItems[key]]);
 };
