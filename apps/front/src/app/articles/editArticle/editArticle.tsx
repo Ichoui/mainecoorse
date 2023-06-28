@@ -130,7 +130,7 @@ const ArticleForm = (props: {
       {openDialogConfirmation && (
         <DialogConfirmation
           open={openDialogConfirmation}
-          purge={true}
+          isArticle={true}
           onClose={remove => handleRemove(false, remove)}
         />
       )}

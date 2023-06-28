@@ -194,7 +194,7 @@ const TSXForm = (props: any): JSX.Element => {
       {openDialogConfirmation && (
         <DialogConfirmation
           open={openDialogConfirmation}
-          purge={true}
+          isArticle={false}
           onClose={remove => handleRemove(false, remove)}
         />
       )}
