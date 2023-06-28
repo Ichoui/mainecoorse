@@ -3,7 +3,7 @@ import { Item } from '@components/item/item';
 import { ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { Autocomplete, Chip, Fab, TextField } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -109,7 +109,7 @@ export const Recettes = (): JSX.Element => {
   }, 200);
 
   const handleTags = (e: object, tags: RecetteTags[]) => {
-    const filter = recettes.reduce((acc, curr, index) => {
+    const filter = recettes.reduce((acc: ItemBase[], curr: ItemBase, index: number) => {
       tags.forEach(tag => {
         if (curr.tags.includes(tag)) {
           acc.push(curr);
@@ -152,7 +152,6 @@ export const Recettes = (): JSX.Element => {
           )}
         />
       </div>
-      <Outlet />
 
       <div className='listing'>
         {filteredRecettes.map((recette, i) => (

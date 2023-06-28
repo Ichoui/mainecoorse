@@ -3,7 +3,7 @@ import { Item } from '@components/item/item';
 import { ArticleTags, ItemBase, ItemType } from '@shared-interfaces/items';
 import { Autocomplete, Chip, Fab, TextField } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -108,7 +108,7 @@ export const Articles = (): JSX.Element => {
   }, 200);
 
   const handleTags = (e: object, tags: ArticleTags[]) => {
-    const filter = articles.reduce((acc, curr, index) => {
+    const filter = articles.reduce((acc: ItemBase[], curr: ItemBase, index: number) => {
       tags.forEach(tag => {
         if (curr.tags.includes(tag)) {
           acc.push(curr);
@@ -145,8 +145,6 @@ export const Articles = (): JSX.Element => {
           renderInput={params => <TextField {...params} variant='outlined' label='Tags' />}
         />
       </div>
-
-      <Outlet />
 
       <div className='listing'>
         {filteredArticles.map((article, i) => (
