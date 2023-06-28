@@ -17,7 +17,7 @@ export const Calendar = () => {
       label: 'Article 1',
       itemType: ItemType.ARTICLE,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
     },
     {
@@ -25,7 +25,7 @@ export const Calendar = () => {
       label: 'Article 2',
       itemType: ItemType.ARTICLE,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
     },
     {
@@ -33,7 +33,7 @@ export const Calendar = () => {
       label: 'Article 3',
       itemType: ItemType.ARTICLE,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
     },
     {
@@ -41,7 +41,7 @@ export const Calendar = () => {
       label: 'Article 4',
       itemType: ItemType.ARTICLE,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
     },
     {
@@ -49,7 +49,7 @@ export const Calendar = () => {
       label: 'Article 14',
       itemType: ItemType.ARTICLE,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
     },
     {
@@ -58,7 +58,7 @@ export const Calendar = () => {
       itemType: ItemType.RECETTE,
       description:
         'Je suis un castor né au canada, ca t en bouche un coin ? Moi aussi, et je vais te le ronger ton coin ! Allez, crocs!',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [RecetteTags.ENTREE, RecetteTags.LONG, RecetteTags.DESSERT],
       articlesList: [
         {
@@ -67,7 +67,7 @@ export const Calendar = () => {
           quantity: 5,
           description: 'Les frites belges ou les frites ricaines ?',
           tags: [RecetteTags.COURT],
-          webImage:
+          url:
             'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
         },
       ],
@@ -86,16 +86,16 @@ export const Calendar = () => {
           label: 'boule',
           itemType: ItemType.ARTICLE,
           description: 'Ma description',
-          webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-          tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+          url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+          tags: [ArticleTags.EPICERIE],
         },
         {
           id: 13,
           label: 'djak',
           itemType: ItemType.ARTICLE,
           description: 'Ma description',
-          webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-          tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
+          url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+          tags: [ArticleTags.BOISSONS],
         },
         {
           id: 8,
@@ -103,7 +103,7 @@ export const Calendar = () => {
           itemType: ItemType.RECETTE,
           description: 'C est pas bon',
           tags: [RecetteTags.PLAT],
-          webImage: 'https://jardinage.lemonde.fr/images/dossiers/historique/oignons2-155448.jpg',
+          url: 'https://jardinage.lemonde.fr/images/dossiers/historique/oignons2-155448.jpg',
           articlesList: [
             {
               id: 12,
@@ -111,7 +111,7 @@ export const Calendar = () => {
               quantity: 5,
               description: 'azerdftghjklm',
               tags: [RecetteTags.COURT],
-              webImage:
+              url:
                 'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
             },
           ],
@@ -129,7 +129,7 @@ export const Calendar = () => {
           label: 'Frites',
           itemType: ItemType.ARTICLE,
           description: 'Ma description',
-          webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+          url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
           tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
         },
       ],
@@ -145,7 +145,7 @@ export const Calendar = () => {
           itemType: ItemType.RECETTE,
           description:
             'Je suis un castor né au canada, ca t en bouche un coin ? Moi aussi, et je vais te le ronger ton coin ! Allez, crocs!',
-          webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+          url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
           tags: [RecetteTags.ENTREE, RecetteTags.LONG, RecetteTags.DESSERT],
           articlesList: [
             {
@@ -154,7 +154,7 @@ export const Calendar = () => {
               quantity: 5,
               description: 'azerdftghjklm',
               tags: [RecetteTags.COURT],
-              webImage:
+              url:
                 'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
             },
           ],

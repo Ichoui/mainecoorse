@@ -7,7 +7,7 @@ export interface ItemBase {
   id: number;
   itemType: ItemType;
   description: string;
-  webImage: string;
+  url: string;
   label: string;
   tags: Tags[];
   articlesList?: ArticleList[];

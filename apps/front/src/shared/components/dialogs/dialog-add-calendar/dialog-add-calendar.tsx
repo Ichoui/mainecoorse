@@ -9,26 +9,27 @@ export const DialogAddCalendar = (props: {
   isArticle: boolean;
   onClose: (confirm?: boolean) => void;
 }): JSX.Element => {
-  const { open, isArticle, onClose } = props;
+  const { open, isArticle, item, onClose } = props;
   const handleClose = () => {
     onClose();
   };
 
   const handleOk = () => {
-    onClose(true);
+    console.log(item);
+    onClose();
   };
 
   return (
     <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} maxWidth='xs'>
       <DialogTitle>Que fait-on avec&nbsp;{isArticle ? 'cet article ?' : 'cette recette ?'}</DialogTitle>
       <DialogContent>
-        <DialogContentText>ALLEZ LE FOOT</DialogContentText>
+        <DialogContentText>Choix 1 Choix 2{/*{item?.articlesList.map(e => )}*/}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose} variant='outlined' color='primary'>
           Annuler
         </Button>
-        <Button onClick={handleOk} variant='outlined' color='secondary' >
+        <Button onClick={handleOk} variant='outlined' color='secondary'>
           Valider
         </Button>
       </DialogActions>

@@ -51,7 +51,7 @@ export const Item = (props: { item: ItemBase }): JSX.Element => {
         {/* DATA*/}
         <CardActionArea onClick={() => handleDialogInspectItem(true)}>
           <CardContent className='itemContent'>
-            <CardMedia component='img' alt={item.label} height='110' image={item.webImage} />
+            <CardMedia component='img' alt={item.label} height='110' image={item.url} />
             <Typography className='typo' gutterBottom variant='h6' component='div'>
               {item.label}
             </Typography>

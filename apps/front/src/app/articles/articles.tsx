@@ -13,7 +13,7 @@ export const Articles = (): JSX.Element => {
       id: 1,
       itemType: ItemType.ARTICLE,
       label: 'Dentifrice',
-      webImage: 'https://helvident.ch/wp-content/uploads/2020/03/choisir-un-dentifrice-HELVIDENT-1024x683.jpg',
+      url: 'https://helvident.ch/wp-content/uploads/2020/03/choisir-un-dentifrice-HELVIDENT-1024x683.jpg',
       tags: [ArticleTags.EPICERIE],
       description: 'ceci est du dentrifrice ok ?',
     },
@@ -21,7 +21,7 @@ export const Articles = (): JSX.Element => {
       id: 13,
       itemType: ItemType.ARTICLE,
       label: 'Pingouin',
-      webImage: 'https://helvident.ch/wp-content/uploads/2020/03/choisir-un-dentifrice-HELVIDENT-1024x683.jpg',
+      url: 'https://helvident.ch/wp-content/uploads/2020/03/choisir-un-dentifrice-HELVIDENT-1024x683.jpg',
       tags: [ArticleTags.EPICERIE],
       description: 'ceci est du dentrifrice ok ?',
     },
@@ -29,7 +29,7 @@ export const Articles = (): JSX.Element => {
       id: 2,
       itemType: ItemType.ARTICLE,
       label: 'Munstère',
-      webImage:
+      url:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.BOULANGERIE],
       description: 'Allez le munster!',
@@ -38,7 +38,7 @@ export const Articles = (): JSX.Element => {
       id: 3,
       itemType: ItemType.ARTICLE,
       label: 'Munster',
-      webImage:
+      url:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.BOULANGERIE, ArticleTags.LAITAGE],
       description: 'Allez le munster!',
@@ -47,7 +47,7 @@ export const Articles = (): JSX.Element => {
       id: 5,
       itemType: ItemType.ARTICLE,
       label: 'Munster aux olives basques ',
-      webImage:
+      url:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.BOULANGERIE, ArticleTags.LAITAGE],
       description: 'Allez le munster!',
@@ -56,7 +56,7 @@ export const Articles = (): JSX.Element => {
       id: 6,
       itemType: ItemType.ARTICLE,
       label: 'Munsteur',
-      webImage:
+      url:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.BOULANGERIE, ArticleTags.LAITAGE],
       description: 'Allez le munster!',
@@ -65,7 +65,7 @@ export const Articles = (): JSX.Element => {
       id: 7,
       itemType: ItemType.ARTICLE,
       label: 'Munsteir',
-      webImage:
+      url:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.LEGUMES],
       description: 'Allez le munster!',
@@ -74,7 +74,7 @@ export const Articles = (): JSX.Element => {
       id: 8,
       itemType: ItemType.ARTICLE,
       label: 'Munstezaer',
-      webImage:
+      url:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.LEGUMES],
       description: 'Allez le munster!',
@@ -83,7 +83,7 @@ export const Articles = (): JSX.Element => {
       id: 9,
       itemType: ItemType.ARTICLE,
       label: 'Munstaer',
-      webImage:
+      url:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.LEGUMES],
       description: 'Allez le munster!',
@@ -92,7 +92,7 @@ export const Articles = (): JSX.Element => {
       id: 10,
       itemType: ItemType.ARTICLE,
       label: 'Munstere',
-      webImage:
+      url:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.LEGUMES],
       description: 'Allez le munster!',

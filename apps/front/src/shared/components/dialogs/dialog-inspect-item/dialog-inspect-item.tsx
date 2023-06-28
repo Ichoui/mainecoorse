@@ -19,7 +19,7 @@ export const DialogInspectItem = (props: {
       <DialogTitle>{item.label}</DialogTitle>
       <DialogContent>
         <div className='dialog-content'>
-          <img src={item.webImage} alt={item.label} />
+          <img src={item.url} alt={item.label} />
           <p>{item.description}</p>
           {item?.tags && (
             <div className='tags'>

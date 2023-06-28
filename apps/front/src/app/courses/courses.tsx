@@ -12,7 +12,7 @@ export const Courses = () => {
       label: 'Article 1',
       quantity: 7,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.EPICERIE],
     },
     {
@@ -20,7 +20,7 @@ export const Courses = () => {
       label: 'Article 2',
       quantity: 7,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.ENTRETIEN],
     },
     {
@@ -28,7 +28,7 @@ export const Courses = () => {
       label: 'Article 3',
       quantity: 7,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.ENTRETIEN],
     },
     {
@@ -36,7 +36,7 @@ export const Courses = () => {
       label: 'Article 4',
       quantity: 7,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.BOISSONS],
     },
     {
@@ -44,7 +44,7 @@ export const Courses = () => {
       label: 'Article 16',
       quantity: 7,
       description: 'Ma description',
-      webImage: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
+      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
       tags: [ArticleTags.EPICERIE],
     },
   ];
