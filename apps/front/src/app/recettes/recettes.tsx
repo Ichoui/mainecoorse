@@ -109,7 +109,7 @@ export const Recettes = (): JSX.Element => {
   }, 200);
 
   const handleTags = (e: object, tags: RecetteTags[]) => {
-    const filter = recettes.reduce((acc: ItemBase[], curr: ItemBase, index: number) => {
+    const filter = recettes.reduce((acc: ItemBase[], curr: ItemBase) => {
       tags.forEach(tag => {
         if (curr.tags.includes(tag)) {
           acc.push(curr);

@@ -108,7 +108,7 @@ export const Articles = (): JSX.Element => {
   }, 200);
 
   const handleTags = (e: object, tags: ArticleTags[]) => {
-    const filter = articles.reduce((acc: ItemBase[], curr: ItemBase, index: number) => {
+    const filter = articles.reduce((acc: ItemBase[], curr: ItemBase) => {
       tags.forEach(tag => {
         if (curr.tags.includes(tag)) {
           acc.push(curr);
