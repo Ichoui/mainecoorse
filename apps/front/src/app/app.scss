@@ -18,6 +18,9 @@
     .active button svg {
       color: $secondary;
     }
+    button svg {
+      color: $white;
+    }
   }
 
   .container {
@@ -31,8 +34,12 @@
     width: 100%;
     height: $footerHeight;
     border-top: 1px solid $secondaryText;
-     a {
-       font-family: Oswald-Regular, sans-serif;
-     }
+    a {
+      font-family: Oswald-Regular, sans-serif;
+      &:not(.Mui-selected) {
+      color: $white;
+
+      }
+    }
   }
 }

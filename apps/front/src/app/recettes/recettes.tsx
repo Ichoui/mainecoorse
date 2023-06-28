@@ -99,7 +99,7 @@ export const Recettes = (): JSX.Element => {
   ];
 
   return (
-    <div className='recettes'>
+    <div className='Recettes'>
       <div className='filters'></div>
       <Outlet />
 

@@ -266,7 +266,7 @@ export const Calendar = () => {
         <hr className='separator-divers-day' />
         {days.map(day => (
           <div key={day.slug} className='day'>
-            <h4>{day.label}</h4>
+            <h3>{day.label}</h3>
             <DragZone
               key={Math.random()}
               items={day.items}

@@ -63,23 +63,23 @@ export const Courses = () => {
   return (
     <div className='Courses'>
       <div className='btn-purge'>
-
-      <Button type='button' variant='outlined' onClick={() => handleDialogConfirmation(true)}>Purger</Button>
+        <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>
+          Purger
+        </Button>
       </div>
       <FormGroup>
         {ItemsSortedByTags.map((items: ArticleList[] | string, index: number) => (
           <div key={index} className='blocks'>
-            {<h2>{items[0] as string}</h2>}
+            {<h3>{items[0] as string}</h3>}
             <hr />
             <div className='container-checkboxes'>
               {(items[1] as unknown as ArticleList[]).map((item, itemIndex) => (
-                <Coches item={item}></Coches>
+                <Coches key={itemIndex} item={item}></Coches>
               ))}
             </div>
           </div>
         ))}
       </FormGroup>
-
 
       {/*OPEN DIALOG TO CONFIRM DELETE */}
       {openDialogConfirmation && (

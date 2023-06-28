@@ -9,17 +9,17 @@
     padding: 15px;
   }
   .blocks {
-    h2 {
+    h3 {
       text-transform: uppercase;
       color: $primary;
       text-align: center;
       margin: 10px auto;
     }
     hr {
-      border-color: $secondary;
-      background-color: $secondary;
+      border-color: $white;
+      background-color: $white;
       margin: 10px auto;
-      width: 90%;
+      width: 100%;
       user-select: none;
     }
 

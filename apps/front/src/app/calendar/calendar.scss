@@ -29,18 +29,21 @@
   }
 
   .day {
-    h4 {
+    h3 {
       user-select: none;
-      color: $white;
       text-align: center;
       margin: 10px;
       text-transform: uppercase;
+      color: $white;
+      color: $primary;
     }
   }
 
   hr {
     width: 90%;
     user-select: none;
+    border-color: $white;
+    background-color: $white;
   }
 
   .chips {

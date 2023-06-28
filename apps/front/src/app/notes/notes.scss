@@ -1,5 +1,15 @@
+@import '@styles/shared';
 
 .Notes {
   width: 90%;
   margin: 0 auto;
+  height: 100%;
+  overflow-y: scroll;
+  h2 {
+    text-align: center;
+    color: $primary;
+  }
+  .MuiFormControl-root {
+    width: 100%;
+  }
 }

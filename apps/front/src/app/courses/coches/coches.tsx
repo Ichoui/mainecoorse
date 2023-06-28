@@ -11,7 +11,7 @@ export const Coches = (props: { item: ArticleList }) => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
-    // TODO API update la valeur
+    // TODO API update la valeur (ou remonter la valeur je ne sais pas encore)
   };
   const handleQuantity = (add: boolean) => {
     if (!checked) {
