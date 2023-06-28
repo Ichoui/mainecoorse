@@ -36,30 +36,30 @@ export interface IIngredient {
 export type Tags = ArticleTags | RecetteTags;
 
 export const enum ArticleTags {
-  VIANDE = 'viande',
-  POISSON = 'poisson',
-  BOULANGERIE = 'boulangerie',
-  FRUITS = 'fruits',
-  LEGUMES = 'légumes',
-  EPICERIE = 'épicerie',
-  LAITAGE = 'laitage',
-  ENTRETIEN = 'entretien',
-  HYGIENE = 'hygiène',
-  BOISSONS = 'boissons',
-  DIVERS = 'divers',
+  VIANDE = 'Viande',
+  POISSON = 'Poisson',
+  BOULANGERIE = 'Boulangerie',
+  FRUITS = 'Fruits',
+  LEGUMES = 'Légumes',
+  EPICERIE = 'Epicerie',
+  LAITAGE = 'Laitage',
+  ENTRETIEN = 'Entretien',
+  HYGIENE = 'Hygiène',
+  BOISSONS = 'Boissons',
+  DIVERS = 'Divers',
 }
 
 export const enum RecetteTags {
-  ENTREE = 'entrée',
-  PLAT = 'plat',
-  DESSERT = 'dessert',
-  BOISSON = 'boisson',
-  PETIT_DEJEUNER = 'petit_dejeuner',
-  ETE = 'été',
-  HIVER = 'hiver',
-  COURT = 'court',
-  MOYEN = 'moyen',
-  LONG = 'long',
+  ENTREE = 'Entrée',
+  PLAT = 'Plat',
+  DESSERT = 'Dessert',
+  BOISSON = 'Boisson',
+  PETIT_DEJEUNER = 'Petit déjeuner',
+  ETE = 'Eté',
+  HIVER = 'Hiver',
+  COURT = 'Court',
+  MOYEN = 'Moyen',
+  LONG = 'Long',
 }
 
 export interface Courses {
