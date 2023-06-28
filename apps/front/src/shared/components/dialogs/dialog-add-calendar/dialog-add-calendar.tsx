@@ -1,10 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import React from 'react';
-import { TransitionProps } from '@mui/material/transitions';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
+import { ItemBase } from '@shared-interfaces/items';
 
 export const DialogAddCalendar = (props: {
   open: boolean;
+  item: ItemBase;
   isArticle: boolean;
   onClose: (confirm?: boolean) => void;
 }): JSX.Element => {
@@ -19,19 +20,16 @@ export const DialogAddCalendar = (props: {
 
   return (
     <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} maxWidth='xs'>
-      <DialogTitle>Supprimer&nbsp;{isArticle ? "l'article" : 'la recette'}</DialogTitle>
+      <DialogTitle>Que fait-on avec&nbsp;{isArticle ? 'cet article ?' : 'cette recette ?'}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          🚧 ATTENTION 🚨 !<br />
-          Si tu supprimes, ça ne reviendra pas...
-        </DialogContentText>
+        <DialogContentText>ALLEZ LE FOOT</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose} variant='outlined' color='primary'>
-          Refuser
+          Annuler
         </Button>
-        <Button onClick={handleOk} variant='outlined' color='error'>
-          Supprimer
+        <Button onClick={handleOk} variant='outlined' color='secondary' >
+          Valider
         </Button>
       </DialogActions>
     </Dialog>

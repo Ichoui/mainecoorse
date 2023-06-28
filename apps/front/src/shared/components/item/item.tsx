@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import { ItemBase, ItemType } from '@shared-interfaces/items';
+import { DialogAddCalendar } from '@components/dialogs/dialog-add-calendar/dialog-add-calendar';
 
 export const Item = (props: { item: ItemBase }): JSX.Element => {
   const { item } = props;
@@ -40,6 +41,10 @@ export const Item = (props: { item: ItemBase }): JSX.Element => {
   const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
   const handleDialogInspectItem = (open = false) => setOpenDialogInspectItem(open);
 
+  // Dialog add to calendar and/or courses
+  const [openDialogAddTo, setOpenDialogAddTo] = useState(false);
+  const handleDialogAddTo = (open = false) => setOpenDialogAddTo(open);
+
   return (
     <div className='item'>
       <Card variant='outlined'>
@@ -55,7 +60,7 @@ export const Item = (props: { item: ItemBase }): JSX.Element => {
 
         {/* BUTTONS */}
         <CardActions className='itemActions'>
-          <IconButton aria-label='add to courses' color='primary'>
+          <IconButton aria-label='add to courses' color='primary' onClick={() => handleDialogAddTo(true)}>
             <AddShoppingCartRounded />
           </IconButton>
           <div>
@@ -113,6 +118,9 @@ export const Item = (props: { item: ItemBase }): JSX.Element => {
           isArticle={isArticle}
           item={item}
         />
+      )}
+      {openDialogAddTo && (
+        <DialogAddCalendar open={openDialogAddTo} onClose={handleDialogAddTo} isArticle={isArticle} item={item} />
       )}
     </div>
   );
