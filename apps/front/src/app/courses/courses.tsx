@@ -49,7 +49,7 @@ export const Courses = () => {
     },
   ];
 
-  const ItemsSortedByTags: (string | ArticleList[])[] = SortByTags(items);
+  const ItemsSortedByTags: (string | ArticleList[])[] = sortByTags(items);
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
@@ -93,7 +93,7 @@ export const Courses = () => {
   );
 };
 
-const SortByTags = (items: ArticleList[]): (string | ArticleList[])[] => {
+const sortByTags = (items: ArticleList[]): (string | ArticleList[])[] => {
   const extractAllTags = items.map(item => item.tags[0] as ArticleTags);
   const tags = extractAllTags.filter((value, index) => extractAllTags.indexOf(value) === index);
   const sortedItems: Record<ArticleTags, ArticleList[]> | {} = {};

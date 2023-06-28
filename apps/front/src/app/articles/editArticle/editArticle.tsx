@@ -5,15 +5,22 @@ import { Button, TextField } from '@mui/material';
 import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
+import React, { useState } from 'react';
+import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 
 export const EditArticle = (): JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://img.cuisineaz.com/660x660/2013/12/20/i47006-raclette.jpeg';
+  const isNewArticle = articleId === 'new';
 
-  let isNewArticle = false;
-  if (articleId === 'new') {
-    isNewArticle = true;
-  }
+  // Dialog Confirmation
+  const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
+  const handleDialogConfirmation = (open = false, remove?: boolean) => {
+    setOpenDialogConfirmation(open);
+    if (remove) {
+      // TODO Supprimer l'article
+    }
+  };
 
   return (
     <div className='editItem'>
@@ -21,12 +28,22 @@ export const EditArticle = (): JSX.Element => {
         <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
       </div>
 
-      <ArticleForm />
+      <ArticleForm
+        openDialogConfirmation={openDialogConfirmation}
+        isNewArticle={isNewArticle}
+        handleRemove={(open, remove) => handleDialogConfirmation(open, remove)}
+      />
     </div>
   );
 };
 
-const ArticleForm = (values?: any): JSX.Element => {
+const ArticleForm = (props: {
+  openDialogConfirmation: boolean;
+  values?: any;
+  isNewArticle: boolean;
+  handleRemove: (open: boolean, remove?: boolean) => void;
+}): JSX.Element => {
+  const { handleRemove, values, isNewArticle, openDialogConfirmation } = props;
   const initialValues = {
     name: '',
     url: '',
@@ -93,13 +110,30 @@ const ArticleForm = (values?: any): JSX.Element => {
         multiline
       />
       <div className='actions'>
-        <Button variant='outlined' type='button' color='error' startIcon={<DeleteForeverRounded />}>
-          Supprimer
-        </Button>
+        {!isNewArticle && (
+          <Button
+            variant='outlined'
+            type='button'
+            color='error'
+            startIcon={<DeleteForeverRounded />}
+            onClick={() => handleRemove(true)}
+          >
+            Supprimer
+          </Button>
+        )}
         <Button variant='outlined' type='submit' color='primary' startIcon={<SaveAsRounded />}>
           Enregistrer
         </Button>
       </div>
+
+      {/*OPEN DIALOG TO CONFIRM DELETE */}
+      {openDialogConfirmation && (
+        <DialogConfirmation
+          open={openDialogConfirmation}
+          purge={true}
+          onClose={remove => handleRemove(false, remove)}
+        />
+      )}
     </form>
   );
 };

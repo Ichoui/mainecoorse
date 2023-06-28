@@ -5,8 +5,9 @@ import { Button, IconButton, MenuItem, TextField, Typography } from '@mui/materi
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { IIngredient, IIngredientsWithQte } from '@shared-interfaces/items';
+import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 
 interface IRecetteForm {
   name: string;
@@ -18,7 +19,16 @@ interface IRecetteForm {
 export const EditRecette = (): JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://alsace-1bc06.kxcdn.com/img/ybc_blog/post/Choucroute_big.jpg';
-  const isNewRecette = recetteId === 'new'
+  const isNewRecette = recetteId === 'new';
+
+  // Dialog Confirmation
+  const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
+  const handleDialogConfirmation = (open = false, remove?: boolean) => {
+    setOpenDialogConfirmation(open);
+    if (remove) {
+      // TODO Supprimer la recette
+    }
+  };
 
   return (
     <div className='editItem'>
@@ -26,13 +36,27 @@ export const EditRecette = (): JSX.Element => {
         <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
       </div>
 
-      <RecetteForm />
+      <RecetteForm
+        openDialogConfirmation={openDialogConfirmation}
+        isNewRecette={isNewRecette}
+        handleRemove={(open, remove) => handleDialogConfirmation(open, remove)}
+      />
     </div>
   );
 };
 
-const JSXForm = (props: any): JSX.Element => {
-  const { values, touched, errors, handleChange, handleSubmit, setFieldValue } = props;
+const TSXForm = (props: any): JSX.Element => {
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+    openDialogConfirmation,
+    isNewRecette,
+    handleRemove,
+  } = props;
   const listComplete: IIngredient[] = [
     { label: 'Interstellar', id: 2014 },
     { label: 'Shaun of the dead', id: 2004 },
@@ -150,24 +174,46 @@ const JSXForm = (props: any): JSX.Element => {
       </div>
 
       <div className='actions'>
-        <Button variant='outlined' type='button' color='error' startIcon={<DeleteForeverRounded />}>
-          Supprimer
-        </Button>
+        {!isNewRecette && (
+          <Button
+            variant='outlined'
+            type='button'
+            color='error'
+            startIcon={<DeleteForeverRounded />}
+            onClick={() => handleRemove(true)}
+          >
+            Supprimer
+          </Button>
+        )}
         <Button variant='outlined' type='submit' color='primary' startIcon={<SaveAsRounded />}>
           Enregistrer
         </Button>
       </div>
+
+      {/*OPEN DIALOG TO CONFIRM DELETE */}
+      {openDialogConfirmation && (
+        <DialogConfirmation
+          open={openDialogConfirmation}
+          purge={true}
+          onClose={remove => handleRemove(false, remove)}
+        />
+      )}
     </form>
   );
 };
 
 const RecetteForm = withFormik({
-  mapPropsToValues: () => ({
-    name: 'aee',
+  mapPropsToValues: (props: {
+    openDialogConfirmation: boolean;
+    isNewRecette: boolean;
+    handleRemove: (open: boolean, remove?: boolean) => void;
+  }) => ({
+    name: 'Ok la cette-re',
     url: 'http://localhost.com',
-    description: 'test',
+    description: 'this is a test!',
     ingredients: [
       { quantity: 5, ingredient: { label: 'Thunder Tropics', id: 2008 } },
+      { quantity: 9, ingredient: { label: 'Hot Fuzz', id: 2007 } },
       { quantity: 7, ingredient: { label: '2001: A Space Odyssey', id: 1968 } },
       { quantity: 9, ingredient: { label: 'Shaun of the dead', id: 2004 } },
     ],
@@ -198,4 +244,4 @@ const RecetteForm = withFormik({
   handleSubmit: (values, { setSubmitting }) => {
     console.log(values);
   },
-})(JSXForm);
+})(TSXForm);
