@@ -1,35 +1,39 @@
 import './recettes.scss';
 import { Item } from '@components/item/item';
-import { ItemBase, ItemType } from '@shared-interfaces/items';
-import { Fab } from '@mui/material';
+import { ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
+import { Autocomplete, Chip, Fab, TextField } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 import { Link, Outlet } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 export const Recettes = (): JSX.Element => {
+  // @ts-ignore
+  const recettesTags = Object.values(RecetteTags);
   const recettes: ItemBase[] = [
     {
       id: 1,
       itemType: ItemType.RECETTE,
       label: 'Dentifrice',
       webImage: 'https://helvident.ch/wp-content/uploads/2020/03/choisir-un-dentifrice-HELVIDENT-1024x683.jpg',
-      tags: [],
+      tags: [RecetteTags.ENTREE],
       description: 'ceci est du dentrifrice ok ?',
       articlesList: [],
     },
     {
       id: 2,
       itemType: ItemType.RECETTE,
-      label: 'Munster',
+      label: 'Munstar',
       webImage:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
-      tags: [],
+      tags: [RecetteTags.DESSERT],
       description: 'Allez le munster!',
       articlesList: [],
     },
     {
       id: 3,
       itemType: ItemType.RECETTE,
-      label: 'Munster',
+      label: 'Munsteir',
       webImage:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [],
@@ -42,7 +46,7 @@ export const Recettes = (): JSX.Element => {
       label: 'Munster aux olives basques ',
       webImage:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
-      tags: [],
+      tags: [RecetteTags.PLAT],
       description: 'Allez le munster!',
       articlesList: [],
     },
@@ -52,64 +56,118 @@ export const Recettes = (): JSX.Element => {
       label: 'Munster',
       webImage:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
-      tags: [],
+      tags: [RecetteTags.MOYEN],
       description: 'Allez le munster!',
       articlesList: [],
     },
     {
       id: 3,
       itemType: ItemType.RECETTE,
-      label: 'Munster',
+      label: 'Munsterrrr',
       webImage:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
-      tags: [],
+      tags: [RecetteTags.PLAT],
       description: 'Allez le munster!',
       articlesList: [],
     },
     {
       id: 3,
       itemType: ItemType.RECETTE,
-      label: 'Munster',
+      label: 'Munsteuer',
       webImage:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
-      tags: [],
+      tags: [RecetteTags.PLAT],
       description: 'Allez le munster!',
       articlesList: [],
     },
     {
       id: 3,
       itemType: ItemType.RECETTE,
-      label: 'Munster',
+      label: 'Munstar',
       webImage:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
-      tags: [],
+      tags: [RecetteTags.LONG],
       description: 'Allez le munster!',
       articlesList: [],
     },
     {
       id: 3,
       itemType: ItemType.RECETTE,
-      label: 'Munster',
+      label: 'Munsr',
       webImage:
         'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
-      tags: [],
+      tags: [RecetteTags.LONG],
       description: 'Allez le munster!',
       articlesList: [],
     },
   ];
+  const [filteredRecettes, setFilteredRecettes] = useState<ItemBase[]>(recettes);
+
+  const handleSearch = useDebouncedCallback(value => {
+    const filter = recettes.filter(f => f.label.toLowerCase().includes(value.toLowerCase()));
+    setFilteredRecettes(filter.length > 0 ? filter : recettes);
+  }, 200);
+
+  const handleTags = (e: object, tags: RecetteTags[]) => {
+    const filter = recettes.reduce((acc, curr, index) => {
+      tags.forEach(tag => {
+        if (curr.tags.includes(tag)) {
+          acc.push(curr);
+        }
+      });
+      return acc;
+    }, []);
+    setFilteredRecettes(filter.length > 0 ? filter : recettes);
+  };
 
   return (
     <div className='Recettes'>
-      <div className='filters'></div>
+      <div className='filters'>
+        <TextField
+          label='Rechercher'
+          placeholder='Ca recherche quoi ?'
+          variant='outlined'
+          onChange={e => handleSearch(e.target.value)}
+          size='small'
+        ></TextField>
+
+        <Autocomplete
+          multiple
+          className='inputs'
+          size='small'
+          limitTags={2}
+          options={recettesTags}
+          renderTags={(tags: readonly RecetteTags[], getTagProps) => {
+            return tags.map((option: RecetteTags, index: number) => (
+              <Chip variant='outlined' label={option} {...getTagProps({ index })} />
+            ));
+          }}
+          onChange={(e: object, tags: RecetteTags[]) => handleTags(e, tags)}
+          renderInput={params => (
+            <TextField
+              {...params}
+              variant='outlined'
+              label='Tags'
+            />
+          )}
+        />
+      </div>
       <Outlet />
 
       <div className='listing'>
-        {recettes.map((recette, i) => (
+        {filteredRecettes.map((recette, i) => (
           <Item key={i} item={recette} />
         ))}
       </div>
 
-      <Fab className='add' color='secondary' size='small' aria-label='add new recette' component={Link} to='/recette/new'>
+      <Fab
+        className='add'
+        color='secondary'
+        size='small'
+        aria-label='add new recette'
+        component={Link}
+        to='/recette/new'
+      >
         <AddRounded />
       </Fab>
     </div>
