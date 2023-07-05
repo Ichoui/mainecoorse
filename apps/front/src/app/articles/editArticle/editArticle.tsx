@@ -1,12 +1,13 @@
 import './editArticle.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
-import { Button, TextField } from '@mui/material';
-import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
+import { Autocomplete, Button, Chip, TextField } from '@mui/material';
+import { DeleteForeverRounded, SaveAsRounded, Tag } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
 import React, { useState } from 'react';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
+import { ArticleTags } from '@shared-interfaces/items';
 
 export const EditArticle = (): JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
@@ -44,10 +45,14 @@ const ArticleForm = (props: {
   handleRemove: (open: boolean, remove?: boolean) => void;
 }): JSX.Element => {
   const { handleRemove, values, isNewArticle, openDialogConfirmation } = props;
+  // @ts-ignore
+  const articlesTags = Object.values(ArticleTags);
+
   const initialValues = {
     label: '',
     url: '',
     description: '',
+    tags: [],
   };
   const validationSchema = yup.object().shape({
     label: yup
@@ -61,6 +66,7 @@ const ArticleForm = (props: {
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
     description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').notRequired(),
+    tags: yup.array().min(1, 'Tu voulais des tags, tu les mets ! 🧌').required(),
   });
 
   const formik = useFormik({
@@ -85,7 +91,7 @@ const ArticleForm = (props: {
       />
 
       <TextField
-        label='URL Image'
+        label='URL Web*'
         placeholder='https://munster-alsace.de'
         type='text'
         name='url'
@@ -97,7 +103,7 @@ const ArticleForm = (props: {
         className='inputs'
       />
       <TextField
-        label='Description'
+        label='Description*'
         placeholder='On se fait une petite Raclette, une Tartiflette ou une Fondue ? 🫕'
         name='description'
         value={formik.values.description}
@@ -108,6 +114,30 @@ const ArticleForm = (props: {
         className='inputs'
         rows={4}
         multiline
+      />
+      <Autocomplete
+        multiple
+        className='inputs'
+        size='small'
+        limitTags={2}
+        options={articlesTags}
+        filterSelectedOptions={true}
+        value={formik.values.tags}
+        renderTags={(tags: readonly ArticleTags[], getTagProps) => {
+          return tags.map((option: ArticleTags, index: number) => (
+            <Chip variant='outlined' label={option} {...getTagProps({ index })} />
+          ));
+        }}
+        onChange={(e: object, tags: ArticleTags[]) => formik.setFieldValue('tags', tags)}
+        renderInput={params => (
+          <TextField
+            {...params}
+            variant='outlined'
+            label='Tags*'
+            error={formik.touched.tags && Boolean(formik.errors.tags)}
+            helperText={formik.touched.tags && formik.errors.tags ? formik.errors.tags : ''}
+          />
+        )}
       />
       <div className='actions'>
         {!isNewArticle && (

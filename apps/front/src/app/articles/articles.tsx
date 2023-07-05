@@ -29,8 +29,7 @@ export const Articles = (): JSX.Element => {
       id: 2,
       itemType: ItemType.ARTICLE,
       label: 'Munstère',
-      url:
-        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.BOULANGERIE],
       description: 'Allez le munster!',
     },
@@ -38,8 +37,7 @@ export const Articles = (): JSX.Element => {
       id: 3,
       itemType: ItemType.ARTICLE,
       label: 'Munster',
-      url:
-        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.BOULANGERIE, ArticleTags.LAITAGE],
       description: 'Allez le munster!',
     },
@@ -47,8 +45,7 @@ export const Articles = (): JSX.Element => {
       id: 5,
       itemType: ItemType.ARTICLE,
       label: 'Munster aux olives basques ',
-      url:
-        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.BOULANGERIE, ArticleTags.LAITAGE],
       description: 'Allez le munster!',
     },
@@ -56,8 +53,7 @@ export const Articles = (): JSX.Element => {
       id: 6,
       itemType: ItemType.ARTICLE,
       label: 'Munsteur',
-      url:
-        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.BOULANGERIE, ArticleTags.LAITAGE],
       description: 'Allez le munster!',
     },
@@ -65,8 +61,7 @@ export const Articles = (): JSX.Element => {
       id: 7,
       itemType: ItemType.ARTICLE,
       label: 'Munsteir',
-      url:
-        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.LEGUMES],
       description: 'Allez le munster!',
     },
@@ -74,8 +69,7 @@ export const Articles = (): JSX.Element => {
       id: 8,
       itemType: ItemType.ARTICLE,
       label: 'Munstezaer',
-      url:
-        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.LEGUMES],
       description: 'Allez le munster!',
     },
@@ -83,8 +77,7 @@ export const Articles = (): JSX.Element => {
       id: 9,
       itemType: ItemType.ARTICLE,
       label: 'Munstaer',
-      url:
-        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.LEGUMES],
       description: 'Allez le munster!',
     },
@@ -92,8 +85,7 @@ export const Articles = (): JSX.Element => {
       id: 10,
       itemType: ItemType.ARTICLE,
       label: 'Munstere',
-      url:
-        'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
+      url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
       tags: [ArticleTags.LEGUMES],
       description: 'Allez le munster!',
     },
@@ -136,6 +128,7 @@ export const Articles = (): JSX.Element => {
           size='small'
           limitTags={2}
           options={articlesTags}
+          filterSelectedOptions={true}
           renderTags={(tags: readonly ArticleTags[], getTagProps) => {
             return tags.map((option: ArticleTags, index: number) => (
               <Chip variant='outlined' label={option} {...getTagProps({ index })} />

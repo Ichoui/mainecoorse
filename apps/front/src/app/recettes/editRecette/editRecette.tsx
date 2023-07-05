@@ -1,12 +1,12 @@
 import './editRecette.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
-import { Button, IconButton, MenuItem, TextField, Typography } from '@mui/material';
+import { Autocomplete, Button, Chip, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
 import React, { Fragment, useState } from 'react';
-import { IIngredient, IIngredientsWithQte } from '@shared-interfaces/items';
+import { IIngredient, IIngredientsWithQte, RecetteTags } from '@shared-interfaces/items';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 
 interface IRecetteForm {
@@ -57,6 +57,9 @@ const TSXForm = (props: any): JSX.Element => {
     isNewRecette,
     handleRemove,
   } = props;
+  // @ts-ignore
+  const recettesTags = Object.values(RecetteTags);
+
   const listComplete: IIngredient[] = [
     { label: 'Interstellar', id: 2014 },
     { label: 'Shaun of the dead', id: 2004 },
@@ -84,7 +87,7 @@ const TSXForm = (props: any): JSX.Element => {
         error={touched.label && Boolean(errors.label)}
       />
       <TextField
-        label='URL Image'
+        label='URL Web*'
         placeholder='https://potee-egal-choucroute.de'
         type='text'
         name='url'
@@ -96,7 +99,7 @@ const TSXForm = (props: any): JSX.Element => {
         className='inputs'
       />
       <TextField
-        label='Description'
+        label='Description*'
         placeholder='Qui a dit que le magret et la choucroute ça se mariait pas bien ? 🦆'
         name='description'
         value={values.description}
@@ -107,6 +110,30 @@ const TSXForm = (props: any): JSX.Element => {
         className='inputs'
         rows={4}
         multiline
+      />
+      <Autocomplete
+        multiple
+        className='inputs'
+        size='small'
+        limitTags={2}
+        options={recettesTags}
+        filterSelectedOptions={true}
+        value={values.tags}
+        renderTags={(tags: readonly RecetteTags[], getTagProps) => {
+          return tags.map((option: RecetteTags, index: number) => (
+            <Chip variant='outlined' label={option} {...getTagProps({ index })} />
+          ));
+        }}
+        onChange={(e: object, tags: RecetteTags[]) => setFieldValue('tags', tags)}
+        renderInput={params => (
+          <TextField
+            {...params}
+            variant='outlined'
+            label='Tags*'
+            error={touched.tags && Boolean(errors.tags)}
+            helperText={touched.tags && errors.tags ? errors.tags : ''}
+          />
+        )}
       />
 
       <div className='ingredients'>
@@ -211,6 +238,7 @@ const RecetteForm = withFormik({
     label: 'Ok la cette-re',
     url: 'http://localhost.com',
     description: 'this is a test!',
+    tags: [RecetteTags.BOISSON, RecetteTags.COURT],
     ingredients: [
       { quantity: 5, ingredient: { label: 'Thunder Tropics', id: 2008 } },
       { quantity: 9, ingredient: { label: 'Hot Fuzz', id: 2007 } },
@@ -240,6 +268,7 @@ const RecetteForm = withFormik({
       )
       .min(2, 'Une recette sans ingrédients... Voyons donc ! 🫠')
       .required('Au moins 2 ingrédients !'),
+    tags: yup.array().min(1, 'NAMEHO ! Mets-en au moins 1 quoi ! 🧌').required(),
   }),
   handleSubmit: (values, { setSubmitting }) => {
     console.log(values);

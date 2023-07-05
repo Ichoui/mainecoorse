@@ -164,6 +164,7 @@ export const Recettes = (): JSX.Element => {
           size='small'
           limitTags={2}
           options={recettesTags}
+          filterSelectedOptions={true}
           renderTags={(tags: readonly RecetteTags[], getTagProps) => {
             return tags.map((option: RecetteTags, index: number) => (
               <Chip variant='outlined' label={option} {...getTagProps({ index })} />
