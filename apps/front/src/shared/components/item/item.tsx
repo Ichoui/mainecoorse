@@ -60,7 +60,7 @@ export const Item = (props: { item: ItemBase }): JSX.Element => {
 
         {/* BUTTONS */}
         <CardActions className='itemActions'>
-          <IconButton aria-label='add to courses' color='primary' onClick={() => handleDialogAddTo(true)}>
+          <IconButton aria-label='add to courses' color='secondary' onClick={() => handleDialogAddTo(true)}>
             <AddShoppingCartRounded />
           </IconButton>
           <div>

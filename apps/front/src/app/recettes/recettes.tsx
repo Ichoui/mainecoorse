@@ -1,6 +1,6 @@
 import './recettes.scss';
 import { Item } from '@components/item/item';
-import { ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
+import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { Autocomplete, Chip, Fab, TextField } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -30,18 +30,18 @@ export const Recettes = (): JSX.Element => {
       articlesList: [
         {
           id: 12,
-          label: 'COURT?',
+          label: 'Ingredient A',
           quantity: 8,
           description: 'azerdftghjklm',
-          tags: [RecetteTags.COURT],
+          tags: [ArticleTags.LEGUMES],
           url:
               'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
         },        {
           id: 15,
-          label: 'PLAT?',
+          label: 'Ingredient de type laitage B',
           quantity: 5,
           description: 'azerdftghjklm',
-          tags: [RecetteTags.PLAT],
+          tags: [ArticleTags.LAITAGE],
           url:
               'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
         },

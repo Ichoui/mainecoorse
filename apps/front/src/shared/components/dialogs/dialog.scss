@@ -19,4 +19,26 @@
       padding-left: 10px;
     }
   }
+  .form-ingredients-listing {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      height: 45px;
+      span {
+        max-width: 80%;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .quantity {
+        height: 100%;
+        width: 65px;
+      }
+    }
+  }
 }
