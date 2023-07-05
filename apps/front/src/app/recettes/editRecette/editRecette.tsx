@@ -10,7 +10,7 @@ import { IIngredient, IIngredientsWithQte } from '@shared-interfaces/items';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 
 interface IRecetteForm {
-  name: string;
+  label: string;
   url: string;
   description: string;
   ingredients: IIngredientsWithQte[];
@@ -75,13 +75,13 @@ const TSXForm = (props: any): JSX.Element => {
         label='Nom*'
         placeholder='Spätzle 🍝'
         type='text'
-        name='name'
-        value={values.name}
+        name='label'
+        value={values.label}
         variant='outlined'
         className='inputs'
         onChange={handleChange}
-        helperText={touched.name ? errors.name : ''}
-        error={touched.name && Boolean(errors.name)}
+        helperText={touched.label ? errors.label : ''}
+        error={touched.label && Boolean(errors.label)}
       />
       <TextField
         label='URL Image'
@@ -208,7 +208,7 @@ const RecetteForm = withFormik({
     isNewRecette: boolean;
     handleRemove: (open: boolean, remove?: boolean) => void;
   }) => ({
-    name: 'Ok la cette-re',
+    label: 'Ok la cette-re',
     url: 'http://localhost.com',
     description: 'this is a test!',
     ingredients: [
@@ -219,7 +219,7 @@ const RecetteForm = withFormik({
     ],
   }),
   validationSchema: yup.object().shape({
-    name: yup
+    label: yup
       .string()
       .min(2, 'Pas assez de lettres 😬')
       .max(25, 'Trop de lettres 😡')

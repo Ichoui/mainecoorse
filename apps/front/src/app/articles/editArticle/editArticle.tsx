@@ -45,12 +45,12 @@ const ArticleForm = (props: {
 }): JSX.Element => {
   const { handleRemove, values, isNewArticle, openDialogConfirmation } = props;
   const initialValues = {
-    name: '',
+    label: '',
     url: '',
     description: '',
   };
   const validationSchema = yup.object().shape({
-    name: yup
+    label: yup
       .string()
       .min(2, 'Pas assez de lettres 😬')
       .max(25, 'Trop de lettres 😡')
@@ -75,13 +75,13 @@ const ArticleForm = (props: {
         label='Nom*'
         placeholder='Bethmale de vache 🧀'
         type='text'
-        name='name'
-        value={formik.values.name}
+        name='label'
+        value={formik.values.label}
         variant='outlined'
         className='inputs'
         onChange={formik.handleChange}
-        helperText={formik.touched.name ? formik.errors.name : ''}
-        error={formik.touched.name && Boolean(formik.errors.name)}
+        helperText={formik.touched.label ? formik.errors.label : ''}
+        error={formik.touched.label && Boolean(formik.errors.label)}
       />
 
       <TextField

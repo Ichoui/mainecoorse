@@ -1,20 +1,17 @@
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControlLabel,
-  Radio,
-  RadioGroup,
   TextField,
 } from '@mui/material';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
-import { ArticleList, ItemBase } from '@shared-interfaces/items';
+import { ItemBase } from '@shared-interfaces/items';
 import '../dialog.scss';
-import { useDebouncedCallback } from 'use-debounce';
-
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -25,31 +22,40 @@ export const DialogAddCalendar = (props: {
   onClose: (confirm?: boolean) => void;
 }): JSX.Element => {
   const { open, isArticle, item, onClose } = props;
-  const [radio, setRadio] = useState('courses');
-  const handleRadio = (event: ChangeEvent<HTMLInputElement>) => {
-    setRadio((event.target as HTMLInputElement).value);
-  };
+  const [calendarCheck, setCalendarCheck] = useState(false);
+  const [coursesCheck, setCoursesCheck] = useState(false);
 
-  const [updatedItem, setUpdatedItem] = useState(item);
+  const formik = useFormik({
+    initialValues: { multiple: 1, articles: item?.articlesList },
+    validationSchema: yup.object().shape({
+      articles: yup.array(),
+      multiple: yup.number().min(1).required(),
+    }),
+    onSubmit: () => handleOk(),
+  });
+
   const handleClose = () => {
     onClose();
   };
 
-  const handleChangeQuantity = useDebouncedCallback((quantity: number, article: ArticleList) => {
-    article = { ...article, quantity };
-    // Updated articleList
-    const articlesList: ArticleList[] = updatedItem.articlesList!.map(al => (al.id === article.id ? article : al));
-    setUpdatedItem({ ...updatedItem, articlesList });
-  }, 250);
+  const handleCheckboxes = (checked: boolean, val: 'calendar' | 'courses') => {
+    if (val === 'calendar') {
+      setCalendarCheck(checked);
+    }
+    if (val === 'courses') {
+      setCoursesCheck(checked);
+    }
+  };
 
   const handleOk = () => {
+    const updatedItem = { ...item, articlesList: formik.values.articles };
     console.log(updatedItem);
-    // Envoyer vers courses seulement l'item updaté (ou non)
-    if (radio === 'courses') {
+    if (calendarCheck) {
+      // Envoyer vers courses l'item updaté (ou non)
     }
 
-    // Envoyer vers courses l'item + quantité et envoyer vers calendar l'article ou la recette
-    if (radio === 'calendar') {
+    if (coursesCheck) {
+      // Envoyer vers courses l'item + sa quantité
     }
 
     onClose();
@@ -60,24 +66,70 @@ export const DialogAddCalendar = (props: {
       <DialogTitle>Ajouter&nbsp;{isArticle ? 'cet article' : 'cette recette'}&nbsp;</DialogTitle>
       <DialogContent>
         <div className='dialog-content'>
-          <RadioGroup value={radio} onChange={handleRadio}>
-            <FormControlLabel value='courses' control={<Radio />} label='🛒 Liste de courses' />
-            <FormControlLabel value='calendar' control={<Radio />} label='📆 Calendrier' />
-          </RadioGroup>
+          <div className='multiple'>
+            <span>Ajouter combien de fois&nbsp;{isArticle ? "l'article" : 'la recette'}&nbsp;?</span>
+            <TextField
+              label='Nb'
+              size='small'
+              name='multiple'
+              value={formik.values.multiple}
+              error={Boolean(formik.errors.multiple)}
+              type='number'
+              variant='outlined'
+              onChange={event => {
+                formik.handleChange(event);
+                formik.values.articles?.map((a, i) =>
+                  formik.setFieldValue(`articles[${i}]`, {
+                    ...a,
+                    quantity: item.articlesList![i].quantity * Number(event.target.value), // use item because it's base value
+                  }),
+                );
+              }}
+            />
+          </div>
+          <hr className='add-to' />
+          <FormControlLabel
+            className={calendarCheck ? 'checked' : ''}
+            control={
+              <Checkbox
+                color='secondary'
+                onChange={event => handleCheckboxes(Boolean(event.target.checked), 'calendar')}
+                checked={calendarCheck}
+              />
+            }
+            label='📆 Calendrier'
+          />
+          <FormControlLabel
+            className={coursesCheck ? 'checked' : ''}
+            control={
+              <Checkbox
+                color='secondary'
+                onChange={event => handleCheckboxes(Boolean(event.target.checked), 'courses')}
+                checked={coursesCheck}
+              />
+            }
+            label='🛒 Liste de courses'
+          />
 
-          {!isArticle && (
+          {!isArticle && coursesCheck && (
             <div className='form-ingredients-listing'>
               {item.articlesList?.map((article, i) => (
                 <div key={i}>
-                  <span>{article.label}</span>
+                  <span>• {article.label}</span>
                   <TextField
                     label='Qte'
                     className='quantity'
                     size='small'
-                    defaultValue={article.quantity}
+                    name={`articles[${i}]`}
+                    value={formik.values.articles![i].quantity}
+                    onChange={event =>
+                      formik.setFieldValue(`articles[${i}]`, {
+                        ...formik.values.articles![i],
+                        quantity: Number(event.target.value),
+                      })
+                    }
                     type='number'
                     variant='outlined'
-                    onChange={event => handleChangeQuantity(Number(event.target.value), article)}
                   />
                 </div>
               ))}
@@ -86,10 +138,16 @@ export const DialogAddCalendar = (props: {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose} variant='outlined' color='primary'>
+        <Button autoFocus type='button' onClick={handleClose} variant='outlined' color='primary'>
           Annuler
         </Button>
-        <Button onClick={handleOk} variant='outlined' color='secondary'>
+        <Button
+          type='button'
+          onClick={() => formik.handleSubmit()}
+          variant='outlined'
+          color='secondary'
+          disabled={Boolean(formik.errors.multiple) || (!coursesCheck && !calendarCheck)}
+        >
           Valider
         </Button>
       </DialogActions>
