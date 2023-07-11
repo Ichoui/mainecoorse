@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Checkbox, FormControlLabel, IconButton } from '@mui/material';
 import { ArticleList } from '@shared-interfaces/items';
 import { ChangeEvent, useState } from 'react';
 import './coches.scss';
@@ -29,12 +29,13 @@ export const Coches = (props: { item: ArticleList }) => {
 
       <div className={`quantity ${checked ? 'disabled' : ''}`}>
         <div className='value'>{quantity}</div>
-        <div className='add' onClick={() => handleQuantity(true)}>
+        <IconButton className="add" color='secondary' onClick={() => handleQuantity(true)}>
           <AddRounded />
-        </div>
-        <div className='remove' onClick={() => handleQuantity(false)}>
+        </IconButton>
+
+        <IconButton className="remove" color='error' onClick={() => handleQuantity(false)}>
           <RemoveRounded />
-        </div>
+        </IconButton>
       </div>
     </div>
   );
