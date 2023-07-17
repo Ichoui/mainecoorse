@@ -10,7 +10,6 @@ export const ManageQuantity = (props: {
 }) => {
   const { itemQuantity, checked, onChange } = props;
   const [quantity, setQuantity] = useState(itemQuantity);
-  console.log('ef');
 
   useEffect(() => {
     // La valeur ne se met pas à jour dans le handleQuantity, il faut passer par un useEffect pour récupérer la donnée ! :)

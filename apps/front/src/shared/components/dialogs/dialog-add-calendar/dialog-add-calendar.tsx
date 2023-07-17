@@ -34,9 +34,6 @@ export const DialogAddCalendar = (props: {
     }),
     onSubmit: () => handleOk(),
   });
-  // useEffect(() => {
-  //   console.log(formik.values);
-  // }, [formik])
 
   const handleClose = () => {
     onClose();
