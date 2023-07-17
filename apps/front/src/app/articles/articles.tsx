@@ -4,8 +4,10 @@ import { ArticleTags, ItemBase, ItemType } from '@shared-interfaces/items';
 import { Autocomplete, Chip, Fab, TextField } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import axios from 'axios';
+import { useAxios } from '@shared/hooks/useAxios.hook';
 
 export const Articles = (): JSX.Element => {
   const articles: ItemBase[] = [
@@ -90,6 +92,9 @@ export const Articles = (): JSX.Element => {
       description: 'Allez le munster!',
     },
   ];
+
+  const { data, error, loaded } = useAxios('http://localhost:3945/api/mc/articles', 'GET');
+
   // @ts-ignore
   const articlesTags = Object.values(ArticleTags);
   const [filteredArticles, setFilteredArticles] = useState<ItemBase[]>(articles);
