@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { ArticlesService } from './articles.service';
-import { ItemBase } from '../../../../../libs/shared-interfaces/src';
+import { ItemBase } from '@shared-interfaces/items';
 
 @Controller('articles')
 export class ArticlesController {

@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "preserveConstEnums": true,
     "paths": {
-      "@mainecoorse/interface/shared-interfaces": ["libs/interface/shared-interfaces/src/index.ts"]
+      "@shared-interfaces/*": ["libs/shared-interfaces/src/interfaces/*"],
     }
   },
   "exclude": ["node_modules", "tmp", "dist"]

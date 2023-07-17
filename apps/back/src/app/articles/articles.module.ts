@@ -6,6 +6,6 @@ import { ArticlesController } from './articles.controller';
   imports: [],
   controllers: [ArticlesController],
   providers: [ArticlesService],
-  exports: [ArticlesService]
+  exports: [ArticlesService],
 })
 export class ArticlesModule {}

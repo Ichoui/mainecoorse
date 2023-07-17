@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ArticleTags, ItemBase, ItemType } from '../../../../../libs/shared-interfaces/src';
+import { ArticleTags, ItemBase, ItemType } from '@shared-interfaces/items';
 
 @Injectable()
 export class ArticlesService {
-
   getArticles(): ItemBase[] {
     const articles: ItemBase[] = [
       {
@@ -89,6 +88,6 @@ export class ArticlesService {
     ];
 
     // return { message: 'Hello API' };
-    return articles
+    return articles;
   }
 }
