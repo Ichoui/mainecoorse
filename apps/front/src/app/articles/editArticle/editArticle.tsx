@@ -2,7 +2,7 @@ import './editArticle.scss';
 import '@styles/forms.scss';
 import { Params, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Chip, TextField } from '@mui/material';
-import { DeleteForeverRounded, SaveAsRounded, Tag } from '@mui/icons-material';
+import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
 import React, { useState } from 'react';

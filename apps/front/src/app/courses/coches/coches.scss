@@ -6,30 +6,11 @@
   justify-content: space-between;
   align-items: center;
 
-  .quantity {
-    display: flex;
-    font-size: 1.4rem;
-    gap: 5px;
-    &.disabled {
-      pointer-events: none;
+  .disabled {
+    pointer-events: none;
+    color: darken($secondaryText, 33%);
+    svg {
       color: darken($secondaryText, 33%);
-      svg {
-        color: darken($secondaryText, 33%);
-      }
-    }
-
-    .value {
-      text-align: center;
-    }
-    button {
-      padding: 0;
-      svg {
-        width: 30px;
-        height: 30px;
-        &:hover {
-          cursor: pointer;
-        }
-      }
     }
   }
 

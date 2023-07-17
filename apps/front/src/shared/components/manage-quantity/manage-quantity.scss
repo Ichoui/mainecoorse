@@ -1,0 +1,21 @@
+@import '@styles/shared';
+
+.Quantity {
+  display: flex;
+  font-size: 1.4rem;
+  gap: 5px;
+
+  .value {
+    text-align: center;
+  }
+  button {
+    padding: 0;
+    svg {
+      width: 30px;
+      height: 30px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
