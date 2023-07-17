@@ -3,53 +3,16 @@ import { ArticleList, ArticleTags } from '@shared-interfaces/items';
 import { Button, FormGroup } from '@mui/material';
 import { Coches } from '@app/courses/coches/coches';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAxios } from '@shared/hooks/useAxios.hook';
 
 export const Courses = () => {
-  const items: ArticleList[] = [
-    {
-      id: 1,
-      label: 'Article 1',
-      quantity: 7,
-      description: 'Ma description',
-      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-      tags: [ArticleTags.EPICERIE],
-    },
-    {
-      id: 3,
-      label: 'Article 2',
-      quantity: 7,
-      description: 'Ma description',
-      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-      tags: [ArticleTags.ENTRETIEN],
-    },
-    {
-      id: 4,
-      label: 'Article 3',
-      quantity: 7,
-      description: 'Ma description',
-      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-      tags: [ArticleTags.ENTRETIEN],
-    },
-    {
-      id: 5,
-      label: 'Article 4',
-      quantity: 7,
-      description: 'Ma description',
-      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-      tags: [ArticleTags.BOISSONS],
-    },
-    {
-      id: 8,
-      label: 'Article 16',
-      quantity: 7,
-      description: 'Ma description',
-      url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-      tags: [ArticleTags.EPICERIE],
-    },
-  ];
+  const [itemsSortedByTags, setItemsSorted] = useState<(string | ArticleList[])[]>([]);
+  const { data } = useAxios('courses', 'GET');
 
-  const ItemsSortedByTags: (string | ArticleList[])[] = sortByTags(items);
+  useEffect(() => {
+    setItemsSorted(sortByTags(data));
+  }, [data]);
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
@@ -68,7 +31,7 @@ export const Courses = () => {
         </Button>
       </div>
       <FormGroup>
-        {ItemsSortedByTags.map((items: ArticleList[] | string, index: number) => (
+        {itemsSortedByTags?.map((items: ArticleList[] | string, index: number) => (
           <div key={index} className='blocks'>
             {<h3>{items[0] as string}</h3>}
             <hr />
@@ -94,15 +57,15 @@ export const Courses = () => {
 };
 
 const sortByTags = (items: ArticleList[]): (string | ArticleList[])[] => {
-  const extractAllTags = items.map(item => item.tags[0] as ArticleTags);
-  const tags = extractAllTags.filter((value, index) => extractAllTags.indexOf(value) === index);
-  const sortedItems: Record<ArticleTags, ArticleList[]> | {} = {};
+  const extractAllTags = items?.map(item => item.tags[0] as ArticleTags);
+  const tags = extractAllTags?.filter((value, index) => extractAllTags.indexOf(value) === index);
+  const sortedItems: Record<ArticleTags, ArticleList[]> | NonNullable<unknown> = {};
   // @ts-ignore
-  tags.map(t => (sortedItems[t] = []));
-  items.map(item => {
+  tags?.map(t => (sortedItems[t] = []));
+  items?.map(item => {
     const tag = item.tags[0];
     // @ts-ignore
-    sortedItems[tag].push(item);
+    return sortedItems[tag].push(item); // TODO return à retirer ou pas ? :grimace:
   });
 
   // @ts-ignore

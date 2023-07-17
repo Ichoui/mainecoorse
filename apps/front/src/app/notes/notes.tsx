@@ -1,10 +1,16 @@
 import './notes.scss';
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { useAxios } from '@shared/hooks/useAxios.hook';
 
 export const Notes = () => {
   const [value, setValue] = useState<string>('');
+  const { data } = useAxios('notes', 'GET')
+
+  useEffect(() => {
+    setValue(data)
+  }, [data]);
 
   const handleChange = useDebouncedCallback(value => {
     setValue(value);
@@ -17,7 +23,7 @@ export const Notes = () => {
       <TextField
         variant='outlined'
         label='Notes'
-        defaultValue={value}
+        defaultValue={value ?? ' '}
         placeholder='Pense, écrit, tape, romance, transcrit, compose, exprime, rédige, consigne, note... 🗒️'
         onChange={e => handleChange(e.target.value)}
         minRows={5}
