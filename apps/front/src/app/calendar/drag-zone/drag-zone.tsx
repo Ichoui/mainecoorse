@@ -30,7 +30,7 @@ export const DragZone = (props: {
       {(provided, snapshot) => (
         <div className='chips' ref={provided.innerRef} {...provided.droppableProps}>
           <div className={`${snapshot.isDraggingOver ? 'active' : ''}`}>
-            {items.map((item, index) => (
+            {items?.map((item, index) => (
               <DraggedChips
                 key={identifier + '-' + index} // TODO ID from API à rajouter !
                 item={item}

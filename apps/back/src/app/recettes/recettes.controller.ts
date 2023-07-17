@@ -5,10 +5,10 @@ import { ItemBase } from '@shared-interfaces/items';
 
 @Controller('recettes')
 export class RecettesController {
-  constructor(private readonly articlesService: RecettesService) {}
+  constructor(private readonly recettesService: RecettesService) {}
 
   @Get()
   getRecettes(): ItemBase[] {
-    return this.articlesService.getRecettes();
+    return this.recettesService.getRecettes();
   }
 }
