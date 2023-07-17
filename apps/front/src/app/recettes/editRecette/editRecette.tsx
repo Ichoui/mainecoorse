@@ -1,12 +1,12 @@
 import './editRecette.scss';
 import '@styles/forms.scss';
-import { Params, useParams } from 'react-router-dom';
+import { Params, useLocation, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Chip, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
 import React, { Fragment, useState } from 'react';
-import { IIngredient, IIngredientsWithQte, RecetteTags } from '@shared-interfaces/items';
+import { IIngredient, IIngredientsWithQte, ItemBase, RecetteTags } from '@shared-interfaces/items';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 
 interface IRecetteForm {
@@ -20,7 +20,8 @@ export const EditRecette = (): JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://alsace-1bc06.kxcdn.com/img/ybc_blog/post/Choucroute_big.jpg';
   const isNewRecette = recetteId === 'new';
-
+  const item: ItemBase = useLocation().state;
+  console.log(item);
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
   const handleDialogConfirmation = (open = false, remove?: boolean) => {
@@ -29,17 +30,18 @@ export const EditRecette = (): JSX.Element => {
       // TODO Supprimer la recette
     }
   };
-
+  const bgc = item?.url ?? defaultUrl;
   return (
     <div className='editItem'>
       <div className='image'>
-        <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
+        <span style={{ backgroundImage: 'url(' + bgc + ')' }}></span>
       </div>
 
       <RecetteForm
         openDialogConfirmation={openDialogConfirmation}
         isNewRecette={isNewRecette}
         handleRemove={(open, remove) => handleDialogConfirmation(open, remove)}
+        item={item}
       />
     </div>
   );
@@ -72,6 +74,7 @@ const TSXForm = (props: any): JSX.Element => {
     { label: '2001: A Space Odyssey', id: 1968 },
     { label: 'Inglourious Basterds', id: 2009 },
   ];
+
   return (
     <form onSubmit={handleSubmit} autoComplete='off'>
       <TextField
@@ -234,17 +237,19 @@ const RecetteForm = withFormik({
     openDialogConfirmation: boolean;
     isNewRecette: boolean;
     handleRemove: (open: boolean, remove?: boolean) => void;
+    item: ItemBase;
   }) => ({
-    label: 'Ok la cette-re',
-    url: 'http://localhost.com',
-    description: 'this is a test!',
-    tags: [RecetteTags.BOISSON, RecetteTags.COURT],
-    ingredients: [
-      { quantity: 5, ingredient: { label: 'Thunder Tropics', id: 2008 } },
-      { quantity: 9, ingredient: { label: 'Hot Fuzz', id: 2007 } },
-      { quantity: 7, ingredient: { label: '2001: A Space Odyssey', id: 1968 } },
-      { quantity: 9, ingredient: { label: 'Shaun of the dead', id: 2004 } },
-    ],
+    label: props.item?.label,
+    url: props.item?.url,
+    description: props.item?.description,
+    tags: props.item?.tags,
+    // ingredients: [
+    //   { quantity: 5, ingredient: { label: 'Thunder Tropics', id: 2008 } },
+    //   { quantity: 9, ingredient: { label: 'Hot Fuzz', id: 2007 } },
+    //   { quantity: 7, ingredient: { label: '2001: A Space Odyssey', id: 1968 } },
+    //   { quantity: 9, ingredient: { label: 'Shaun of the dead', id: 2004 } },
+    // ],
+    ingredients: props.item?.articlesList,
   }),
   validationSchema: yup.object().shape({
     label: yup

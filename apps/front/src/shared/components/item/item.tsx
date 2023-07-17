@@ -1,5 +1,5 @@
 import './item.scss';
-import React, { useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import {
   Card,
   CardActionArea,
@@ -91,7 +91,7 @@ export const Item = (props: { item: ItemBase }): JSX.Element => {
                   <DeleteRounded /> <span>Supprimer</span>
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={() => handleMiniMenu} component={Link} to={urlToRoute}>
+              <MenuItem onClick={() => handleMiniMenu} component={Link} to={urlToRoute} state={item}>
                 <Typography className='typo-mini-menu'>
                   <EditRounded /> <span>Modifier</span>
                 </Typography>

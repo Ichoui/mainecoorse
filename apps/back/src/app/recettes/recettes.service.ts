@@ -9,10 +9,27 @@ export class RecettesService {
         id: 1,
         itemType: ItemType.RECETTE,
         label: 'Dentifrice',
-        url: 'https://helvident.ch/wp-content/uploads/2020/03/choisir-un-dentifrice-HELVIDENT-1024x683.jpg',
+        url: 'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
         tags: [RecetteTags.ENTREE],
         description: 'ceci est du dentrifrice ok ?',
-        articlesList: [],
+        articlesList: [
+          {
+            id: 12,
+            label: 'Ingredient F',
+            quantity: 8,
+            description: 'vb,klom',
+            tags: [ArticleTags.FRUITS],
+            url: 'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
+          },
+          {
+            id: 12,
+            label: 'Ingredient X',
+            quantity: 8,
+            description: 'azfgn',
+            tags: [ArticleTags.BOULANGERIE],
+            url: 'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
+          },
+        ],
       },
       {
         id: 14,
@@ -59,7 +76,7 @@ export class RecettesService {
         articlesList: [],
       },
       {
-        id: 3,
+        id: 4,
         itemType: ItemType.RECETTE,
         label: 'Munster aux olives basques ',
         url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
@@ -68,7 +85,7 @@ export class RecettesService {
         articlesList: [],
       },
       {
-        id: 3,
+        id: 5,
         itemType: ItemType.RECETTE,
         label: 'Munster',
         url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
@@ -77,7 +94,7 @@ export class RecettesService {
         articlesList: [],
       },
       {
-        id: 3,
+        id: 6,
         itemType: ItemType.RECETTE,
         label: 'Munsterrrr',
         url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
@@ -86,7 +103,7 @@ export class RecettesService {
         articlesList: [],
       },
       {
-        id: 3,
+        id: 7,
         itemType: ItemType.RECETTE,
         label: 'Munsteuer',
         url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
@@ -95,7 +112,7 @@ export class RecettesService {
         articlesList: [],
       },
       {
-        id: 3,
+        id: 8,
         itemType: ItemType.RECETTE,
         label: 'Munstar',
         url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
@@ -104,7 +121,7 @@ export class RecettesService {
         articlesList: [],
       },
       {
-        id: 3,
+        id: 9,
         itemType: ItemType.RECETTE,
         label: 'Munsr',
         url: 'https://img-3.journaldesfemmes.fr/jSfD848yzUP8lhZYyue6Dv57I7o=/1500x/smart/c7a5593e8bd74911abdcdee8e23fccd4/ccmcms-jdf/35284182.jpg',
@@ -116,4 +133,8 @@ export class RecettesService {
 
     return recettes;
   }
+
+  // getOneRecette() : ItemBase {
+  //
+  // }
 }

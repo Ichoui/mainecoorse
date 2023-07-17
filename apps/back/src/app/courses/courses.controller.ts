@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { CoursesService } from './courses.service';
-import { ArticleList, ItemBase } from '@shared-interfaces/items';
+import { ArticleList } from '@shared-interfaces/items';
 
 @Controller('courses')
 export class CoursesController {

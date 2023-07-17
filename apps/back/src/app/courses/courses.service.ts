@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ArticleList, ArticleTags, ItemBase, ItemType } from '@shared-interfaces/items';
+import { ArticleList, ArticleTags } from '@shared-interfaces/items';
 
 @Injectable()
 export class CoursesService {
