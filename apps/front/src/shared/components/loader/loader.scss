@@ -1,0 +1,28 @@
+@import '@styles/shared';
+
+.Loader {
+  //display: flex;
+  //justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  img {
+    //width: 200px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    img {
+      animation: loader-spin infinite 4s linear;
+    }
+  }
+
+  @keyframes loader-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

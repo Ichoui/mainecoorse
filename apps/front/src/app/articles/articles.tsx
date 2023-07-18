@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useAxios } from '@shared/hooks/useAxios.hook';
+import { Loader } from '@components/loader/loader';
+import { DataError } from '@components/data-error/data-error';
 
 export const Articles = (): JSX.Element => {
   const { data, error, loaded } = useAxios('articles', 'GET');
@@ -16,7 +18,7 @@ export const Articles = (): JSX.Element => {
   useEffect(() => {
     setArticles(data);
     setFilteredArticles(data);
-  }, [data]);
+  }, [data, loaded]);
 
   // @ts-ignore
   const articlesTags = Object.values(ArticleTags);
@@ -65,6 +67,10 @@ export const Articles = (): JSX.Element => {
           renderInput={params => <TextField {...params} variant='outlined' label='Tags' />}
         />
       </div>
+
+      {!loaded && <Loader />}
+      {error && <DataError />}
+
       <div className='listing'>
         {filteredArticles?.map((article, i) => (
           <Item key={i} item={article} />

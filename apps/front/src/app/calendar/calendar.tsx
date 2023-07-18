@@ -1,13 +1,15 @@
 import './calendar.scss';
 import { ArticleTags, Days, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
 import { DragDropContext, useKeyboardSensor, useMouseSensor } from '@hello-pangea/dnd';
 import update from 'immutability-helper';
 import useTouchSensor from './use-touch-sensor';
 import { BinZone } from '@app/calendar/drag-zone/bin-zone';
 import { useAxios } from '@shared/hooks/useAxios.hook';
+import { Loader } from '@components/loader/loader';
+import { DataError } from '@components/data-error/data-error';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -104,39 +106,44 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-      <DragDropContext
-        onBeforeCapture={handleOnBeforeCapture}
-        onDragStart={handleOnDragStart}
-        onDragEnd={handleOnDragEnd}
-        enableDefaultSensors={false}
-        sensors={[useTouchSensor, useKeyboardSensor, useMouseSensor]}
-      >
-        <div className='divers'>
-          <DragZone
-            key={Math.random()}
-            items={divers}
-            identifier='divers'
-            onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
-          />
-        </div>
-        <hr className='separator-divers-day' />
-        {days?.map(day => (
-          <div key={day.slug} className='day'>
-            <h3>{day.label}</h3>
+      {!reqItems.loaded && !reqDays.loaded && <Loader />}
+      {(reqItems.error || reqDays.error) && <DataError />}
+
+      {reqItems.loaded && reqDays.loaded && (!reqItems.error || !reqDays.error) && (
+        <DragDropContext
+          onBeforeCapture={handleOnBeforeCapture}
+          onDragStart={handleOnDragStart}
+          onDragEnd={handleOnDragEnd}
+          enableDefaultSensors={false}
+          sensors={[useTouchSensor, useKeyboardSensor, useMouseSensor]}
+        >
+          <div className='divers'>
             <DragZone
               key={Math.random()}
-              items={day.items}
-              identifier={day.slug}
+              items={divers}
+              identifier='divers'
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
             />
-            <hr />
           </div>
-        ))}
+          <hr className='separator-divers-day' />
+          {days?.map(day => (
+            <div key={day.slug} className='day'>
+              <h3>{day.label}</h3>
+              <DragZone
+                key={Math.random()}
+                items={day.items}
+                identifier={day.slug}
+                onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+              />
+              <hr />
+            </div>
+          ))}
 
-        <div className='bin'>
-          <BinZone key={Math.random()} identifier='bin' isDragging={isDragging} />
-        </div>
-      </DragDropContext>
+          <div className='bin'>
+            <BinZone key={Math.random()} identifier='bin' isDragging={isDragging} />
+          </div>
+        </DragDropContext>
+      )}
 
       {/*OPEN DIALOG TON INSPECT ITEM IN READONLY*/}
       {openDialogInspectItem && (

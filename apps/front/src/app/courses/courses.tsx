@@ -3,12 +3,14 @@ import { ArticleList, ArticleTags } from '@shared-interfaces/items';
 import { Button, FormGroup } from '@mui/material';
 import { Coches } from '@app/courses/coches/coches';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useAxios } from '@shared/hooks/useAxios.hook';
+import { Loader } from '@components/loader/loader';
+import { DataError } from '@components/data-error/data-error';
 
 export const Courses = () => {
   const [itemsSortedByTags, setItemsSorted] = useState<(string | ArticleList[])[]>([]);
-  const { data } = useAxios('courses', 'GET');
+  const { data, error, loaded } = useAxios('courses', 'GET');
 
   useEffect(() => {
     setItemsSorted(sortByTags(data));
@@ -25,25 +27,31 @@ export const Courses = () => {
 
   return (
     <div className='Courses'>
-      <div className='btn-purge'>
-        <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>
-          Purger
-        </Button>
-      </div>
-      <FormGroup>
-        {itemsSortedByTags?.map((items: ArticleList[] | string, index: number) => (
-          <div key={index} className='blocks'>
-            {<h3>{items[0] as string}</h3>}
-            <hr />
-            <div className='container-checkboxes'>
-              {(items[1] as unknown as ArticleList[]).map((item, itemIndex) => (
-                <Coches key={itemIndex} item={item}></Coches>
-              ))}
-            </div>
-          </div>
-        ))}
-      </FormGroup>
+      {!loaded && <Loader />}
+      {error && <DataError />}
 
+      {loaded && !error && (
+        <Fragment>
+          <div className='btn-purge'>
+            <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>
+              Purger
+            </Button>
+          </div>
+          <FormGroup>
+            {itemsSortedByTags?.map((items: ArticleList[] | string, index: number) => (
+              <div key={index} className='blocks'>
+                {<h3>{items[0] as string}</h3>}
+                <hr />
+                <div className='container-checkboxes'>
+                  {(items[1] as unknown as ArticleList[]).map((item, itemIndex) => (
+                    <Coches key={itemIndex} item={item}></Coches>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </FormGroup>
+        </Fragment>
+      )}
       {/*OPEN DIALOG TO CONFIRM DELETE */}
       {openDialogConfirmation && (
         <DialogConfirmation

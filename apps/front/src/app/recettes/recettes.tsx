@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useAxios } from '@shared/hooks/useAxios.hook';
+import { Loader } from '@components/loader/loader';
+import { DataError } from '@components/data-error/data-error';
 
 export const Recettes = (): JSX.Element => {
   // @ts-ignore
@@ -64,6 +66,9 @@ export const Recettes = (): JSX.Element => {
           renderInput={params => <TextField {...params} variant='outlined' label='Tags' />}
         />
       </div>
+
+      {!loaded && <Loader />}
+      {error && <DataError />}
 
       <div className='listing'>
         {filteredRecettes?.map((recette, i) => (

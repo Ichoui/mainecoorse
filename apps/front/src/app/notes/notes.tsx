@@ -1,15 +1,17 @@
 import './notes.scss';
 import { TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useAxios } from '@shared/hooks/useAxios.hook';
+import { Loader } from '@components/loader/loader';
+import { DataError } from '@components/data-error/data-error';
 
 export const Notes = () => {
   const [value, setValue] = useState<string>('');
-  const { data } = useAxios('notes', 'GET')
+  const { data, error, loaded } = useAxios('notes', 'GET');
 
   useEffect(() => {
-    setValue(data)
+    setValue(data);
   }, [data]);
 
   const handleChange = useDebouncedCallback(value => {
@@ -20,15 +22,19 @@ export const Notes = () => {
   return (
     <div className='Notes'>
       <h2>Pense-bête</h2>
-      <TextField
-        variant='outlined'
-        label='Notes'
-        defaultValue={value ?? ' '}
-        placeholder='Pense, écrit, tape, romance, transcrit, compose, exprime, rédige, consigne, note... 🗒️'
-        onChange={e => handleChange(e.target.value)}
-        minRows={5}
-        multiline
-      ></TextField>
+      {!loaded && <Loader />}
+      {error && <DataError />}
+      {loaded && !error && (
+        <TextField
+          variant='outlined'
+          label='Notes'
+          defaultValue={value ?? ' '}
+          placeholder='Pense, écrit, tape, romance, transcrit, compose, exprime, rédige, consigne, note... 🗒️'
+          onChange={e => handleChange(e.target.value)}
+          minRows={5}
+          multiline
+        ></TextField>
+      )}
     </div>
   );
 };

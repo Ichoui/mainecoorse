@@ -1,5 +1,5 @@
 import './item.scss';
-import React, { createContext, useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardActionArea,
