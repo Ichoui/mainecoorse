@@ -19,6 +19,7 @@ export const useAxios = (urlPath: string, method: Method, payload?: unknown) => 
         const response = await axios.request({
           headers: {
             'Access-Control-Allow-Origin': '*',
+            'maple': true,
           },
           data: payload,
           signal: controllerRef.current.signal,
