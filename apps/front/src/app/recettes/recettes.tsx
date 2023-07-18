@@ -20,7 +20,7 @@ export const Recettes = (): JSX.Element => {
   useEffect(() => {
     setRecettes(data);
     setFilteredRecettes(data);
-  }, [data]);
+  }, [data, loaded, error]);
 
   const handleSearch = useDebouncedCallback(value => {
     const filter = recettes?.filter(f => f.label.toLowerCase().includes(value.toLowerCase()));

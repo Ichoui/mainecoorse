@@ -12,7 +12,7 @@ export const Notes = () => {
 
   useEffect(() => {
     setValue(data);
-  }, [data]);
+  }, [data, loaded, error]);
 
   const handleChange = useDebouncedCallback(value => {
     setValue(value);

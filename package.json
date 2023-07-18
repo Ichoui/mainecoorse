@@ -41,6 +41,7 @@
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
     "use-debounce": "^9.0.4",
+    "winston": "^3.10.0",
     "yup": "^1.2.0"
   },
   "devDependencies": {

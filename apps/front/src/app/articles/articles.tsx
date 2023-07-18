@@ -18,7 +18,7 @@ export const Articles = (): JSX.Element => {
   useEffect(() => {
     setArticles(data);
     setFilteredArticles(data);
-  }, [data, loaded]);
+  }, [data, loaded,error]);
 
   // @ts-ignore
   const articlesTags = Object.values(ArticleTags);

@@ -14,7 +14,7 @@ export const Courses = () => {
 
   useEffect(() => {
     setItemsSorted(sortByTags(data));
-  }, [data]);
+  }, [data, loaded, error]);
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
