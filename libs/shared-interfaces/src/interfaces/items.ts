@@ -22,6 +22,7 @@ export interface Days {
   items: ItemBase[] | never[];
 }
 
+
 export interface IIngredientsWithQte {
   ingredient: IIngredient;
   quantity?: number;

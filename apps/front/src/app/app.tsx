@@ -79,7 +79,7 @@ export const App = (): JSX.Element => {
           value='recettes'
           icon={<RestaurantMenuRounded />}
           iconPosition='top'
-          label='Recette'
+          label='Recettes'
           component={Link}
           to='/recettes'
         />

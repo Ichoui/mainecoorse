@@ -10,12 +10,12 @@ export class NotesController {
   constructor(private readonly _notesService: NotesService) {}
 
   @Get()
-  getNotes(): Promise<NotesDto> {
+  getNotes(): Promise<string> {
     return this._notesService.getNotes();
   }
 
   @Post()
-  postNotes(@Body() notes: NotesDto): Promise<NotesDto> {
+  postNotes(@Body() notes: NotesDto): Promise<string> {
     return this._notesService.postNotes(notes);
   }
 }

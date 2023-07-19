@@ -18,6 +18,7 @@ export const useAxios = (urlPath: string, method: Method, payload?: unknown) => 
       try {
         const response = await axios.request({
           headers: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Access-Control-Allow-Origin': '*',
             'maple': true,
           },
