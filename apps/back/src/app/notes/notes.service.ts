@@ -9,7 +9,10 @@ export class NotesService {
   constructor(@InjectRepository(NotesEntity) private _notesEntityRepository: Repository<NotesEntity>) {}
 
   async getNotes(): Promise<string> {
-    return this._notesEntityRepository.findOne({ where: { oneId: 1 } }).then(e => manageNoteData(e));
+    return this._notesEntityRepository.findOne({ where: { oneId: 1 } }).then(e => {
+      console.log(e);
+      return manageNoteData(e);
+    });
   }
 
   async postNotes(notesDto: NotesDto): Promise<string> {
