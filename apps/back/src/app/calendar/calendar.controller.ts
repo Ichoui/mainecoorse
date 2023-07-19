@@ -7,16 +7,16 @@ import { ReqInterceptor } from '../../shared/interceptor.service';
 @UseInterceptors(ReqInterceptor)
 @Controller('calendar')
 export class CalendarController {
-  constructor(private readonly calendarService: CalendarService) {}
+  constructor(private readonly _calendarService: CalendarService) {}
 
   @Get('items')
   getCalendarItems(): ItemBase[] {
-    return this.calendarService.getCalendarItems();
+    return this._calendarService.getCalendarItems();
   }
 
   @Get('days')
   getCalendarDays(): Days[] {
-    return this.calendarService.getCalendarDays()
+    return this._calendarService.getCalendarDays()
   }
 
 

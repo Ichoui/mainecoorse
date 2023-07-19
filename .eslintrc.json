@@ -18,6 +18,99 @@
               }
             ]
           }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "variable",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "variable",
+            "modifiers": ["global"],
+            "format": ["camelCase", "UPPER_CASE"]
+          },
+          {
+            "selector": "memberLike",
+            "modifiers": ["private"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "memberLike",
+            "modifiers": ["protected"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "classMethod",
+            "modifiers": ["private"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "classMethod",
+            "modifiers": ["protected"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "objectLiteralProperty",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "enum",
+            "format": ["PascalCase"]
+          },
+          {
+            "selector": "enumMember",
+            "format": ["UPPER_CASE"]
+          },
+          {
+            "selector": "class",
+            "format": ["PascalCase"]
+          },
+          {
+            "selector": "classMethod",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "interface",
+            "format": ["PascalCase"]
+          },
+          {
+            "selector": "typeParameter",
+            "format": ["UPPER_CASE"]
+          },
+          {
+            "selector": "typeProperty",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "classProperty",
+            "format": ["camelCase", "UPPER_CASE"],
+            "leadingUnderscore": "forbid"
+          },
+          {
+            "selector": "classProperty",
+            "format": ["camelCase", "UPPER_CASE"],
+            "modifiers": ["private"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "classProperty",
+            "format": ["camelCase"],
+            "modifiers": ["protected"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "typeAlias",
+            "format": ["PascalCase"]
+          }
         ]
       }
     },

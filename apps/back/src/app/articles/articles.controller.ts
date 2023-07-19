@@ -7,10 +7,10 @@ import { ReqInterceptor } from '../../shared/interceptor.service';
 @UseInterceptors(ReqInterceptor)
 @Controller('articles')
 export class ArticlesController {
-  constructor(private readonly articlesService: ArticlesService) {}
+  constructor(private readonly _articlesService: ArticlesService) {}
 
   @Get()
   getArticles(): ItemBase[] {
-    return this.articlesService.getArticles();
+    return this._articlesService.getArticles();
   }
 }
