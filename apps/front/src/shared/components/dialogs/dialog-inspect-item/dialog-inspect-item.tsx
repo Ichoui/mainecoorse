@@ -23,7 +23,7 @@ export const DialogInspectItem = (props: {
           <p>{item.description}</p>
           {item?.tags && (
             <div className='tags'>
-              {item.tags.map((tag, i) => (
+              {item.tags?.map((tag, i) => (
                 <Chip key={i} label={tag} variant='outlined' />
               ))}
             </div>

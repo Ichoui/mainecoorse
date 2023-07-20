@@ -1,13 +1,17 @@
 import './editArticle.scss';
 import '@styles/forms.scss';
-import { Params, useParams } from 'react-router-dom';
+import { Params, useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Chip, TextField } from '@mui/material';
 import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
-import { ArticleTags } from '@shared-interfaces/items';
+import { ArticleTags, ISnackbar } from '@shared-interfaces/items';
+import { configAxios } from '@shared/hooks/axios.config';
+import { RefetchFunction } from 'axios-hooks';
+import { SnackbarPortal } from '@components/snackbarPortal/snackbarPortal';
+import { SnackbarContext } from '@app/app';
 
 export const EditArticle = (): JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
@@ -22,13 +26,14 @@ export const EditArticle = (): JSX.Element => {
       // TODO Supprimer l'article
     }
   };
+  // Snackbar values
+  // const [snackValues, setSnackValues] = useState<ISnackbar>({ open: false });
 
   return (
     <div className='editItem'>
       <div className='image'>
         <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
       </div>
-
       <ArticleForm
         openDialogConfirmation={openDialogConfirmation}
         isNewArticle={isNewArticle}
@@ -45,8 +50,14 @@ const ArticleForm = (props: {
   handleRemove: (open: boolean, remove?: boolean) => void;
 }): JSX.Element => {
   const { handleRemove, values, isNewArticle, openDialogConfirmation } = props;
+  const { snackValues, setSnackValues } = useContext(SnackbarContext);
+
+  // eslint-disable-next-line no-empty-pattern
+  const [{ loading }, executePost] = configAxios({ url: 'articles', method: 'POST', manual: true });
+
   // @ts-ignore
   const articlesTags = Object.values(ArticleTags);
+  const navigation = useNavigate();
 
   const initialValues = {
     label: '',
@@ -65,14 +76,14 @@ const ArticleForm = (props: {
       .url('Gruge pas, on veut un lien pas long !')
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
-    description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').notRequired(),
+    description: yup.string().max(512, 'Trop long ton fichu texte ! 😡').notRequired(),
     tags: yup.array().min(1, 'Tu voulais des tags, tu les mets ! 🧌').required(),
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: values => submit(values),
+    onSubmit: values => submit(values, executePost, navigation, setSnackValues),
   });
 
   return (
@@ -91,7 +102,7 @@ const ArticleForm = (props: {
       />
 
       <TextField
-        label='URL Web*'
+        label='Image Web*'
         placeholder='https://munster-alsace.de'
         type='text'
         name='url'
@@ -146,12 +157,13 @@ const ArticleForm = (props: {
             type='button'
             color='error'
             startIcon={<DeleteForeverRounded />}
+            disabled={loading}
             onClick={() => handleRemove(true)}
           >
             Supprimer
           </Button>
         )}
-        <Button variant='outlined' type='submit' color='primary' startIcon={<SaveAsRounded />}>
+        <Button variant='outlined' type='submit' color='primary' startIcon={<SaveAsRounded />} disabled={loading}>
           Enregistrer
         </Button>
       </div>
@@ -168,7 +180,20 @@ const ArticleForm = (props: {
   );
 };
 
-const submit = (values: FormikValues): void => {
-  // TO SERVER !
-  console.log(values);
+const submit = (
+  values: FormikValues,
+  executePost: RefetchFunction<unknown, unknown>,
+  navigation: (to: string) => void,
+  setSnackValues: ({ open, message, severity }: ISnackbar) => void,
+): void => {
+  executePost({
+    data: { ...values },
+  })
+    .then(value => {
+      setSnackValues({ open: true, message: '🌞 Article enregistré', severity: 'success' });
+      navigation('/articles');
+    })
+    .catch(() => {
+      setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
+    });
 };

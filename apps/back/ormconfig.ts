@@ -11,6 +11,7 @@ export default {
   entities: [__dirname + '/**/*.entity.ts'],
   synchronize: env.DB_SYNCHRONIZE === 'true',
   ssl: false,
-  logging: false,
+  logging: env.MODE === 'DEV',
+  retryAttempts: 1,
   autoLoadEntities: true,
 } as TypeOrmModuleOptions;

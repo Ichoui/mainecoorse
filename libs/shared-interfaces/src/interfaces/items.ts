@@ -1,4 +1,4 @@
-export const enum ItemType {
+export enum ItemType {
   ARTICLE = 'article',
   RECETTE = 'recette',
 }
@@ -9,7 +9,7 @@ export interface ItemBase {
   description: string;
   url: string;
   label: string;
-  tags: Tags[];
+  tags: Tags[] | string[];
   articlesList?: ArticleList[];
 }
 
@@ -21,7 +21,6 @@ export interface Days {
   slug: string;
   items: ItemBase[] | never[];
 }
-
 
 export interface IIngredientsWithQte {
   ingredient: IIngredient;
@@ -36,7 +35,7 @@ export interface IIngredient {
 // https://stackoverflow.com/questions/48478361/how-to-merge-two-enums-in-typescript
 export type Tags = ArticleTags | RecetteTags;
 
-export const enum ArticleTags {
+export enum ArticleTags {
   VIANDE = 'Viande',
   POISSON = 'Poisson',
   BOULANGERIE = 'Boulangerie',
@@ -46,16 +45,15 @@ export const enum ArticleTags {
   LAITAGE = 'Laitage',
   ENTRETIEN = 'Entretien',
   HYGIENE = 'Hygiène',
-  BOISSONS = 'Boissons',
+  BOISSON = 'Boisson',
   DIVERS = 'Divers',
 }
 
-export const enum RecetteTags {
+export enum RecetteTags {
   ENTREE = 'Entrée',
   PLAT = 'Plat',
   DESSERT = 'Dessert',
-  BOISSON = 'Boisson',
-  PETIT_DEJEUNER = 'Petit déjeuner',
+  DEJEUNER = 'Déjeuner',
   ETE = 'Eté',
   HIVER = 'Hiver',
   COURT = 'Court',
@@ -67,4 +65,10 @@ export interface Courses {
   id: number;
   articlesList: ArticleList[];
   tags: Tags[];
+}
+
+export interface ISnackbar {
+  open: boolean;
+  message?: string;
+  severity?: 'success' | 'warning' | 'error' | 'info';
 }

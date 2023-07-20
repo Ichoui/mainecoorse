@@ -90,7 +90,7 @@ const TSXForm = (props: any): JSX.Element => {
         error={touched.label && Boolean(errors.label)}
       />
       <TextField
-        label='URL Web*'
+        label='Image Web*'
         placeholder='https://potee-egal-choucroute.de'
         type='text'
         name='url'
