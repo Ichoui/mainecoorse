@@ -6,19 +6,23 @@ import { AddRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { useAxios } from '@shared/hooks/useAxios.hook';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
+import { configAxios } from '@shared/hooks/axios.config';
 
 export const Articles = (): JSX.Element => {
-  const { data, error, loaded } = useAxios('articles', 'GET');
+  const [{ data, error, loading }] = configAxios({
+    url: 'articles',
+    method: 'GET',
+    autoCancel: false,
+  });
   const [articles, setArticles] = useState<ItemBase[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<ItemBase[]>([]);
 
   useEffect(() => {
     setArticles(data);
     setFilteredArticles(data);
-  }, [data, loaded,error]);
+  }, [data, loading, error]);
 
   // @ts-ignore
   const articlesTags = Object.values(ArticleTags);
@@ -68,7 +72,7 @@ export const Articles = (): JSX.Element => {
         />
       </div>
 
-      {!loaded && <Loader />}
+      {loading && <Loader />}
       {error && <DataError />}
 
       <div className='listing'>
