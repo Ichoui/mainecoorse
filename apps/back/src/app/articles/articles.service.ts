@@ -24,14 +24,23 @@ export class ArticlesService {
 
   async postArticles(articles: ArticlesCreateDto): Promise<ItemBase> {
     const entity = this._articlesEntityRepository.create({ ...articles, itemType: ItemType.ARTICLE });
-    console.log(articles);
     if (!entity) {
       throw new NotFoundException();
     }
     return this._articlesEntityRepository.save(entity);
   }
 
-  async putArticles(articles: ArticlesUpdateDto): Promise<any> {
-    return Promise.resolve([]);
+  async putArticles(id: number, articles: ArticlesUpdateDto): Promise<ItemBase> {
+    const entity = this._articlesEntityRepository.update({ id }, { ...articles });
+    if (!entity) {
+      throw new NotFoundException();
+    }
+    // return this._articlesEntityRepository.save(entity);
+    return null
   }
+
+ async removeArticle(id: number): Promise<void> {
+   const entity = await this._articlesEntityRepository.findOne({where: {id}});
+   await this._articlesEntityRepository.remove(entity);
+ }
 }

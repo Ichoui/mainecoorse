@@ -1,5 +1,5 @@
 import './item.scss';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Card,
   CardActionArea,
@@ -17,23 +17,44 @@ import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dial
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import { ItemBase, ItemType } from '@shared-interfaces/items';
 import { DialogAddCalendar } from '@components/dialogs/dialog-add-calendar/dialog-add-calendar';
+import { SnackbarContext } from '@app/app';
+import { configAxios } from '@shared/hooks/axios.config';
 
 export const Item = (props: { item: ItemBase }): JSX.Element => {
   const { item } = props;
   const isArticle = item.itemType === ItemType.ARTICLE;
   const urlToRoute = `/${isArticle ? 'article' : 'recette'}/${item.id}`;
+  const { setSnackValues } = useContext(SnackbarContext);
+
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, removeItem] = configAxios({
+    url: isArticle ? 'articles' : 'recettes',
+    method: 'DELETE',
+    manual: true,
+    params: { id: item?.id },
+  });
 
   // Anchor Element to attach mini menu
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMiniMenu = Boolean(anchorEl);
   const handleMiniMenu = (event?: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event?.currentTarget ?? null);
 
-  // Dialog Confirmation
+  // Dialog supression Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
-  const handleDialogConfirmation = (open = false, removeItem?: boolean) => {
+  const handleDialogConfirmation = (open = false, remove?: boolean) => {
     setOpenDialogConfirmation(open);
-    if (removeItem) {
-      // ICI, gérer la suppression via API de l'item via son ID
+    if (remove) {
+      removeItem()
+        .then(() => {
+          setSnackValues({
+            open: true,
+            message: `👽 ${isArticle ? 'Article' : 'Recette'} supprimé`,
+            severity: 'success',
+          });
+        })
+        .catch(() => {
+          setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
+        });
     }
   };
 

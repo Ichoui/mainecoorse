@@ -15,8 +15,9 @@ export const configAxios = (props: {
   autoCancel?: boolean;
   manual?: boolean;
   useCache?: boolean;
+  params?: unknown
 }) => {
-  const { url, method, manual = false, autoCancel = true, useCache = false } = props;
+  const { url, method, manual = false, autoCancel = true, useCache = false, params } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useAxios({ headers, url: axiosUrl(url), method }, { manual, autoCancel, useCache });
+  return useAxios({ headers, url: axiosUrl(url), method, params }, { manual, autoCancel, useCache });
 };

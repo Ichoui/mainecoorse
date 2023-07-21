@@ -18,6 +18,16 @@ export const EditArticle = (): JSX.Element => {
   const isNewArticle = articleId === 'new';
   const item: ItemBase = useLocation().state;
   const bgi = item?.url ?? defaultUrl;
+  const { setSnackValues } = useContext(SnackbarContext);
+  const navigation = useNavigate();
+
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, removeArticle] = configAxios({
+    url: 'articles',
+    method: 'DELETE',
+    manual: true,
+    params: { id: item?.id },
+  });
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
@@ -25,6 +35,18 @@ export const EditArticle = (): JSX.Element => {
     setOpenDialogConfirmation(open);
     if (remove) {
       // TODO Supprimer l'article
+      removeArticle()
+        .then(() => {
+          setSnackValues({
+            open: true,
+            message: '👽 Article supprimé',
+            severity: 'success',
+          });
+          navigation('/articles');
+        })
+        .catch(() => {
+          setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
+        });
     }
   };
 
@@ -38,6 +60,8 @@ export const EditArticle = (): JSX.Element => {
         isNewArticle={isNewArticle}
         handleRemove={(open, remove) => handleDialogConfirmation(open, remove)}
         item={item}
+        navigation={navigation}
+        setSnackValues={setSnackValues}
       />
     </div>
   );
@@ -48,15 +72,20 @@ const ArticleForm = (props: {
   isNewArticle: boolean;
   handleRemove: (open: boolean, remove?: boolean) => void;
   item: ItemBase;
+  navigation: (to: string) => void;
+  setSnackValues: ({ open, message, severity }: ISnackbar) => void;
 }): JSX.Element => {
-  const { handleRemove, isNewArticle, openDialogConfirmation, item } = props;
-  const { setSnackValues } = useContext(SnackbarContext);
+  const { handleRemove, isNewArticle, openDialogConfirmation, item, navigation, setSnackValues } = props;
 
-  const [{ loading }, executePost] = configAxios({ url: 'articles', method: 'POST', manual: true });
+  const [{ loading }, saveData] = configAxios({
+    url: 'articles',
+    method: isNewArticle ? 'POST' : 'PUT',
+    manual: true,
+    params: { id: item?.id },
+  });
 
   // @ts-ignore
   const articlesTags = Object.values(ArticleTags);
-  const navigation = useNavigate();
 
   const initialValues: Partial<ItemBase> = {
     label: item?.label,
@@ -83,7 +112,7 @@ const ArticleForm = (props: {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: values => submit(values, executePost, navigation, setSnackValues),
+    onSubmit: values => submit(values, saveData, navigation, setSnackValues, isNewArticle),
   });
 
   return (
@@ -135,9 +164,7 @@ const ArticleForm = (props: {
         filterSelectedOptions={true}
         value={formik.values.tags as ArticleTags[]}
         renderTags={(tags, getTagProps) => {
-          return tags.map((option, index) => (
-            <Chip variant='outlined' label={option} {...getTagProps({ index })} />
-          ));
+          return tags.map((option, index) => <Chip variant='outlined' label={option} {...getTagProps({ index })} />);
         }}
         onChange={(e, tags) => formik.setFieldValue('tags', tags)}
         renderInput={params => (
@@ -182,15 +209,20 @@ const ArticleForm = (props: {
 
 const submit = (
   values: FormikValues,
-  executePost: RefetchFunction<unknown, unknown>,
+  saveData: RefetchFunction<unknown, unknown>,
   navigation: (to: string) => void,
   setSnackValues: ({ open, message, severity }: ISnackbar) => void,
+  isNewArticle: boolean,
 ): void => {
-  executePost({
+  saveData({
     data: { ...values },
   })
-    .then(value => {
-      setSnackValues({ open: true, message: '🌞 Article enregistré', severity: 'success' });
+    .then(() => {
+      setSnackValues({
+        open: true,
+        message: isNewArticle ? '🌞 Article enregistré' : '🌞 Article modifié',
+        severity: 'success',
+      });
       navigation('/articles');
     })
     .catch(() => {
