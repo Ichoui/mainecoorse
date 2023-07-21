@@ -36,7 +36,7 @@ export const Recettes = (): JSX.Element => {
       });
       return acc;
     }, []);
-    setFilteredRecettes(filter.length > 0 ? filter : recettes);
+    setFilteredRecettes(tags.length > 0 ? filter : recettes);
   };
 
   return (

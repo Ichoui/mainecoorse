@@ -41,7 +41,7 @@ export const Articles = (): JSX.Element => {
       });
       return acc;
     }, []);
-    setFilteredArticles(filter.length > 0 ? filter : articles);
+    setFilteredArticles(tags.length > 0 ? filter : articles);
   };
 
   return (
