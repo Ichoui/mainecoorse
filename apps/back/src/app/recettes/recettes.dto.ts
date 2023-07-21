@@ -1,5 +1,5 @@
 import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
-import { ItemType, Tags } from '@shared-interfaces/items';
+import { ArticleList, ItemType, Tags } from '@shared-interfaces/items';
 
 export class RecettesCreateDto {
   @IsOptional()
@@ -28,6 +28,10 @@ export class RecettesCreateDto {
   @IsNotEmpty()
   @IsArray()
   tags: string[] | Tags[];
+
+  @IsNotEmpty()
+  @IsArray()
+  articlesList: ArticleList[];
 }
 
 export class RecettesUpdateDto extends RecettesCreateDto {}

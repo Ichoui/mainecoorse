@@ -165,14 +165,16 @@ const TSXForm = (props: any): JSX.Element => {
                       select // because of outlined label does not display with <Select> tag ... bug
                       label='Article'
                       className='article'
-                      name={`articlesList[${index}]`}
+                      name={`articlesList[${index}].label`}
                       value={p?.label ?? ''}
                       defaultValue={p?.label ?? ''}
                       variant='outlined'
                       helperText={
-                        touched.articlesList && errors?.articlesList?.[index] ? errors?.articlesList[index] : ''
+                        touched.articlesList && errors?.articlesList?.[index]?.label
+                          ? errors?.articlesList[index].label
+                          : ''
                       }
-                      error={touched.articlesList && Boolean(errors?.articlesList?.[index])}
+                      error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.label)}
                     >
                       {articlesData?.map((art: ItemBase) => (
                         <MenuItem
@@ -211,7 +213,7 @@ const TSXForm = (props: any): JSX.Element => {
                   </div>
                 );
               })}
-              <Button onClick={() => push({ quantity: '' })} variant='outlined'>
+              <Button onClick={() => push({ quantity: '', label: '' })} variant='outlined'>
                 Ajouter
               </Button>
               <Typography color='error'>
@@ -268,7 +270,7 @@ const RecetteForm = withFormik({
     url: props.item?.url,
     description: props.item?.description,
     tags: props.item?.tags,
-    articlesList: [], // TODO  props.item?.articlesList,
+    articlesList: props.item?.articlesList ?? [{label: '', quantity: ''}],
   }),
   validationSchema: yup.object().shape({
     label: yup
@@ -278,27 +280,23 @@ const RecetteForm = withFormik({
       .required('A remplir, banane ! 🍌'),
     url: yup
       .string()
-      .url("C'est pas une vrai URL ça")
+      .url("C'est pas une vrai URL ça 🙀")
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
     description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').required('Encore un autographe svp 🖋️️'),
-
-    // TODO revoir validation here :)
-
     articlesList: yup
       .array()
-      // .of(
-      //   yup.object().shape({
-      //     ingredient: yup.object().required('Ne pas zapper !'),
-      //     quantity: yup.number().min(1, '0 ? Nope !'),
-      //   }),
-      // )
-      .min(2, 'Une recette sans ingrédients... Voyons donc ! 🫠')
+      .of(
+        yup.object().shape({
+          label: yup.string().required('Fait-un effort ! 🏋'),
+          quantity: yup.number().min(1, '0 ? Nope !').required('0+0=😬'),
+        }),
+      )
+      .min(2, 'Une recette avec un seul ingrédient... Voyons donc ! 🫠')
       .required('Au moins 2 ingrédients !'),
     tags: yup.array().min(1, 'NAMEHO ! Mets-en au moins 1 quoi ! 🧌').required('O-BLI-GA-TOIRE, OK ? 🤬'),
   }),
   handleSubmit: (values, formikBag) => {
-    console.log(values);
     const { isNewRecette, navigation, setSnackValues, saveData } = formikBag.props;
     saveData({
       data: { ...values },

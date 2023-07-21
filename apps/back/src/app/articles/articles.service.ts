@@ -10,17 +10,17 @@ export class ArticlesService {
   constructor(@InjectRepository(ArticlesEntity) private _articlesEntityRepository: Repository<ArticlesEntity>) {}
 
   async getArticles(): Promise<ItemBase[]> {
-    const entity = this._articlesEntityRepository
+    const query = this._articlesEntityRepository
       .createQueryBuilder('a')
       .select('*')
       .where('a.id is not null')
       .orderBy({ id: 'ASC'})
       .getRawMany();
 
-    if (!entity) {
+    if (!query) {
       throw new NotFoundException();
     }
-    return entity;
+    return query;
   }
 
   async postArticle(articles: ArticlesCreateDto): Promise<ItemBase> {
@@ -41,7 +41,6 @@ export class ArticlesService {
   }
 
  async removeArticle(id: number): Promise<void> {
-   console.log('removing!', id);
    const entity = await this._articlesEntityRepository.findOneBy({id});
    await this._articlesEntityRepository.remove(entity);
  }

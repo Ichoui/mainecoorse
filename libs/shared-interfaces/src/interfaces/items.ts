@@ -13,7 +13,14 @@ export interface ItemBase {
   articlesList?: ArticleList[];
 }
 
-export type ArticleList = Omit<ItemBase, 'articlesList' | 'itemType'> & { quantity: number };
+export interface ArticleList {
+  id: number;
+  description: string;
+  url: string;
+  label: string;
+  tags: Tags[] | string[];
+  quantity: number;
+}
 
 export interface Days {
   label: string;
@@ -47,7 +54,7 @@ export enum ArticleTags {
   BOISSONS = 'Boissons',
   POISSONS = 'Poissons',
   DIVERS = 'Divers',
-  MAPLE_SYRUP = 'Maple Syrup'
+  MAPLE_SYRUP = 'Maple Syrup',
 }
 
 export enum RecetteTags {
@@ -60,7 +67,7 @@ export enum RecetteTags {
   LONG = 'Long',
   ETE = 'Eté',
   HIVER = 'Hiver',
-  MAPLE_LEAF = 'Maple Leaf'
+  MAPLE_LEAF = 'Maple Leaf',
 }
 
 export interface Courses {

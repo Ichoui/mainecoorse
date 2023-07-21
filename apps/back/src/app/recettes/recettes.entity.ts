@@ -1,8 +1,9 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ItemBase, ItemType, Tags } from '@shared-interfaces/items';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ArticleList, ItemBase, ItemType, Tags } from '@shared-interfaces/items';
+import { ArticlesEntity } from '../articles/articles.entity';
 
 @Entity({
-  name: 'articles',
+  name: 'recettes',
 })
 export class RecettesEntity extends BaseEntity implements ItemBase {
   @PrimaryGeneratedColumn('increment')
@@ -29,5 +30,7 @@ export class RecettesEntity extends BaseEntity implements ItemBase {
   })
   tags: string[] | Tags[]; // Tags[] | string[];
 
-
+  // @OneToMany(() => ArticlesEntity, art => art.id)
+  @Column('jsonb')
+  articlesList: ArticleList[];
 }

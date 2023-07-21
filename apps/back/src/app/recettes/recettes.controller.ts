@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query, UseInterceptors } from '@nestjs/common';
 
 import { RecettesService } from './recettes.service';
 import { ItemBase } from '@shared-interfaces/items';
@@ -16,7 +16,17 @@ export class RecettesController {
   }
 
   @Post()
-  postRecette(@Query('id') id: number, @Body() recette: RecettesCreateDto): Promise<ItemBase> {
-    return this._recettesService.postRecette(id, recette);
+  postRecette(@Body() recette: RecettesCreateDto): Promise<ItemBase> {
+    return this._recettesService.postRecette(recette);
+  }
+
+  @Put()
+  putRecette(@Query('id') id: number, @Body() recette: RecettesCreateDto): Promise<ItemBase> {
+    return this._recettesService.putRecette(id, recette);
+  }
+
+  @Delete()
+  removeRecette(@Query('id') id: number): Promise<void> {
+    return this._recettesService.removeRecette(id);
   }
 }

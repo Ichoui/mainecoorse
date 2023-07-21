@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query, UseInterceptors } from '@nestjs/common';
 
 import { ArticlesService } from './articles.service';
 import { ItemBase } from '@shared-interfaces/items';
@@ -26,7 +26,7 @@ export class ArticlesController {
   }
 
   @Delete()
-  deleteArticle(@Query('id') id: number): Promise<void> {
+  removeArticle(@Query('id') id: number): Promise<void> {
     return this._articlesService.removeArticle(id);
   }
 }
