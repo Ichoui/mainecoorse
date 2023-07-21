@@ -1,4 +1,4 @@
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Snackbar, Typography } from '@mui/material';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { ISnackbar } from '@shared-interfaces/items';
 
@@ -22,8 +22,8 @@ export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: (
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       autoHideDuration={2000}
     >
-      <Alert onClose={handleClose} severity={snackValues.severity} sx={{ width: 'auto' }}>
-        {snackValues.message}
+      <Alert onClose={handleClose} variant='filled' severity={snackValues.severity} sx={{ width: 'auto' }}>
+        <Typography fontFamily={'Oswald-medium'}>{snackValues.message}</Typography>
       </Alert>
     </Snackbar>
   );

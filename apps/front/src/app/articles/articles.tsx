@@ -11,7 +11,7 @@ import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 
 export const Articles = (): JSX.Element => {
-  const [{ data, error, loading }] = configAxios({
+  const [{ data, error, loading }, refetchArticles] = configAxios({
     url: 'articles',
     method: 'GET',
     autoCancel: false,
@@ -77,7 +77,7 @@ export const Articles = (): JSX.Element => {
 
       <div className='listing'>
         {filteredArticles?.map((article, i) => (
-          <Item key={i} item={article} />
+          <Item key={i} item={article} itemRemoved={() => refetchArticles()} />
         ))}
       </div>
       <Fab

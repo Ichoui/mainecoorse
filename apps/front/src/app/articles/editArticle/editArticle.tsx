@@ -34,7 +34,6 @@ export const EditArticle = (): JSX.Element => {
   const handleDialogConfirmation = (open = false, remove?: boolean) => {
     setOpenDialogConfirmation(open);
     if (remove) {
-      // TODO Supprimer l'article
       removeArticle()
         .then(() => {
           setSnackValues({

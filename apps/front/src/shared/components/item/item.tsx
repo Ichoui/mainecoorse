@@ -20,8 +20,8 @@ import { DialogAddCalendar } from '@components/dialogs/dialog-add-calendar/dialo
 import { SnackbarContext } from '@app/app';
 import { configAxios } from '@shared/hooks/axios.config';
 
-export const Item = (props: { item: ItemBase }): JSX.Element => {
-  const { item } = props;
+export const Item = (props: { item: ItemBase, itemRemoved: () => void }): JSX.Element => {
+  const { item, itemRemoved } = props;
   const isArticle = item.itemType === ItemType.ARTICLE;
   const urlToRoute = `/${isArticle ? 'article' : 'recette'}/${item.id}`;
   const { setSnackValues } = useContext(SnackbarContext);
@@ -51,6 +51,7 @@ export const Item = (props: { item: ItemBase }): JSX.Element => {
             message: `👽 ${isArticle ? 'Article' : 'Recette'} supprimé`,
             severity: 'success',
           });
+          itemRemoved();
         })
         .catch(() => {
           setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
