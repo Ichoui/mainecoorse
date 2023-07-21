@@ -16,13 +16,13 @@ export class ArticlesController {
   }
 
   @Post()
-  postArticles(@Body() articles: ArticlesCreateDto): Promise<ItemBase> {
-    return this._articlesService.postArticles(articles);
+  postArticle(@Body() articles: ArticlesCreateDto): Promise<ItemBase> {
+    return this._articlesService.postArticle(articles);
   }
 
   @Put()
-  putArticles(@Query('id') id: number, @Body() articles: ArticlesUpdateDto): Promise<ItemBase> {
-    return this._articlesService.putArticles(id, articles);
+  putArticle(@Query('id') id: number, @Body() article: ArticlesUpdateDto): Promise<ItemBase> {
+    return this._articlesService.putArticle(id, article);
   }
 
   @Delete()

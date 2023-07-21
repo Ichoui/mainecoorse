@@ -1,20 +1,16 @@
 import './editRecette.scss';
 import '@styles/forms.scss';
-import { Params, useLocation, useParams } from 'react-router-dom';
+import { Params, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Chip, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
-import React, { Fragment, useState } from 'react';
-import { IIngredient, IIngredientsWithQte, ItemBase, RecetteTags } from '@shared-interfaces/items';
+import React, { Fragment, useContext, useState } from 'react';
+import { ArticleList, ISnackbar, ItemBase, RecetteTags } from '@shared-interfaces/items';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
-
-interface IRecetteForm {
-  label: string;
-  url: string;
-  description: string;
-  ingredients: IIngredientsWithQte[];
-}
+import { configAxios } from '@shared/hooks/axios.config';
+import { SnackbarContext } from '@app/app';
+import { RefetchFunction } from 'axios-hooks';
 
 export const EditRecette = (): JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
@@ -23,12 +19,37 @@ export const EditRecette = (): JSX.Element => {
   const item: ItemBase = useLocation().state;
   const bgi = item?.url ?? defaultUrl;
 
+  const { setSnackValues } = useContext(SnackbarContext);
+  const navigation = useNavigate();
+
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, removeRecette] = configAxios({ url: 'recettes', method: 'DELETE', manual: true });
+  const [{ data }] = configAxios({ url: 'articles', method: 'GET', useCache: true });
+
+  const [{ loading }, saveData] = configAxios({
+    url: 'recettes',
+    method: isNewRecette ? 'POST' : 'PUT',
+    manual: true,
+    params: { id: item?.id },
+  });
+
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
   const handleDialogConfirmation = (open = false, remove?: boolean) => {
     setOpenDialogConfirmation(open);
     if (remove) {
-      // TODO Supprimer la recette
+      removeRecette()
+        .then(() => {
+          setSnackValues({
+            open: true,
+            message: '👽 Recette supprimé',
+            severity: 'success',
+          });
+          navigation('/recettes');
+        })
+        .catch(() => {
+          setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
+        });
     }
   };
   return (
@@ -42,6 +63,11 @@ export const EditRecette = (): JSX.Element => {
         isNewRecette={isNewRecette}
         handleRemove={(open, remove) => handleDialogConfirmation(open, remove)}
         item={item}
+        articlesData={data}
+        navigation={navigation}
+        setSnackValues={setSnackValues}
+        saveData={saveData}
+        loading={loading}
       />
     </div>
   );
@@ -58,22 +84,11 @@ const TSXForm = (props: any): JSX.Element => {
     openDialogConfirmation,
     isNewRecette,
     handleRemove,
+    articlesData,
+    loading,
   } = props;
   // @ts-ignore
   const recettesTags = Object.values(RecetteTags);
-
-  const listComplete: IIngredient[] = [
-    { label: 'Interstellar', id: 2014 },
-    { label: 'Shaun of the dead', id: 2004 },
-    { label: 'Hot Fuzz', id: 2007 },
-    { label: 'Le dernier pub avant la fin du monde', id: 2013 },
-    { label: 'Thunder Tropics', id: 2008 },
-    { label: 'Pulp Fiction', id: 1994 },
-    { label: 'Snatch', id: 2000 },
-    { label: 'Whiplash', id: 2014 },
-    { label: '2001: A Space Odyssey', id: 1968 },
-    { label: 'Inglourious Basterds', id: 2009 },
-  ];
 
   return (
     <form onSubmit={handleSubmit} autoComplete='off'>
@@ -139,51 +154,55 @@ const TSXForm = (props: any): JSX.Element => {
         )}
       />
 
-      <div className='ingredients'>
-        <FieldArray name='ingredients'>
+      <div className='articlesList'>
+        <FieldArray name='articlesList'>
           {({ remove, push }) => (
             <Fragment>
-              {(values.ingredients as IIngredientsWithQte[])?.map((p, index) => {
+              {(values.articlesList as ArticleList[])?.map((p, index) => {
                 return (
-                  <div key={index} className='ingredientForm'>
+                  <div key={index} className='articlesListForm'>
                     <TextField
                       select // because of outlined label does not display with <Select> tag ... bug
-                      label='Ingredient'
-                      className='ingredient'
-                      name={`ingredients[${index}].ingredient`}
-                      value={p?.ingredient?.label ?? ''}
-                      defaultValue={p?.ingredient?.label ?? ''}
+                      label='Article'
+                      className='article'
+                      name={`articlesList[${index}]`}
+                      value={p?.label ?? ''}
+                      defaultValue={p?.label ?? ''}
                       variant='outlined'
                       helperText={
-                        touched.ingredients && errors?.ingredients?.[index]?.ingredient
-                          ? errors?.ingredients[index]?.ingredient
-                          : ''
+                        touched.articlesList && errors?.articlesList?.[index] ? errors?.articlesList[index] : ''
                       }
-                      error={touched.ingredients && Boolean(errors?.ingredients?.[index]?.ingredient)}
+                      error={touched.articlesList && Boolean(errors?.articlesList?.[index])}
                     >
-                      {listComplete.map(ing => (
+                      {articlesData?.map((art: ItemBase) => (
                         <MenuItem
-                          key={`${ing.label}-${index}`}
-                          value={ing.label}
-                          onClick={() => setFieldValue(`ingredients[${index}].ingredient`, ing)}
+                          key={`${art.id}-${index}`}
+                          value={art.label}
+                          onClick={() =>
+                            setFieldValue(`articlesList[${index}]`, {
+                              id: art.id,
+                              label: art.label,
+                              quantity: values.articlesList[index]?.quantity ?? 1, // On peut dissocier l'ajout d'un article et de la quantité :)
+                            })
+                          }
                         >
-                          {ing.label}
+                          {art.label}
                         </MenuItem>
                       ))}
                     </TextField>
                     <TextField
                       label='Qte'
                       className='quantity'
-                      name={`ingredients[${index}].quantity`}
+                      name={`articlesList[${index}].quantity`}
                       value={p.quantity}
                       type='number'
                       variant='outlined'
                       helperText={
-                        touched.ingredients && errors?.ingredients?.[index]?.quantity
-                          ? errors?.ingredients[index]?.quantity
+                        touched.articlesList && errors?.articlesList?.[index]?.quantity
+                          ? errors?.articlesList[index]?.quantity
                           : ''
                       }
-                      error={touched.ingredients && Boolean(errors?.ingredients?.[index]?.quantity)}
+                      error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.quantity)}
                       onChange={handleChange}
                     />
                     <IconButton onClick={() => remove(index)} color='error'>
@@ -192,11 +211,11 @@ const TSXForm = (props: any): JSX.Element => {
                   </div>
                 );
               })}
-              <Button onClick={() => push({ quantity: 1 })} variant='outlined'>
+              <Button onClick={() => push({ quantity: '' })} variant='outlined'>
                 Ajouter
               </Button>
               <Typography color='error'>
-                {Boolean(errors.ingredients) && typeof errors.ingredients === 'string' ? errors.ingredients : ''}
+                {Boolean(errors.articlesList) && typeof errors.articlesList === 'string' ? errors.articlesList : ''}
               </Typography>
             </Fragment>
           )}
@@ -210,12 +229,13 @@ const TSXForm = (props: any): JSX.Element => {
             type='button'
             color='error'
             startIcon={<DeleteForeverRounded />}
+            disabled={loading}
             onClick={() => handleRemove(true)}
           >
             Supprimer
           </Button>
         )}
-        <Button variant='outlined' type='submit' color='primary' startIcon={<SaveAsRounded />}>
+        <Button variant='outlined' type='submit' color='primary' disabled={loading} startIcon={<SaveAsRounded />}>
           Enregistrer
         </Button>
       </div>
@@ -238,18 +258,17 @@ const RecetteForm = withFormik({
     isNewRecette: boolean;
     handleRemove: (open: boolean, remove?: boolean) => void;
     item: ItemBase;
+    articlesData: ItemBase[];
+    navigation: (to: string) => void;
+    setSnackValues: ({ open, message, severity }: ISnackbar) => void;
+    saveData: RefetchFunction<unknown, unknown>;
+    loading: boolean;
   }) => ({
     label: props.item?.label,
     url: props.item?.url,
     description: props.item?.description,
     tags: props.item?.tags,
-    // ingredients: [
-    //   { quantity: 5, ingredient: { label: 'Thunder Tropics', id: 2008 } },
-    //   { quantity: 9, ingredient: { label: 'Hot Fuzz', id: 2007 } },
-    //   { quantity: 7, ingredient: { label: '2001: A Space Odyssey', id: 1968 } },
-    //   { quantity: 9, ingredient: { label: 'Shaun of the dead', id: 2004 } },
-    // ],
-    ingredients: props.item?.articlesList,
+    articlesList: [], // TODO  props.item?.articlesList,
   }),
   validationSchema: yup.object().shape({
     label: yup
@@ -262,20 +281,38 @@ const RecetteForm = withFormik({
       .url("C'est pas une vrai URL ça")
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
-    description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').notRequired(),
-    ingredients: yup
+    description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').required('Encore un autographe svp 🖋️️'),
+
+    // TODO revoir validation here :)
+
+    articlesList: yup
       .array()
-      .of(
-        yup.object().shape({
-          ingredient: yup.object().required('Ne pas zapper !'),
-          quantity: yup.number().min(1, '0 ? Nope !'),
-        }),
-      )
+      // .of(
+      //   yup.object().shape({
+      //     ingredient: yup.object().required('Ne pas zapper !'),
+      //     quantity: yup.number().min(1, '0 ? Nope !'),
+      //   }),
+      // )
       .min(2, 'Une recette sans ingrédients... Voyons donc ! 🫠')
       .required('Au moins 2 ingrédients !'),
-    tags: yup.array().min(1, 'NAMEHO ! Mets-en au moins 1 quoi ! 🧌').required(),
+    tags: yup.array().min(1, 'NAMEHO ! Mets-en au moins 1 quoi ! 🧌').required('O-BLI-GA-TOIRE, OK ? 🤬'),
   }),
-  handleSubmit: (values, { setSubmitting }) => {
+  handleSubmit: (values, formikBag) => {
     console.log(values);
+    const { isNewRecette, navigation, setSnackValues, saveData } = formikBag.props;
+    saveData({
+      data: { ...values },
+    })
+      .then(() => {
+        setSnackValues({
+          open: true,
+          message: isNewRecette ? '🌞 Recette enregistrée' : '🌞 Recette modifiée',
+          severity: 'success',
+        });
+        navigation('/recettes');
+      })
+      .catch(() => {
+        setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
+      });
   },
 })(TSXForm);

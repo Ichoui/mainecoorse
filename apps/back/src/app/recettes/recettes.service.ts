@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ArticleTags, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
+import { RecettesCreateDto } from './recettes.dto';
 
 @Injectable()
 export class RecettesService {
-  getRecettes(): ItemBase[] {
+  async getRecettes(): Promise<ItemBase[]> {
     const recettes: ItemBase[] = [
       {
         id: 1,
@@ -130,11 +131,10 @@ export class RecettesService {
         articlesList: [],
       },
     ];
-
     return recettes;
   }
 
-  // getOneRecette() : ItemBase {
-  //
-  // }
+  async postRecette(id: number, recette: RecettesCreateDto): Promise<ItemBase> {
+    return null;
+  }
 }

@@ -104,7 +104,7 @@ const ArticleForm = (props: {
       .url('Gruge pas, on veut un lien pas long !')
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
-    description: yup.string().max(512, 'Trop long ton fichu texte ! 😡').notRequired(),
+    description: yup.string().max(512, 'Trop long ton fichu texte ! 😡').required('Un autographe svp 🖋️'),
     tags: yup.array().min(1, 'Tu voulais des tags, tu les mets ! 🧌').required(),
   });
 

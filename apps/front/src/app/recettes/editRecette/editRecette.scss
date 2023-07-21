@@ -1,14 +1,14 @@
 @import '@styles/shared';
 
-.ingredients {
+.articlesList {
   gap: 15px;
   display: flex;
   flex-direction: column;
   width: 80%;
-  .ingredientForm {
+  .articlesListForm {
     display: flex;
     gap: 10px;
-    .ingredient {
+    .article {
       width: 60%;
     }
     .quantity {

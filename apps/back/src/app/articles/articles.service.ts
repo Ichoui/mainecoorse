@@ -23,7 +23,7 @@ export class ArticlesService {
     return entity;
   }
 
-  async postArticles(articles: ArticlesCreateDto): Promise<ItemBase> {
+  async postArticle(articles: ArticlesCreateDto): Promise<ItemBase> {
     const entity = this._articlesEntityRepository.create({ ...articles, itemType: ItemType.ARTICLE });
     if (!entity) {
       throw new NotFoundException();
@@ -31,7 +31,7 @@ export class ArticlesService {
     return this._articlesEntityRepository.save(entity);
   }
 
-  async putArticles(id: number, articles: ArticlesUpdateDto): Promise<ItemBase> {
+  async putArticle(id: number, articles: ArticlesUpdateDto): Promise<ItemBase> {
     const entity = await this._articlesEntityRepository.findOneBy({ id });
     if (!entity) {
       throw new NotFoundException();
