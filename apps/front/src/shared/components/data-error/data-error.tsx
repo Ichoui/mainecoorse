@@ -1,4 +1,4 @@
-import Map404 from './map404.png'
+import Map404 from '/map404.png'
 import './data-error.scss';
 import Typography from '@mui/material/Typography';
 

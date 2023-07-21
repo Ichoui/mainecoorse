@@ -35,7 +35,7 @@ export class CoursesService {
         quantity: 7,
         description: 'Ma description',
         url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.BOISSON],
+        tags: [ArticleTags.BOISSONS],
       },
       {
         id: 8,

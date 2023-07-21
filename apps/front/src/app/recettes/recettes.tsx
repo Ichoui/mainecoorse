@@ -9,6 +9,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useAxios } from '@shared/hooks/useAxios.hook';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
+import MapleNoResults from '*.png';
 
 export const Recettes = (): JSX.Element => {
   // @ts-ignore
@@ -72,8 +73,11 @@ export const Recettes = (): JSX.Element => {
 
       <div className='listing'>
         {filteredRecettes?.map((recette, i) => (
-          <Item key={i} item={recette} />
+          <Item key={i} item={recette}  itemRemoved={() => null }/>
         ))}
+        {/*{filteredArticles?.length === 0 && !loading && !error && <div className='no-results'>*/}
+        {/*  <img src={MapleNoResults} alt='Aucun résultats' />*/}
+        {/*</div>}*/}
       </div>
 
       <Fab

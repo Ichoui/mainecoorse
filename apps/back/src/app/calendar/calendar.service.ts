@@ -11,7 +11,7 @@ export class CalendarService {
         itemType: ItemType.ARTICLE,
         description: 'Ma description',
         url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.BOISSON, ArticleTags.EPICERIE],
+        tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
       },
       {
         id: 3,
@@ -19,7 +19,7 @@ export class CalendarService {
         itemType: ItemType.ARTICLE,
         description: 'Ma description',
         url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.BOISSON, ArticleTags.EPICERIE],
+        tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
       },
       {
         id: 4,
@@ -27,7 +27,7 @@ export class CalendarService {
         itemType: ItemType.ARTICLE,
         description: 'Ma description',
         url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.BOISSON, ArticleTags.EPICERIE],
+        tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
       },
       {
         id: 5,
@@ -35,7 +35,7 @@ export class CalendarService {
         itemType: ItemType.ARTICLE,
         description: 'Ma description',
         url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.BOISSON, ArticleTags.EPICERIE],
+        tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
       },
       {
         id: 8,
@@ -43,7 +43,7 @@ export class CalendarService {
         itemType: ItemType.ARTICLE,
         description: 'Ma description',
         url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.BOISSON, ArticleTags.EPICERIE],
+        tags: [ArticleTags.BOISSONS, ArticleTags.EPICERIE],
       },
       {
         id: 2,

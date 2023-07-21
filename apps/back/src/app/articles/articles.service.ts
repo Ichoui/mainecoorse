@@ -14,6 +14,7 @@ export class ArticlesService {
       .createQueryBuilder('a')
       .select('*')
       .where('a.id is not null')
+      .orderBy({ id: 'ASC'})
       .getRawMany();
 
     if (!entity) {
@@ -31,16 +32,17 @@ export class ArticlesService {
   }
 
   async putArticles(id: number, articles: ArticlesUpdateDto): Promise<ItemBase> {
-    const entity = this._articlesEntityRepository.update({ id }, { ...articles });
+    const entity = await this._articlesEntityRepository.findOneBy({ id });
     if (!entity) {
       throw new NotFoundException();
     }
-    // return this._articlesEntityRepository.save(entity);
-    return null
+    await this._articlesEntityRepository.update({ id }, { ...articles });
+    return this._articlesEntityRepository.findOneBy({ id });
   }
 
  async removeArticle(id: number): Promise<void> {
-   const entity = await this._articlesEntityRepository.findOne({where: {id}});
+   console.log('removing!', id);
+   const entity = await this._articlesEntityRepository.findOneBy({id});
    await this._articlesEntityRepository.remove(entity);
  }
 }

@@ -52,7 +52,7 @@ export class RecettesService {
             label: 'Ingredient de type laitage B',
             quantity: 5,
             description: 'azerdftghjklm',
-            tags: [ArticleTags.LAITAGE],
+            tags: [ArticleTags.LAITAGES],
             url: 'https://img-3.journaldesfemmes.fr/C5EOtA1h6Kn6_Jthz_R1nZWVOac=/1500x/smart/d72f4f8d3c6a45699a979e56df4b2d53/ccmcms-jdf/10820734.jpg',
           },
         ],

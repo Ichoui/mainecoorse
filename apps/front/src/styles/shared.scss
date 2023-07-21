@@ -99,3 +99,14 @@ $large: 1400px;
   font-style: normal;
   font-display: swap;
 }
+
+//
+.no-results {
+  img {
+    width: 50%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    max-width: 300px;
+  }
+}
