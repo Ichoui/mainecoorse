@@ -6,22 +6,26 @@ import { AddRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { useAxios } from '@shared/hooks/useAxios.hook';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
-import MapleNoResults from '*.png';
+import MapleNoResults from '/maple-no-results.png';
+import { configAxios } from '@shared/hooks/axios.config';
 
 export const Recettes = (): JSX.Element => {
-  // @ts-ignore
-  const recettesTags = Object.values(RecetteTags);
-  const { data, error, loaded } = useAxios('recettes', 'GET');
+  const [{ data, error, loading }, refetchRecettes] = configAxios({
+    url: 'recettes',
+    method: 'GET',
+    autoCancel: false,
+  });
   const [recettes, setRecettes] = useState<ItemBase[]>([]);
   const [filteredRecettes, setFilteredRecettes] = useState<ItemBase[]>([]);
+  // @ts-ignore
+  const recettesTags = Object.values(RecetteTags);
 
   useEffect(() => {
     setRecettes(data);
     setFilteredRecettes(data);
-  }, [data, loaded, error]);
+  }, [data, loading, error]);
 
   const handleSearch = useDebouncedCallback(value => {
     const filter = recettes?.filter(f => f.label.toLowerCase().includes(value.toLowerCase()));
@@ -68,16 +72,18 @@ export const Recettes = (): JSX.Element => {
         />
       </div>
 
-      {!loaded && <Loader />}
+      {loading && <Loader />}
       {error && <DataError />}
 
       <div className='listing'>
         {filteredRecettes?.map((recette, i) => (
-          <Item key={i} item={recette}  itemRemoved={() => null }/>
+          <Item key={i} item={recette} itemRemoved={() => refetchRecettes()} />
         ))}
-        {/*{filteredArticles?.length === 0 && !loading && !error && <div className='no-results'>*/}
-        {/*  <img src={MapleNoResults} alt='Aucun résultats' />*/}
-        {/*</div>}*/}
+        {filteredRecettes?.length === 0 && !loading && !error && (
+          <div className='no-results'>
+            <img src={MapleNoResults} alt='Aucun résultats' />
+          </div>
+        )}
       </div>
 
       <Fab
