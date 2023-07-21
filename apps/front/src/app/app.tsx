@@ -1,5 +1,5 @@
-import React, { createContext, SyntheticEvent, useEffect, useState } from 'react';
-import { Alert, IconButton, Snackbar, Tab, Tabs, ThemeProvider } from '@mui/material';
+import React, { createContext, SyntheticEvent, useState } from 'react';
+import { IconButton, Tab, Tabs, ThemeProvider } from '@mui/material';
 import {
   CalendarMonthRounded,
   EditNoteRounded,
@@ -20,7 +20,7 @@ type SnackDefaultValue = {
 };
 export const SnackbarContext = createContext<SnackDefaultValue>({
   snackValues: { open: false },
-  setSnackValues: () => {},
+  setSnackValues: () => { /*Init*/},
 });
 
 export const App = (): JSX.Element => {

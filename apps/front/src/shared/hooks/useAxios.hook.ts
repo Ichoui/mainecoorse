@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import axios, { Method } from 'axios';
 
+// TODO - Supprimer plus tard !
 // https://blog.openreplay.com/integrating-axios-with-react-hooks/
 export const useAxios = (urlPath: string, method: Method, payload?: unknown) => {
   const [data, setData] = useState<any>(null);
@@ -52,7 +53,10 @@ export const useAxiosPost = () => {
     const postData = () => {
       axios
         .post('http://localhost:3945/api/mc/' + input.url, input.data)
-        .then(res => input.callback(res.data))
+        .then(res => {
+          // @ts-ignore
+          return input.callback(res.data);
+        })
         .catch(err => console.error(err));
     };
 

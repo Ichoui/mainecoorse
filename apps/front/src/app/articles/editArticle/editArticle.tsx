@@ -1,22 +1,23 @@
 import './editArticle.scss';
 import '@styles/forms.scss';
-import { Params, useNavigate, useParams } from 'react-router-dom';
+import { Params, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Chip, TextField } from '@mui/material';
 import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
 import React, { useContext, useState } from 'react';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
-import { ArticleTags, ISnackbar } from '@shared-interfaces/items';
+import { ArticleTags, ISnackbar, ItemBase } from '@shared-interfaces/items';
 import { configAxios } from '@shared/hooks/axios.config';
 import { RefetchFunction } from 'axios-hooks';
-import { SnackbarPortal } from '@components/snackbarPortal/snackbarPortal';
 import { SnackbarContext } from '@app/app';
 
 export const EditArticle = (): JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://img.cuisineaz.com/660x660/2013/12/20/i47006-raclette.jpeg';
   const isNewArticle = articleId === 'new';
+  const item: ItemBase = useLocation().state;
+  const bgi = item?.url ?? defaultUrl;
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
@@ -26,18 +27,17 @@ export const EditArticle = (): JSX.Element => {
       // TODO Supprimer l'article
     }
   };
-  // Snackbar values
-  // const [snackValues, setSnackValues] = useState<ISnackbar>({ open: false });
 
   return (
     <div className='editItem'>
       <div className='image'>
-        <span style={{ backgroundImage: 'url(' + defaultUrl + ')' }}></span>
+        <span style={{ backgroundImage: 'url(' + bgi + ')' }}></span>
       </div>
       <ArticleForm
         openDialogConfirmation={openDialogConfirmation}
         isNewArticle={isNewArticle}
         handleRemove={(open, remove) => handleDialogConfirmation(open, remove)}
+        item={item}
       />
     </div>
   );
@@ -45,26 +45,26 @@ export const EditArticle = (): JSX.Element => {
 
 const ArticleForm = (props: {
   openDialogConfirmation: boolean;
-  values?: any;
   isNewArticle: boolean;
   handleRemove: (open: boolean, remove?: boolean) => void;
+  item: ItemBase;
 }): JSX.Element => {
-  const { handleRemove, values, isNewArticle, openDialogConfirmation } = props;
-  const { snackValues, setSnackValues } = useContext(SnackbarContext);
+  const { handleRemove, isNewArticle, openDialogConfirmation, item } = props;
+  const { setSnackValues } = useContext(SnackbarContext);
 
-  // eslint-disable-next-line no-empty-pattern
   const [{ loading }, executePost] = configAxios({ url: 'articles', method: 'POST', manual: true });
 
   // @ts-ignore
   const articlesTags = Object.values(ArticleTags);
   const navigation = useNavigate();
 
-  const initialValues = {
-    label: '',
-    url: '',
-    description: '',
-    tags: [],
+  const initialValues: Partial<ItemBase> = {
+    label: item?.label,
+    url: item?.url,
+    description: item?.description,
+    tags: item?.tags,
   };
+
   const validationSchema = yup.object().shape({
     label: yup
       .string()
@@ -133,13 +133,13 @@ const ArticleForm = (props: {
         limitTags={2}
         options={articlesTags}
         filterSelectedOptions={true}
-        value={formik.values.tags}
-        renderTags={(tags: readonly ArticleTags[], getTagProps) => {
-          return tags.map((option: ArticleTags, index: number) => (
+        value={formik.values.tags as ArticleTags[]}
+        renderTags={(tags, getTagProps) => {
+          return tags.map((option, index) => (
             <Chip variant='outlined' label={option} {...getTagProps({ index })} />
           ));
         }}
-        onChange={(e: object, tags: ArticleTags[]) => formik.setFieldValue('tags', tags)}
+        onChange={(e, tags) => formik.setFieldValue('tags', tags)}
         renderInput={params => (
           <TextField
             {...params}

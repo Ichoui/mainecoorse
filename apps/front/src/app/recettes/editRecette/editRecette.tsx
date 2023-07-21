@@ -21,7 +21,8 @@ export const EditRecette = (): JSX.Element => {
   const defaultUrl = 'https://alsace-1bc06.kxcdn.com/img/ybc_blog/post/Choucroute_big.jpg';
   const isNewRecette = recetteId === 'new';
   const item: ItemBase = useLocation().state;
-  console.log(item);
+  const bgi = item?.url ?? defaultUrl;
+
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
   const handleDialogConfirmation = (open = false, remove?: boolean) => {
@@ -30,11 +31,10 @@ export const EditRecette = (): JSX.Element => {
       // TODO Supprimer la recette
     }
   };
-  const bgc = item?.url ?? defaultUrl;
   return (
     <div className='editItem'>
       <div className='image'>
-        <span style={{ backgroundImage: 'url(' + bgc + ')' }}></span>
+        <span style={{ backgroundImage: 'url(' + bgi + ')' }}></span>
       </div>
 
       <RecetteForm
