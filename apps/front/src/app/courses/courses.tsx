@@ -4,17 +4,17 @@ import { Button, FormGroup } from '@mui/material';
 import { Coches } from '@app/courses/coches/coches';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import React, { Fragment, useEffect, useState } from 'react';
-import { useAxios } from '@shared/hooks/useAxios.hook';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
+import { configAxios } from '@shared/hooks/axios.config';
 
 export const Courses = () => {
   const [itemsSortedByTags, setItemsSorted] = useState<(string | ArticleList[])[]>([]);
-  const { data, error, loaded } = useAxios('courses', 'GET');
+  const [{ data, error, loading }] = configAxios({ url: 'courses', method: 'GET', autoCancel: true });
 
   useEffect(() => {
     setItemsSorted(sortByTags(data));
-  }, [data, loaded, error]);
+  }, [data, loading, error]);
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
@@ -27,10 +27,10 @@ export const Courses = () => {
 
   return (
     <div className='Courses'>
-      {!loaded && <Loader />}
+      {loading && <Loader />}
       {error && <DataError />}
 
-      {loaded && !error && (
+      {!loading && !error && (
         <Fragment>
           <div className='btn-purge'>
             <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>

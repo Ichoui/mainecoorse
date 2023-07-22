@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ItemBase, ItemType, Tags } from '@shared-interfaces/items';
+import { DaysEntity } from '../calendar/days/days.entity';
 
 @Entity({
   name: 'articles',
@@ -28,4 +29,9 @@ export class ArticlesEntity extends BaseEntity implements ItemBase {
     array: true,
   })
   tags: string[] | Tags[]; // Tags[] | string[];
+
+
+  // Relations
+  @OneToMany(() => DaysEntity, days => days.articleId)
+  articleId: DaysEntity[];
 }

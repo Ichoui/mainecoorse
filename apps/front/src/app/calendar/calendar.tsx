@@ -1,5 +1,5 @@
 import './calendar.scss';
-import { ArticleTags, Days, ItemBase, ItemType, RecetteTags } from '@shared-interfaces/items';
+import { Days, ItemBase, ItemType } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import React, { useCallback, useEffect, useState } from 'react';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
@@ -7,22 +7,43 @@ import { DragDropContext, useKeyboardSensor, useMouseSensor } from '@hello-pange
 import update from 'immutability-helper';
 import useTouchSensor from './use-touch-sensor';
 import { BinZone } from '@app/calendar/drag-zone/bin-zone';
-import { useAxios } from '@shared/hooks/useAxios.hook';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
+import { configAxios } from '@shared/hooks/axios.config';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
   const [divers, setDivers] = useState<ItemBase[]>([]);
   const [days, setDays] = useState<Days[]>([]);
 
-  const reqItems = useAxios('calendar/items', 'GET');
-  const reqDays = useAxios('calendar/days', 'GET');
+  const [{ data: getItemsData, error: itemsError, loading: loadingItem }] = configAxios({
+    url: 'calendar/divers',
+    method: 'GET',
+    autoCancel: false,
+  });
+  const [{ data: getDaysData, error: daysError, loading: loadingError }] = configAxios({
+    url: 'calendar/days',
+    method: 'GET',
+    autoCancel: false,
+  });
+
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePutDivers] = configAxios({
+    url: 'calendar/divers',
+    method: 'PUT',
+    manual: true,
+  });
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePutDays] = configAxios({
+    url: 'calendar/days',
+    method: 'PUT',
+    manual: true,
+  });
 
   useEffect(() => {
-    setDivers(reqItems.data);
-    setDays(reqDays.data);
-  }, [reqItems, reqDays]);
+    setDivers(getItemsData);
+    setDays(getDaysData);
+  }, [getItemsData, getDaysData, itemsError, daysError, loadingError, loadingItem]);
 
   // Dialog inspect item
   const [openDialogInspectItem, setOpenDialogInspectItem] = useState(false);
@@ -56,6 +77,7 @@ export const Calendar = () => {
             [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
           }),
         );
+
       } else if (destination.droppableId === 'bin') {
         // Supprimer un item depuis divers
         if (source.droppableId === 'divers') {
@@ -106,10 +128,10 @@ export const Calendar = () => {
 
   return (
     <div className='Calendar'>
-      {!reqItems.loaded && !reqDays.loaded && <Loader />}
-      {(reqItems.error || reqDays.error) && <DataError />}
+      {loadingItem && loadingError && <Loader />}
+      {(itemsError || daysError) && <DataError />}
 
-      {reqItems.loaded && reqDays.loaded && (!reqItems.error || !reqDays.error) && (
+      {!loadingError && !loadingItem && (!itemsError || !daysError) && (
         <DragDropContext
           onBeforeCapture={handleOnBeforeCapture}
           onDragStart={handleOnDragStart}

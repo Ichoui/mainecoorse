@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleList, ItemBase, ItemType, Tags } from '@shared-interfaces/items';
-import { ArticlesEntity } from '../articles/articles.entity';
+import { DaysEntity } from '../calendar/days/days.entity';
 
 @Entity({
   name: 'recettes',
@@ -30,7 +30,9 @@ export class RecettesEntity extends BaseEntity implements ItemBase {
   })
   tags: string[] | Tags[]; // Tags[] | string[];
 
-  // @OneToMany(() => ArticlesEntity, art => art.id)
   @Column('jsonb')
   articlesList: ArticleList[];
+
+  @OneToMany(() => DaysEntity, days => days.recette)
+  recetteId: DaysEntity[];
 }

@@ -26,18 +26,14 @@ export interface Days {
   label: string;
   id: number;
   slug: string;
-  items: ItemBase[] | never[];
+  items?: ItemBase[] | never[];
+  articleId?: number;
+  recetteId?: number;
 }
 
-export interface IIngredientsWithQte {
-  ingredient: IIngredient;
-  quantity?: number;
-}
+/*export interface CalendarItems {
 
-export interface IIngredient {
-  label: string;
-  id: number;
-}
+}*/
 
 // https://stackoverflow.com/questions/48478361/how-to-merge-two-enums-in-typescript
 export type Tags = ArticleTags | RecetteTags;

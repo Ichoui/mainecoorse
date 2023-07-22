@@ -1,23 +1,32 @@
-import { Controller, Get, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Put, UseInterceptors } from '@nestjs/common';
 
-import { CalendarService } from './calendar.service';
+import { DiversService } from './items/divers.service';
 import { Days, ItemBase } from '@shared-interfaces/items';
 import { ReqInterceptor } from '../../shared/interceptor.service';
+import { DaysService } from './days/days.service';
 
 @UseInterceptors(ReqInterceptor)
 @Controller('calendar')
 export class CalendarController {
-  constructor(private readonly _calendarService: CalendarService) {}
+  constructor(private readonly _diversService: DiversService, private _daysService: DaysService) {}
 
-  @Get('items')
-  getCalendarItems(): ItemBase[] {
-    return this._calendarService.getCalendarItems();
+  @Get('divers')
+  getCalendarItems(): Promise<ItemBase[]> {
+    return this._diversService.getCalendarDiversItems();
+  }
+
+  @Put('divers')
+  putCalendarItems(): ItemBase[] {
+    return this._diversService.putCalendarDiversItems();
   }
 
   @Get('days')
   getCalendarDays(): Days[] {
-    return this._calendarService.getCalendarDays()
+    return this._daysService.getCalendarDays();
   }
 
-
+  @Put('days')
+  putCalendarDays(): Days[] {
+    return this._daysService.putCalendarDays();
+  }
 }
