@@ -12,4 +12,24 @@
   .MuiFormControl-root {
     width: 100%;
   }
+
+  .map-btn {
+    width: 50px;
+    position: fixed;
+    bottom: 85px;
+    right: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+  }
+  .maple404test {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+    width: 100%;
+    }
+  }
 }

@@ -1,10 +1,14 @@
 import './notes.scss';
-import { TextField } from '@mui/material';
+import { Fab, IconButton, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
+import Map404 from '/map404.png';
+import Maple from '/maple.png';
+import { Link } from 'react-router-dom';
+import { AddRounded } from '@mui/icons-material';
 
 export const Notes = (): JSX.Element => {
   const [{ data: getData, loading: getLoading, error: getError }] = configAxios({
@@ -17,6 +21,7 @@ export const Notes = (): JSX.Element => {
   const [{}, executePost] = configAxios({ url: 'notes', method: 'POST', manual: true });
 
   const [value, setValue] = useState<string | undefined>(undefined);
+  const [mapCoon, setMapCoon] = useState<boolean>(false);
 
   const handleChange = useDebouncedCallback(notes => {
     setValue(notes);
@@ -40,6 +45,16 @@ export const Notes = (): JSX.Element => {
           minRows={5}
           multiline
         ></TextField>
+      )}
+
+      <IconButton aria-label='map-btn' className='map-btn' onClick={() => setMapCoon(!mapCoon)}>
+        <img src={Maple} alt='map' />
+      </IconButton>
+
+      {mapCoon && (
+        <div className='maple404test'>
+          <img src={Map404} alt='TestMaple404' />
+        </div>
       )}
     </div>
   );
