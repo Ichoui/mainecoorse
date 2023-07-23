@@ -71,20 +71,28 @@ export class DiversService {
       },
     ];
 
-    const query = this._diversEntityRepository
-      .createQueryBuilder('a')
-      .select('*')
-      .where('a.id is not null')
-      // .leftJoinAndSelect('a.articleId', 'articles') //
-      .orderBy({ id: 'ASC' })
+    const queryRecette: ItemBase[] = await this._diversEntityRepository
+      .createQueryBuilder('divers')
+      .select(
+        'recette.articlesList, recette.id, recette.label, recette.description, recette.url, recette.tags, recette.itemType',
+      )
+      .leftJoin('divers.recetteId', 'recette')
+      .where('divers.recetteId is not null')
       .getRawMany();
 
-    console.log(query);
+    const queryArticle: ItemBase[] = await this._diversEntityRepository
+      .createQueryBuilder('divers')
+      .select('article.id, article.label, article.description, article.url, article.tags, article.itemType')
+      .leftJoin('divers.articleId', 'article')
+      .where('divers.articleId is not null')
+      .getRawMany();
 
-    return calendarItems;
+    console.log(queryRecette.concat(queryArticle).sort((a, b) => a.id - b.id));
+
+    return queryRecette.concat(queryArticle);
   }
 
-  putCalendarDiversItems() {
+  putCalendarDiversItems(): any[] {
     return [];
   }
 }
