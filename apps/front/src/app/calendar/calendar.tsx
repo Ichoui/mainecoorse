@@ -1,5 +1,5 @@
 import './calendar.scss';
-import { Days, ItemBase, ItemType } from '@shared-interfaces/items';
+import { Days, ItemBase, ItemType, translateDays } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
 import React, { useCallback, useEffect, useState } from 'react';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
@@ -67,6 +67,7 @@ export const Calendar = () => {
       if (destination.droppableId === 'divers') {
         const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
         // Vers divers
+        console.log(item);
         setDivers(
           update(divers, {
             $push: [item],
@@ -77,7 +78,6 @@ export const Calendar = () => {
             [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
           }),
         );
-
       } else if (destination.droppableId === 'bin') {
         // Supprimer un item depuis divers
         if (source.droppableId === 'divers') {
@@ -112,6 +112,7 @@ export const Calendar = () => {
           );
         }
       }
+      console.log(days);
     },
     [days, divers],
   );
@@ -150,7 +151,7 @@ export const Calendar = () => {
           <hr className='separator-divers-day' />
           {days?.map(day => (
             <div key={day.slug} className='day'>
-              <h3>{day.label}</h3>
+              <h3>{translateDays(day.slug)}</h3>
               <DragZone
                 key={Math.random()}
                 items={day.items}

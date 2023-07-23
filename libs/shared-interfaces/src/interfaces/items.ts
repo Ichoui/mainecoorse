@@ -23,12 +23,14 @@ export interface ArticleList {
 }
 
 export interface Days {
-  label: string;
+  slug: EDays;
+  items: ItemBase[];
+}
+
+export interface ItemsDays {
   id: number;
   slug: string;
-  items?: ItemBase[] | never[];
-  articleId?: number;
-  recetteId?: number;
+  item: ItemBase;
 }
 
 /*export interface CalendarItems {
@@ -77,3 +79,34 @@ export interface ISnackbar {
   message?: string;
   severity?: 'success' | 'warning' | 'error' | 'info';
 }
+
+export enum EDays {
+  MONDAY = 'monday',
+  TUESDAY = 'tuesday',
+  WEDNESDAY = 'wednesday',
+  THURSDAY = 'thursday',
+  FRIDAY = 'friday',
+  SATURDAY = 'saturday',
+  SUNDAY = 'sunday',
+}
+
+export const translateDays = (day: EDays): string => {
+  switch (day) {
+    case EDays.MONDAY:
+      return 'Lundi';
+    case EDays.TUESDAY:
+      return 'Mardi';
+    case EDays.WEDNESDAY:
+      return 'Mercredi';
+    case EDays.THURSDAY:
+      return 'Jeudi';
+    case EDays.FRIDAY:
+      return 'Vendredi';
+    case EDays.SATURDAY:
+      return 'Samedi';
+    case EDays.SUNDAY:
+      return 'Dimanche';
+    default:
+      return 'Un jour buggé !';
+  }
+};

@@ -1,33 +1,25 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticlesEntity } from '../../articles/articles.entity';
 import { RecettesEntity } from '../../recettes/recettes.entity';
-import { Days } from '@shared-interfaces/items';
+import { EDays } from '@shared-interfaces/items';
 
 @Entity({
   name: 'days',
 })
-export class DaysEntity extends BaseEntity implements Days {
+export class DaysEntity extends BaseEntity {
   @PrimaryGeneratedColumn('rowid')
   id: number;
 
-  @Column()
-  label: string;
+  @Column({ type: 'enum', enum: EDays, nullable: false, default: undefined })
+  slug: EDays;
 
-  @Column()
-  slug: string;
-
-  @Column()
+  @Column({ nullable: true })
+  @ManyToOne(() => ArticlesEntity, article => article.diversArticleId, { nullable: true })
+  @JoinColumn({ name: 'articleId' })
   articleId: number;
 
-  @Column()
-  recetteId: number;
-
-  // Relations
-  @ManyToOne(() => ArticlesEntity, article => article.articleId)
-  @JoinColumn({ name: 'articleId' })
-  article: ArticlesEntity[];
-
-  @ManyToOne(() => RecettesEntity, recette => recette.recetteId)
+  @Column({ nullable: true })
+  @ManyToOne(() => RecettesEntity, recette => recette.daysRecetteId, { nullable: true })
   @JoinColumn({ name: 'recetteId' })
-  recette: RecettesEntity[];
+  recetteId: number;
 }
