@@ -118,10 +118,7 @@ export class DaysService {
       .getRawMany();
 
     const itemsRequested: ItemBaseWithSlug[] = queryRecette.concat(queryArticle).sort((a, b) => a.id - b.id);
-
     SkeletonDays.forEach(day => (day.items = itemsRequested.filter(item => item.slug === day.slug)));
-    console.log('here', SkeletonDays);
-    // return queryRecette.concat(queryArticle).sort((a, b) => a.id - b.id);
     return SkeletonDays
   }
 

@@ -29,10 +29,14 @@ export class DiversService {
   }
 
   async putCalendarDiversItem(): Promise<any[]> {
+    // const entity = this._diversEntityRepository.create({});
+    // if (!entity) {
+    //   throw new NotFoundException();
+    // }
+    //
+    // return this._diversEntityRepository.save(entity);
     return [];
   }
 
-  async deleteCalendarDiversItem(): Promise<void> {
-
-  }
+  async deleteCalendarDiversItem(): Promise<void> {}
 }

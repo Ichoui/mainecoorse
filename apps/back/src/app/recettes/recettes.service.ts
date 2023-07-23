@@ -23,7 +23,6 @@ export class RecettesService {
   }
 
   async postRecette(recette: RecettesCreateDto): Promise<ItemBase> {
-    console.log(recette);
     const entity = this._recettesEntityRepository.create({ ...recette, itemType: ItemType.RECETTE });
     if (!entity) {
       throw new NotFoundException();
@@ -33,7 +32,6 @@ export class RecettesService {
   }
 
   async putRecette(id: number, recette: RecettesUpdateDto): Promise<ItemBase> {
-    console.log(recette);
     const entity = await this._recettesEntityRepository.findOneBy({ id });
     if (!entity) {
       throw new NotFoundException();
@@ -43,7 +41,6 @@ export class RecettesService {
   }
 
   async removeRecette(id: number): Promise<void> {
-    console.log('removing!', id);
     const entity = await this._recettesEntityRepository.findOneBy({ id });
     await this._recettesEntityRepository.remove(entity);
   }

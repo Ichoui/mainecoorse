@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Put, UseInterceptors } from '@nestjs/common';
 
 import { DiversService } from './items/divers.service';
 import { Days, ItemBase } from '@shared-interfaces/items';
@@ -18,6 +18,7 @@ export class CalendarController {
 
   @Put('divers')
   putCalendarItems(): Promise<ItemBase[]> {
+    // BOdy :)
     return this._diversService.putCalendarDiversItem();
   }
 
