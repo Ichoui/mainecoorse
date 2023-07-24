@@ -40,7 +40,12 @@ export const DialogAddCalendar = (props: {
     onClose();
   };
 
-  const [{ loading: putLoading }, putData] = configAxios({ manual: true, method: 'PUT', url: '' });
+  const [{ loading: putLoading }, putData] = configAxios({
+    manual: true,
+    method: 'PUT',
+    url: 'calendar',
+    autoCancel: false,
+  });
 
   const handleCheckboxes = (checked: boolean, val: 'calendar' | 'courses') => {
     if (val === 'calendar') {
@@ -54,12 +59,12 @@ export const DialogAddCalendar = (props: {
   const handleOk = () => {
     console.log(item);
     if (calendarCheck) {
-      // Envoyer vers courses l'item updaté (ou non)
       putData({
         data: { itemId: item.id, type: isArticle ? ItemType.ARTICLE : ItemType.RECETTE },
         url: axiosUrl('calendar/divers'),
-      });
+      }).then(() => onClose());
     }
+    // TODO concatener les onClose là avec une PromiseAll
 
     if (coursesCheck) {
       const updatedItem = { ...item, articlesList: formik.values.articles };
@@ -70,8 +75,6 @@ export const DialogAddCalendar = (props: {
         url: axiosUrl('courses'),
       });
     }
-
-    onClose();
   };
 
   return (
@@ -81,25 +84,6 @@ export const DialogAddCalendar = (props: {
         <div className='dialog-content'>
           <div className='multiple'>
             <span>Ajouter combien de fois&nbsp;{isArticle ? "l'article" : 'la recette'}&nbsp;?</span>
-            {/*           <TextField
-                  label='Nb'
-                  size='small'
-                  name='multiple'
-                  value={formik.values.multiple}
-                  error={Boolean(formik.errors.multiple)}
-                  type='number'
-                  variant='outlined'
-                  onChange={event => {
-                    formik.handleChange(event);
-                    formik.values.articles?.map((a, i) =>
-                        formik.setFieldValue(`articles[${i}]`, {
-                          ...a,
-                          quantity: item.articlesList![i].quantity * Number(event.target.value), // use item because it's base value
-                        }),
-                    );
-                  }}
-              />*/}
-
             <ManageQuantity
               itemQuantity={formik.values.multiple}
               onChange={quantity => {
@@ -173,7 +157,7 @@ export const DialogAddCalendar = (props: {
           onClick={() => formik.handleSubmit()}
           variant='outlined'
           color='secondary'
-          disabled={Boolean(formik.errors.multiple) || (!coursesCheck && !calendarCheck)}
+          disabled={Boolean(formik.errors.multiple) || (!coursesCheck && !calendarCheck) || putLoading}
         >
           Valider
         </Button>

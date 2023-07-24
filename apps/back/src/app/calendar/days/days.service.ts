@@ -34,9 +34,18 @@ export class DaysService {
     return SkeletonDays;
   }
 
-  async putCalendarDay(days: DaysDto): Promise<ItemBase> {
-    return null;
+  async putCalendarDay(days: DaysDto): Promise<void> {
+    // const diversType = divers.type === ItemType.RECETTE ? { recetteId: divers.itemId } : { articleId: divers.itemId };
+    // const entity = this._diversEntityRepository.create({ ...diversType });
+    // if (!entity) {
+    //   throw new NotFoundException();
+    // }
+    // console.log(entity);
+    // await this._diversEntityRepository.save(entity);
   }
 
-  async deleteCalendarDay(id: number): Promise<void> {}
+  async deleteCalendarDay(id: number): Promise<void> {
+    const entity = await this._daysEntityRepository.findOneBy({ id });
+    await this._daysEntityRepository.remove(entity);
+  }
 }

@@ -26,7 +26,6 @@ export class CalendarController {
 
   @Delete('divers')
   deleteCalendarItems(@Query('id') id: number): Promise<void> {
-    console.log('putain', id);
     return this._diversService.deleteCalendarDiversItem(id);
   }
 
@@ -37,7 +36,7 @@ export class CalendarController {
   }
 
   @Put('days')
-  putCalendarDays(@Body() days: DaysDto): Promise<ItemBase> {
+  putCalendarDays(@Body() days: DaysDto): Promise<void> {
     return this._daysService.putCalendarDay(days);
   }
 

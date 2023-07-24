@@ -35,6 +35,7 @@ export class DiversService {
     if (!entity) {
       throw new NotFoundException();
     }
+    console.log(entity);
     await this._diversEntityRepository.save(entity);
   }
 
