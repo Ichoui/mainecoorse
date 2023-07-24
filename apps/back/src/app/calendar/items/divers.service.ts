@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { ItemBase } from '@shared-interfaces/items';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ItemBase, ItemType } from '@shared-interfaces/items';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DiversEntity } from './divers.entity';
 import { Repository } from 'typeorm';
+import { DiversDto } from './divers.dto';
 
 @Injectable()
 export class DiversService {
@@ -12,7 +13,7 @@ export class DiversService {
     const queryRecette: ItemBase[] = await this._diversEntityRepository
       .createQueryBuilder('divers')
       .select(
-        'recette.articlesList, recette.id, recette.label, recette.description, recette.url, recette.tags, recette.itemType',
+        'recette.articlesList, recette.id, recette.label, recette.description, recette.url, recette.tags, recette.itemType, divers.id as "tableIdentifier"',
       )
       .leftJoin('divers.recetteId', 'recette')
       .where('divers.recetteId is not null')
@@ -20,7 +21,7 @@ export class DiversService {
 
     const queryArticle: ItemBase[] = await this._diversEntityRepository
       .createQueryBuilder('divers')
-      .select('article.id, article.label, article.description, article.url, article.tags, article.itemType')
+      .select('article.id, article.label, article.description, article.url, article.tags, article.itemType, divers.id as "tableIdentifier"')
       .leftJoin('divers.articleId', 'article')
       .where('divers.articleId is not null')
       .getRawMany();
@@ -28,15 +29,17 @@ export class DiversService {
     return queryRecette.concat(queryArticle);
   }
 
-  async putCalendarDiversItem(): Promise<any[]> {
-    // const entity = this._diversEntityRepository.create({});
-    // if (!entity) {
-    //   throw new NotFoundException();
-    // }
-    //
-    // return this._diversEntityRepository.save(entity);
-    return [];
+  async putCalendarDiversItem(divers: DiversDto): Promise<void> {
+    const diversType = divers.type === ItemType.RECETTE ? { recetteId: divers.itemId } : { articleId: divers.itemId };
+    const entity = this._diversEntityRepository.create({ ...diversType });
+    if (!entity) {
+      throw new NotFoundException();
+    }
+    await this._diversEntityRepository.save(entity);
   }
 
-  async deleteCalendarDiversItem(): Promise<void> {}
+  async deleteCalendarDiversItem(id: number): Promise<void> {
+    const entity = await this._diversEntityRepository.findOneBy({ id });
+    await this._diversEntityRepository.remove(entity);
+  }
 }

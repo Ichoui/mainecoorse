@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Put, Query, UseInterceptors } from '@nestjs/common';
 
 import { DiversService } from './items/divers.service';
 import { Days, ItemBase } from '@shared-interfaces/items';
 import { ReqInterceptor } from '../../shared/interceptor.service';
 import { DaysService } from './days/days.service';
+import { DiversDto } from './items/divers.dto';
+import { DaysDto } from './days/days.dto';
 
 @UseInterceptors(ReqInterceptor)
 @Controller('calendar')
@@ -17,14 +19,15 @@ export class CalendarController {
   }
 
   @Put('divers')
-  putCalendarItems(): Promise<ItemBase[]> {
-    // BOdy :)
-    return this._diversService.putCalendarDiversItem();
+  putCalendarItems(@Body() divers: DiversDto): Promise<void> {
+    console.log(divers);
+    return this._diversService.putCalendarDiversItem(divers);
   }
 
   @Delete('divers')
-  deleteCalendarItems(): Promise<void> {
-    return this._diversService.deleteCalendarDiversItem();
+  deleteCalendarItems(@Query('id') id: number): Promise<void> {
+    console.log('putain', id);
+    return this._diversService.deleteCalendarDiversItem(id);
   }
 
   // DAYS CONTROLLER
@@ -34,12 +37,12 @@ export class CalendarController {
   }
 
   @Put('days')
-  putCalendarDays(): Promise<ItemBase> {
-    return this._daysService.putCalendarDay();
+  putCalendarDays(@Body() days: DaysDto): Promise<ItemBase> {
+    return this._daysService.putCalendarDay(days);
   }
 
   @Delete('days')
-  deleteCalendarDays(): Promise<void> {
-    return this._daysService.deleteCalendarDay();
+  deleteCalendarDays(@Query('id') id: number): Promise<void> {
+    return this._daysService.deleteCalendarDay(id);
   }
 }

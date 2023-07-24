@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleList, ItemBase, ItemType, Tags } from '@shared-interfaces/items';
 import { DaysEntity } from '../calendar/days/days.entity';
 import { DiversEntity } from '../calendar/items/divers.entity';
@@ -7,7 +7,7 @@ import { DiversEntity } from '../calendar/items/divers.entity';
   name: 'recettes',
 })
 export class RecettesEntity extends BaseEntity implements ItemBase {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()

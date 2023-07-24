@@ -16,7 +16,9 @@
   overflow-x: hidden;
 
   .divers {
-    height: 6em;
+    height: fit-content;
+    min-height: 6em;
+    padding: 5px 0;
     .chips {
       height: 100%;
     }
@@ -34,7 +36,6 @@
       text-align: center;
       margin: 10px;
       text-transform: uppercase;
-      color: $white;
       color: $primary;
     }
   }

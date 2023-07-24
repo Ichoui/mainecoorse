@@ -15,7 +15,7 @@ import '../dialog.scss';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { ManageQuantity } from '@components/manage-quantity/manage-quantity';
-import { configAxios } from '@shared/hooks/axios.config';
+import { axiosUrl, configAxios } from '@shared/hooks/axios.config';
 
 export const DialogAddCalendar = (props: {
   open: boolean;
@@ -40,7 +40,7 @@ export const DialogAddCalendar = (props: {
     onClose();
   };
 
-  const [{ loading: putLoading }, putData] = configAxios({ manual: true, method: 'PUT', url: 'calendar' });
+  const [{ loading: putLoading }, putData] = configAxios({ manual: true, method: 'PUT', url: '' });
 
   const handleCheckboxes = (checked: boolean, val: 'calendar' | 'courses') => {
     if (val === 'calendar') {
@@ -55,13 +55,20 @@ export const DialogAddCalendar = (props: {
     console.log(item);
     if (calendarCheck) {
       // Envoyer vers courses l'item updaté (ou non)
-      putData({ data: { id: item.id, type: isArticle ? ItemType.ARTICLE : ItemType.RECETTE }, url: 'calendar/divers' });
+      putData({
+        data: { itemId: item.id, type: isArticle ? ItemType.ARTICLE : ItemType.RECETTE },
+        url: axiosUrl('calendar/divers'),
+      });
     }
 
     if (coursesCheck) {
       const updatedItem = { ...item, articlesList: formik.values.articles };
+      console.log(updatedItem);
       // Envoyer vers courses l'item + sa quantité
-      putData({ data: { id: item.id, type: isArticle ? ItemType.ARTICLE : ItemType.RECETTE }, url: 'calendar/days' });
+      putData({
+        data: {},
+        url: axiosUrl('courses'),
+      });
     }
 
     onClose();

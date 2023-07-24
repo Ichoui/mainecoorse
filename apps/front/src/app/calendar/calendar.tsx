@@ -9,7 +9,7 @@ import useTouchSensor from './use-touch-sensor';
 import { BinZone } from '@app/calendar/drag-zone/bin-zone';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
-import { configAxios } from '@shared/hooks/axios.config';
+import { axiosUrl, configAxios } from '@shared/hooks/axios.config';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -29,14 +29,15 @@ export const Calendar = () => {
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, executePutDivers] = configAxios({
-    url: 'calendar/divers',
+    url: '',
     method: 'PUT',
     manual: true,
   });
+
   // eslint-disable-next-line no-empty-pattern
-  const [{}, executePutDays] = configAxios({
-    url: 'calendar/days',
-    method: 'PUT',
+  const [{}, executeRemove] = configAxios({
+    url: '',
+    method: 'DELETE',
     manual: true,
   });
 
@@ -66,8 +67,9 @@ export const Calendar = () => {
 
       if (destination.droppableId === 'divers') {
         const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
-        // Vers divers
-        console.log(item);
+        /////////////////
+        // Vers DIVERS
+        /////////////////
         setDivers(
           update(divers, {
             $push: [item],
@@ -79,19 +81,30 @@ export const Calendar = () => {
           }),
         );
       } else if (destination.droppableId === 'bin') {
-        // Supprimer un item depuis divers
+        /////////////////
+        // Supprimer ITEM depuis DIVERS
+        /////////////////
         if (source.droppableId === 'divers') {
+          const item = divers[e.source.index];
           setDivers(update(divers, { $splice: [[source.index, 1]] }));
+          console.log(item);
+          executeRemove({ params: { id: item?.tableIdentifier }, url: axiosUrl('calendar/divers') });
         } else {
-          // Supprimer un item depuis un jour
+          /////////////////
+          // Supprimer ITEM depuis JOUR
+          /////////////////
+          const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
           setDays(
             update(days, {
               [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
             }),
           );
+          executeRemove({ params: { id: item?.id }, url: axiosUrl('calendar/days') });
         }
       } else {
-        // Depuis divers vers un jour
+        /////////////////
+        // Depuis DIVERS vers JOUR
+        /////////////////
         if (source.droppableId === 'divers') {
           const item = divers[e.source.index];
           setDays(
@@ -102,7 +115,9 @@ export const Calendar = () => {
 
           setDivers(update(divers, { $splice: [[source.index, 1]] }));
         } else {
-          // Depuis un jour vers un jour
+          /////////////////
+          // Depuis JOUR vers JOUR
+          /////////////////
           const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
           setDays(
             update(days, {
@@ -179,4 +194,16 @@ export const Calendar = () => {
       )}
     </div>
   );
+};
+
+const updateDaysOrDivers = (type: 'divers' | 'days') => {
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePutDivers] = configAxios({
+    url: `calendar/${type}`,
+    method: 'PUT',
+    manual: true,
+  });
+  executePutDivers({
+    data: {},
+  });
 };

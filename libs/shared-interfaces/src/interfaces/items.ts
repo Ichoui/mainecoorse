@@ -4,13 +4,15 @@ export enum ItemType {
 }
 
 export interface ItemBase {
-  id: number;
+  id: number; // article or recette id
   itemType: ItemType;
   description: string;
   url: string;
   label: string;
   tags: Tags[] | string[];
   articlesList?: ArticleList[];
+
+  tableIdentifier?: number; // calendar Items, from days or divers table
 }
 
 export interface ArticleList {
