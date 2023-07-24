@@ -14,7 +14,7 @@ export class DaysEntity extends BaseEntity {
   slug: EDays;
 
   @Column({ nullable: true })
-  @ManyToOne(() => ArticlesEntity, article => article.diversArticleId, { nullable: true })
+  @ManyToOne(() => ArticlesEntity, article => article.daysArticleId, { nullable: true })
   @JoinColumn({ name: 'articleId' })
   articleId: number;
 

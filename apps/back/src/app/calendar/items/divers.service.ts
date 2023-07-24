@@ -41,6 +41,9 @@ export class DiversService {
 
   async deleteCalendarDiversItem(id: number): Promise<void> {
     const entity = await this._diversEntityRepository.findOneBy({ id });
+    if (!entity) {
+      throw new NotFoundException();
+    }
     await this._diversEntityRepository.remove(entity);
   }
 }

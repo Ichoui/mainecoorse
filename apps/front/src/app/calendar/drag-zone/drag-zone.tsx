@@ -32,7 +32,7 @@ export const DragZone = (props: {
           <div className={`${snapshot.isDraggingOver ? 'active' : ''}`}>
             {items?.map((item, index) => (
               <DraggedChips
-                key={identifier + '-' + index} // TODO ID from API à rajouter !
+                key={identifier + '-' + index}
                 item={item}
                 identifier={identifier + '-' + index}
                 index={index}

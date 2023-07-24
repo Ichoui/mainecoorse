@@ -10,6 +10,7 @@ import { BinZone } from '@app/calendar/drag-zone/bin-zone';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { axiosUrl, configAxios } from '@shared/hooks/axios.config';
+import { RefetchFunction } from 'axios-hooks';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
@@ -28,7 +29,7 @@ export const Calendar = () => {
   });
 
   // eslint-disable-next-line no-empty-pattern
-  const [{}, executePutDivers] = configAxios({
+  const [{}, executePut] = configAxios({
     url: '',
     method: 'PUT',
     manual: true,
@@ -80,15 +81,16 @@ export const Calendar = () => {
             [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
           }),
         );
+        updateDaysAndDivers('days', 'divers', item, destination.droppableId, executePut, executeRemove);
       } else if (destination.droppableId === 'bin') {
+        console.log('effe');
         /////////////////
         // Supprimer ITEM depuis DIVERS
         /////////////////
         if (source.droppableId === 'divers') {
           const item = divers[e.source.index];
           setDivers(update(divers, { $splice: [[source.index, 1]] }));
-          console.log(item);
-          executeRemove({ params: { id: item?.tableIdentifier }, url: axiosUrl('calendar/divers') });
+          executeRemove({ params: { id: item.tableIdentifier }, url: axiosUrl('calendar/divers') });
         } else {
           /////////////////
           // Supprimer ITEM depuis JOUR
@@ -99,7 +101,7 @@ export const Calendar = () => {
               [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
             }),
           );
-          executeRemove({ params: { id: item?.id }, url: axiosUrl('calendar/days') });
+          executeRemove({ params: { id: item.tableIdentifier }, url: axiosUrl('calendar/days') });
         }
       } else {
         /////////////////
@@ -114,6 +116,10 @@ export const Calendar = () => {
           );
 
           setDivers(update(divers, { $splice: [[source.index, 1]] }));
+
+          updateDaysAndDivers('divers', 'days', item, destination.droppableId, executePut, executeRemove);
+
+          console.log(item);
         } else {
           /////////////////
           // Depuis JOUR vers JOUR
@@ -125,6 +131,7 @@ export const Calendar = () => {
               [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } }, // add
             }),
           );
+          updateDaysAndDivers('days', 'days', item, destination.droppableId, executePut, executeRemove);
         }
       }
       console.log(days);
@@ -196,14 +203,27 @@ export const Calendar = () => {
   );
 };
 
-const updateDaysOrDivers = (type: 'divers' | 'days') => {
-  // eslint-disable-next-line no-empty-pattern
-  const [{}, executePutDivers] = configAxios({
-    url: `calendar/${type}`,
-    method: 'PUT',
-    manual: true,
-  });
-  executePutDivers({
-    data: {},
-  });
+const updateDaysAndDivers = (
+  source: 'divers' | 'days',
+  destination: 'divers' | 'days',
+  item: ItemBase,
+  slug: string, // jours de la semaine ou divers
+  executePut: RefetchFunction<any, any>,
+  executeRemove: RefetchFunction<any, any>,
+) => {
+  if (source === 'divers' && destination === 'days') {
+    executeRemove({ params: { id: item.tableIdentifier }, url: axiosUrl('calendar/divers') });
+    executePut({ data: { itemId: item.id, type: item.itemType, slug }, url: axiosUrl('calendar/days') });
+  }
+
+  if (source === 'days' && destination === 'divers') {
+    executeRemove({ params: { id: item.tableIdentifier }, url: axiosUrl('calendar/days') });
+    executePut({ data: { itemId: item.id, type: item.itemType }, url: axiosUrl('calendar/divers') });
+  }
+
+  if (source === 'days' && destination === 'days') {
+    executeRemove({ params: { id: item.tableIdentifier }, url: axiosUrl('calendar/days') });
+    executePut({ data: { itemId: item.id, type: item.itemType, slug }, url: axiosUrl('calendar/days') });
+  // TODO PromiseAll
+  }
 };

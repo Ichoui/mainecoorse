@@ -64,7 +64,7 @@ export const DialogAddCalendar = (props: {
         url: axiosUrl('calendar/divers'),
       }).then(() => onClose());
     }
-    // TODO concatener les onClose là avec une PromiseAll
+    // TODO concatener les onClose là avec une PromiseAll à voir plus tard toussa
 
     if (coursesCheck) {
       const updatedItem = { ...item, articlesList: formik.values.articles };
