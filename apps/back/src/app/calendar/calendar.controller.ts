@@ -19,7 +19,7 @@ export class CalendarController {
   }
 
   @Put('divers')
-  putCalendarItems(@Body() divers: DiversDto): Promise<void> {
+  putCalendarItems(@Body() divers: DiversDto): Promise<ItemBase[]> {
     console.log(divers);
     return this._diversService.putCalendarDiversItem(divers);
   }
@@ -36,7 +36,7 @@ export class CalendarController {
   }
 
   @Put('days')
-  putCalendarDays(@Body() days: DaysDto): Promise<void> {
+  putCalendarDays(@Body() days: DaysDto): Promise<Days[]> {
     return this._daysService.putCalendarDay(days);
   }
 

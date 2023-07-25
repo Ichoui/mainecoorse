@@ -29,14 +29,14 @@ export class DiversService {
     return queryRecette.concat(queryArticle);
   }
 
-  async putCalendarDiversItem(divers: DiversDto): Promise<void> {
+  async putCalendarDiversItem(divers: DiversDto): Promise<ItemBase[]> {
     const diversType = divers.type === ItemType.RECETTE ? { recetteId: divers.itemId } : { articleId: divers.itemId };
     const entity = this._diversEntityRepository.create({ ...diversType });
     if (!entity) {
       throw new NotFoundException();
     }
-    console.log(entity);
     await this._diversEntityRepository.save(entity);
+    return this.getCalendarDiversItems();
   }
 
   async deleteCalendarDiversItem(id: number): Promise<void> {

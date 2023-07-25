@@ -36,7 +36,7 @@ export class DaysService {
     return SkeletonDays;
   }
 
-  async putCalendarDay(days: DaysDto): Promise<void> {
+  async putCalendarDay(days: DaysDto): Promise<Days[]> {
     console.log(days);
     const daysType =
       days.type === ItemType.RECETTE
@@ -46,8 +46,8 @@ export class DaysService {
     if (!entity) {
       throw new NotFoundException();
     }
-    console.log(entity);
     await this._daysEntityRepository.save(entity);
+    return this.getCalendarDays();
   }
 
   async deleteCalendarDay(id: number): Promise<void> {

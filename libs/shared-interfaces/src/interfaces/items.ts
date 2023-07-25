@@ -80,6 +80,7 @@ export interface ISnackbar {
   open: boolean;
   message?: string;
   severity?: 'success' | 'warning' | 'error' | 'info';
+  autoHideDuration?: number;
 }
 
 export enum EDays {

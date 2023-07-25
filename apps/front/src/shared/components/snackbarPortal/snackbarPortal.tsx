@@ -20,7 +20,7 @@ export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: (
       open={open}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      autoHideDuration={2000}
+      autoHideDuration={snackValues.autoHideDuration ?? 2000}
     >
       <Alert onClose={handleClose} variant='filled' severity={snackValues.severity} sx={{ width: 'auto' }}>
         <Typography fontFamily={'Oswald-medium'}>{snackValues.message}</Typography>

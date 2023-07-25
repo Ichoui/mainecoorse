@@ -1,7 +1,7 @@
 import './calendar.scss';
-import { Days, ItemBase, ItemType, translateDays } from '@shared-interfaces/items';
+import { Days, ISnackbar, ItemBase, ItemType, translateDays } from '@shared-interfaces/items';
 import { DialogInspectItem } from '@components/dialogs/dialog-inspect-item/dialog-inspect-item';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { DragZone } from '@app/calendar/drag-zone/drag-zone';
 import { DragDropContext, useKeyboardSensor, useMouseSensor } from '@hello-pangea/dnd';
 import update from 'immutability-helper';
@@ -11,11 +11,13 @@ import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { axiosUrl, configAxios } from '@shared/hooks/axios.config';
 import { RefetchFunction } from 'axios-hooks';
+import { SnackbarContext } from '@app/app';
 
 // https://www.npmjs.com/package/react-draggable
 export const Calendar = () => {
   const [divers, setDivers] = useState<ItemBase[]>([]);
   const [days, setDays] = useState<Days[]>([]);
+  const { setSnackValues } = useContext(SnackbarContext);
 
   const [{ data: getItemsData, error: itemsError, loading: loadingItem }] = configAxios({
     url: 'calendar/divers',
@@ -65,6 +67,14 @@ export const Calendar = () => {
       const source = e.source;
       const destination = e.destination;
       const dragZoneIndex = (droppableId: string) => days.findIndex(d => d.slug === droppableId);
+      const dragBag = {
+        slug: destination.droppableId,
+        executePut,
+        executeRemove,
+        setSnackValues,
+        setDivers,
+        setDays,
+      };
 
       if (destination.droppableId === 'divers') {
         const item = days[dragZoneIndex(e.source.droppableId)].items[e.source.index];
@@ -81,9 +91,8 @@ export const Calendar = () => {
             [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
           }),
         );
-        updateDaysAndDivers('days', 'divers', item, destination.droppableId, executePut, executeRemove);
+        updateDaysAndDivers('days', 'divers', item, dragBag);
       } else if (destination.droppableId === 'bin') {
-        console.log('effe');
         /////////////////
         // Supprimer ITEM depuis DIVERS
         /////////////////
@@ -117,7 +126,7 @@ export const Calendar = () => {
 
           setDivers(update(divers, { $splice: [[source.index, 1]] }));
 
-          updateDaysAndDivers('divers', 'days', item, destination.droppableId, executePut, executeRemove);
+          updateDaysAndDivers('divers', 'days', item, dragBag);
 
           console.log(item);
         } else {
@@ -131,7 +140,7 @@ export const Calendar = () => {
               [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } }, // add
             }),
           );
-          updateDaysAndDivers('days', 'days', item, destination.droppableId, executePut, executeRemove);
+          updateDaysAndDivers('days', 'days', item, dragBag);
         }
       }
       console.log(days);
@@ -207,23 +216,43 @@ const updateDaysAndDivers = (
   source: 'divers' | 'days',
   destination: 'divers' | 'days',
   item: ItemBase,
-  slug: string, // jours de la semaine ou divers
-  executePut: RefetchFunction<any, any>,
-  executeRemove: RefetchFunction<any, any>,
+  dragBag: {
+    slug: string; // jours de la semaine ou divers
+    executePut: RefetchFunction<any, any>;
+    executeRemove: RefetchFunction<any, any>;
+    setSnackValues: (value: ((prevState: ISnackbar) => ISnackbar) | ISnackbar) => void;
+    setDivers: (value: ((prevState: ItemBase[]) => ItemBase[]) | ItemBase[]) => void;
+    setDays: (value: ((prevState: Days[]) => Days[]) | Days[]) => void;
+  },
 ) => {
+  const { slug, executePut, executeRemove, setSnackValues, setDivers, setDays } = dragBag;
+  const remove = (params: any, url: string) => executeRemove({ params: { ...params }, url });
+  const put = (data: any, url: string) => executePut({ data: { ...data }, url });
+  let promiseAll: Promise<unknown> = Promise.resolve();
+
   if (source === 'divers' && destination === 'days') {
-    executeRemove({ params: { id: item.tableIdentifier }, url: axiosUrl('calendar/divers') });
-    executePut({ data: { itemId: item.id, type: item.itemType, slug }, url: axiosUrl('calendar/days') });
+    promiseAll = Promise.all([
+      remove({ id: item.tableIdentifier }, axiosUrl('calendar/divers')),
+      put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')),
+    ]).then(([, put]) => setDays(put.data));
   }
 
   if (source === 'days' && destination === 'divers') {
-    executeRemove({ params: { id: item.tableIdentifier }, url: axiosUrl('calendar/days') });
-    executePut({ data: { itemId: item.id, type: item.itemType }, url: axiosUrl('calendar/divers') });
+    promiseAll = Promise.all([
+      remove({ id: item.tableIdentifier }, axiosUrl('calendar/days')),
+      put({ itemId: item.id, type: item.itemType }, axiosUrl('calendar/divers')),
+    ]).then(([, put]) => setDivers(put.data));
   }
 
   if (source === 'days' && destination === 'days') {
-    executeRemove({ params: { id: item.tableIdentifier }, url: axiosUrl('calendar/days') });
-    executePut({ data: { itemId: item.id, type: item.itemType, slug }, url: axiosUrl('calendar/days') });
-  // TODO PromiseAll
+    console.log(item);
+    promiseAll = Promise.all([
+      remove({ id: item.tableIdentifier }, axiosUrl('calendar/days')),
+      put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')),
+    ]).then(([, put]) => setDays(put.data));
   }
+
+  promiseAll
+    .then(() => setSnackValues({ open: true, message: '🤠 Hiiii-haaaa', severity: 'success', autoHideDuration: 1000 }))
+    .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
 };
