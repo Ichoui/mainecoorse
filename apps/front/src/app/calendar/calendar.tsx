@@ -126,7 +126,6 @@ export const Calendar = () => {
 
           updateDaysAndDivers('divers', 'days', item, dragBag);
 
-          console.log(item);
         } else {
           /////////////////
           // Depuis JOUR vers JOUR
@@ -141,7 +140,6 @@ export const Calendar = () => {
           updateDaysAndDivers('days', 'days', item, dragBag);
         }
       }
-      console.log(days);
     },
     [days, divers],
   );
@@ -243,7 +241,6 @@ const updateDaysAndDivers = (
   }
 
   if (source === 'days' && destination === 'days') {
-    console.log(item);
     promiseAll = Promise.all([
       remove({ id: item.tableIdentifier }, axiosUrl('calendar/days')),
       put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')),

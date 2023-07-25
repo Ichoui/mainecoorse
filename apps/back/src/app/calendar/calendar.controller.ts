@@ -20,7 +20,6 @@ export class CalendarController {
 
   @Put('divers')
   putCalendarItems(@Body() divers: DiversDto): Promise<ItemBase[]> {
-    console.log(divers);
     return this._diversService.putCalendarDiversItem(divers);
   }
 

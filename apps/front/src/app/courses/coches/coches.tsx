@@ -26,8 +26,6 @@ export const Coches = (props: {
   }, 250);
 
   const handleQuantity = useDebouncedCallback((quantity: number) => {
-    console.log(quantity);
-
     executePut({
       url: axiosUrl(`courses/quantity/${item.id}`),
       method: 'PUT',

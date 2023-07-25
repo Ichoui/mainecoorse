@@ -25,7 +25,6 @@ export class CoursesService {
   async upsertArticles(res: CoursesPostDto): Promise<void> {
     res.articles.map(async item => {
       const existingItem = await this._coursesEntityRepository.findOneBy({ articleId: item.id });
-      console.log(existingItem);
       if (existingItem) {
         // Update existing item
         existingItem.quantity += item.quantity;
