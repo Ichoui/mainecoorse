@@ -100,7 +100,6 @@ export const DialogAddCalendar = (props: {
                     quantity: item.articlesList![i].quantity * Number(quantity), // use item because it's base value
                   }),
                 );
-                console.log(formik.values);
               }}
             />
           </div>
