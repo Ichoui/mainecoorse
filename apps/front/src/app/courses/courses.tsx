@@ -16,8 +16,6 @@ export const Courses = () => {
   // eslint-disable-next-line no-empty-pattern
   const [{}, executePutQuantity] = configAxios({ method: 'PUT', manual: true });
   // eslint-disable-next-line no-empty-pattern
-  const [{}, executePutPurchased] = configAxios({ method: 'PUT', manual: true });
-  // eslint-disable-next-line no-empty-pattern
   const [{}, executePurge] = configAxios({ url: 'courses', method: 'DELETE', manual: true });
 
   useEffect(() => {

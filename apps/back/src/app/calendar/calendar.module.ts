@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DiversService } from './items/divers.service';
+import { DiversService } from './divers/divers.service';
 import { CalendarController } from './calendar.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DiversEntity } from './items/divers.entity';
+import { DiversEntity } from './divers/divers.entity';
 import { DaysService } from './days/days.service';
 import { DaysEntity } from './days/days.entity';
 

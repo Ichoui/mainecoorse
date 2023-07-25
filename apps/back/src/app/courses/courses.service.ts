@@ -54,4 +54,11 @@ export class CoursesService {
     await this._coursesEntityRepository.remove(queryArticlesToRemove)
     return this.getCourses();
   }
+
+  async removeForbiddenIfExisting(id: number): Promise<string> {
+    const existing = await this._coursesEntityRepository.findOneBy({ articleId: id });
+    if (existing) {
+      return 'courses'
+    }
+  }
 }

@@ -56,4 +56,12 @@ export class DaysService {
     }
     await this._daysEntityRepository.remove(entity);
   }
+
+  async removeForbiddenIfExisting(id: number, type: ItemType): Promise<string> {
+    const value = type === ItemType.RECETTE ? { recetteId: id } : { articleId: id };
+    const existing = await this._daysEntityRepository.findOneBy(value);
+    if (existing) {
+      return 'calendrier (jours)'
+    }
+  }
 }

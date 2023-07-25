@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleList, ItemBase, ItemType, Tags } from '@shared-interfaces/items';
 import { DaysEntity } from '../calendar/days/days.entity';
-import { DiversEntity } from '../calendar/items/divers.entity';
+import { DiversEntity } from '../calendar/divers/divers.entity';
 
 @Entity({
   name: 'recettes',

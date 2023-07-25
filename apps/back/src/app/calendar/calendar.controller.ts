@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Put, Query, UseInterceptors } from '@nestjs/common';
 
-import { DiversService } from './items/divers.service';
+import { DiversService } from './divers/divers.service';
 import { Days, ItemBase } from '@shared-interfaces/items';
 import { ReqInterceptor } from '../../shared/interceptor.service';
 import { DaysService } from './days/days.service';
-import { DiversDto } from './items/divers.dto';
+import { DiversDto } from './divers/divers.dto';
 import { DaysDto } from './days/days.dto';
 
 @UseInterceptors(ReqInterceptor)

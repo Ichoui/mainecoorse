@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ItemBase, ItemType, Tags } from '@shared-interfaces/items';
 import { DaysEntity } from '../calendar/days/days.entity';
-import { DiversEntity } from '../calendar/items/divers.entity';
+import { DiversEntity } from '../calendar/divers/divers.entity';
 import { CoursesEntity } from '../courses/courses.entity';
 
 @Entity({

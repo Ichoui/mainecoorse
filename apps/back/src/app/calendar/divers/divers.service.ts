@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { ItemBase, ItemType } from '@shared-interfaces/items';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DiversEntity } from './divers.entity';
@@ -21,7 +21,9 @@ export class DiversService {
 
     const queryArticle: ItemBase[] = await this._diversEntityRepository
       .createQueryBuilder('divers')
-      .select('article.id, article.label, article.description, article.url, article.tags, article.itemType, divers.id as "tableIdentifier"')
+      .select(
+        'article.id, article.label, article.description, article.url, article.tags, article.itemType, divers.id as "tableIdentifier"',
+      )
       .leftJoin('divers.articleId', 'article')
       .where('divers.articleId is not null')
       .getRawMany();
@@ -45,5 +47,13 @@ export class DiversService {
       throw new NotFoundException();
     }
     await this._diversEntityRepository.remove(entity);
+  }
+
+  async removeForbiddenIfExisting(id: number, type: ItemType): Promise<string> {
+    const value = type === ItemType.RECETTE ? { recetteId: id } : { articleId: id };
+    const existing = await this._diversEntityRepository.findOneBy(value);
+    if (existing) {
+      return 'calendrier (divers)'
+    }
   }
 }
