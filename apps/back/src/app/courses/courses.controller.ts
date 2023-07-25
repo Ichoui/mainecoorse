@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from
 import { CoursesService } from './courses.service';
 import { CoursesArticleList, ItemBase } from '@shared-interfaces/items';
 import { ReqInterceptor } from '../../shared/interceptor.service';
-import { CoursesDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
+import { CoursesPostDto, CoursesDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
 
 @UseInterceptors(ReqInterceptor)
 @Controller('courses')
@@ -16,8 +16,8 @@ export class CoursesController {
   }
 
   @Post()
-  addArticle(@Body() article: CoursesDto[]): Promise<void> {
-    return this._coursesService.postArticle(article);
+  upsertArticles(@Body() articles: CoursesPostDto): Promise<void> {
+    return this._coursesService.upsertArticles(articles);
   }
 
   @Put('quantity/:id')
@@ -31,7 +31,7 @@ export class CoursesController {
   }
 
   @Delete()
-  removeArticles(): Promise<void> {
+  removeArticles(): Promise<CoursesArticleList[]> {
     return this._coursesService.removeArticles();
   }
 }

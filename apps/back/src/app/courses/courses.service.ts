@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CoursesArticleList, ItemBase } from '@shared-interfaces/items';
-import { CoursesDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
+import { CoursesPostDto, CoursesDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CoursesEntity } from './courses.entity';
 import { Repository } from 'typeorm';
@@ -22,8 +22,19 @@ export class CoursesService {
     return queryArticle;
   }
 
-  async postArticle(article: CoursesDto[]): Promise<void> {
-    return Promise.resolve(undefined);
+  async upsertArticles(res: CoursesPostDto): Promise<void> {
+    res.articles.map(async item => {
+      const existingItem = await this._coursesEntityRepository.findOneBy({ articleId: item.id });
+      console.log(existingItem);
+      if (existingItem) {
+        // Update existing item
+        existingItem.quantity += item.quantity;
+        await this._coursesEntityRepository.save(existingItem);
+      } else {
+        // Create my new item
+        await this._coursesEntityRepository.insert({ articleId: item.id, quantity: item.quantity, purchased: false });
+      }
+    });
   }
 
   async updateQuantity(id: number, body: CoursesQuantityDto): Promise<void> {
@@ -38,7 +49,9 @@ export class CoursesService {
     await this._coursesEntityRepository.save(entity);
   }
 
-  async removeArticles(): Promise<void> {
-    return Promise.resolve(undefined);
+  async removeArticles(): Promise<CoursesArticleList[]> {
+    const queryArticlesToRemove = await this._coursesEntityRepository.find({where: {purchased: true}});
+    await this._coursesEntityRepository.remove(queryArticlesToRemove)
+    return this.getCourses();
   }
 }

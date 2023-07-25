@@ -5,6 +5,7 @@ import './coches.scss';
 import { ManageQuantity } from '@components/manage-quantity/manage-quantity';
 import { RefetchFunction } from 'axios-hooks';
 import { axiosUrl } from '@shared/hooks/axios.config';
+import { useDebouncedCallback } from 'use-debounce';
 
 export const Coches = (props: {
   item: CoursesArticleList;
@@ -23,11 +24,9 @@ export const Coches = (props: {
     })
       .then(() => setSnackValues({ open: true, message: '🦊', severity: 'success', autoHideDuration: 500 }))
       .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
-
-    // TODO API update la valeur (ou remonter la valeur je ne sais pas encore)
   };
 
-  const handleQuantity = (quantity: number) => {
+  const handleQuantity = useDebouncedCallback((quantity: number) => {
     console.log(quantity);
 
     executePut({
@@ -37,7 +36,7 @@ export const Coches = (props: {
     })
       .then(() => setSnackValues({ open: true, message: '🦆', severity: 'success', autoHideDuration: 500 }))
       .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
-  };
+  }, 250);
 
   return (
     <div className='Coches'>

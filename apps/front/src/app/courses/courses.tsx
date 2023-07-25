@@ -29,10 +29,10 @@ export const Courses = () => {
   const handleDialogConfirmation = (open = false, purge?: boolean) => {
     setOpenDialogConfirmation(open);
     if (purge) {
-      // executePurge()
-      // .then(() => setSnackValues({ open: true, message: '🤠 Hiiii-haaaa', severity: 'success', autoHideDuration: 1000 }))
-      // .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
-      // TODO Purger les courses avec les ID en body + queryParam
+      executePurge()
+        .then(res => setItemsSorted(sortByTags(res.data)))
+        .then(() => setSnackValues({ open: true, message: '♻️ Purgatoire en cours...', severity: 'success' }))
+        .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' }));
     }
   };
 
