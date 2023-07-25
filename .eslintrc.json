@@ -121,11 +121,6 @@
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/ban-ts-comment": "off"
       }
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
-      "rules": {}
     }
   ]
 }

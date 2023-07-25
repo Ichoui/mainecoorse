@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
 
 import { CoursesService } from './courses.service';
-import { ArticleList, ItemBase } from '@shared-interfaces/items';
+import { CoursesArticleList, ItemBase } from '@shared-interfaces/items';
 import { ReqInterceptor } from '../../shared/interceptor.service';
 import { CoursesDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
 
@@ -11,23 +11,23 @@ export class CoursesController {
   constructor(private readonly _coursesService: CoursesService) {}
 
   @Get()
-  getCourses(): Promise<ArticleList[]> {
+  getCourses(): Promise<CoursesArticleList[]> {
     return this._coursesService.getCourses();
   }
 
   @Post()
-  addArticle(@Body() article: CoursesDto[]): Promise<ItemBase> {
+  addArticle(@Body() article: CoursesDto[]): Promise<void> {
     return this._coursesService.postArticle(article);
   }
 
-  @Put('quantity')
-  updateQuantity(@Body() quantity: CoursesQuantityDto): Promise<void> {
-    return this._coursesService.updateQuantity(quantity);
+  @Put('quantity/:id')
+  updateQuantity(@Param('id') id: number, @Body() quantity: CoursesQuantityDto): Promise<void> {
+    return this._coursesService.updateQuantity(id, quantity);
   }
 
-  @Put('purchased')
-  updatePurchasedStatus(@Body() purchased: CoursesPurchasedDto): Promise<void> {
-    return this._coursesService.updatePurchasedStatus(purchased);
+  @Put('purchased/:id')
+  updatePurchasedStatus(@Param('id') id: number, @Body() purchased: CoursesPurchasedDto): Promise<void> {
+    return this._coursesService.updatePurchasedStatus(id, purchased);
   }
 
   @Delete()

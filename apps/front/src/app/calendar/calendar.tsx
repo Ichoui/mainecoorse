@@ -32,14 +32,12 @@ export const Calendar = () => {
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, executePut] = configAxios({
-    url: '',
     method: 'PUT',
     manual: true,
   });
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, executeRemove] = configAxios({
-    url: '',
     method: 'DELETE',
     manual: true,
   });

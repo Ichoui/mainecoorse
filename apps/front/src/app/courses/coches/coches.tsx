@@ -1,23 +1,49 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
-import { CoursesArticleList } from '@shared-interfaces/items';
+import { CoursesArticleList, ISnackbar } from '@shared-interfaces/items';
 import { ChangeEvent, Fragment, useState } from 'react';
 import './coches.scss';
 import { ManageQuantity } from '@components/manage-quantity/manage-quantity';
+import { RefetchFunction } from 'axios-hooks';
+import { axiosUrl } from '@shared/hooks/axios.config';
 
-export const Coches = (props: { item: CoursesArticleList }) => {
-  const { item } = props;
-  const [checked, setChecked] = useState(false);
+export const Coches = (props: {
+  item: CoursesArticleList;
+  setSnackValues: ({ open, message, severity }: ISnackbar) => void;
+  executePut: RefetchFunction<any, any>;
+}) => {
+  const { item, setSnackValues, executePut } = props;
+  const [checked, setChecked] = useState(item.purchased);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleCheck = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
+    executePut({
+      url: axiosUrl(`courses/purchased/${item.id}`),
+      method: 'PUT',
+      data: { purchased: event.target.checked },
+    })
+      .then(() => setSnackValues({ open: true, message: '🦊', severity: 'success', autoHideDuration: 500 }))
+      .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
+
     // TODO API update la valeur (ou remonter la valeur je ne sais pas encore)
+  };
+
+  const handleQuantity = (quantity: number) => {
+    console.log(quantity);
+
+    executePut({
+      url: axiosUrl(`courses/quantity/${item.id}`),
+      method: 'PUT',
+      data: { quantity },
+    })
+      .then(() => setSnackValues({ open: true, message: '🦆', severity: 'success', autoHideDuration: 500 }))
+      .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
   };
 
   return (
     <div className='Coches'>
       <FormControlLabel
         className={`label ${checked ? 'checked' : ''}`}
-        control={<Checkbox onChange={handleChange} checked={checked} />}
+        control={<Checkbox onChange={handleCheck} checked={checked} />}
         label={
           <Fragment>
             <img src={item.url} alt={item.label} />
@@ -27,7 +53,7 @@ export const Coches = (props: { item: CoursesArticleList }) => {
       />
 
       <div className={`quantity ${checked ? 'disabled' : ''}`}>
-        <ManageQuantity itemQuantity={item.quantity} checked={checked} />
+        <ManageQuantity itemQuantity={item.quantity} checked={checked} onChange={handleQuantity} />
       </div>
     </div>
   );

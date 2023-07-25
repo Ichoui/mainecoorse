@@ -1,36 +1,47 @@
 import './courses.scss';
-import { ArticleList, ArticleTags } from '@shared-interfaces/items';
+import { ArticleTags, CoursesArticleList } from '@shared-interfaces/items';
 import { Button, FormGroup } from '@mui/material';
 import { Coches } from '@app/courses/coches/coches';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
+import { SnackbarContext } from '@app/app';
 
 export const Courses = () => {
-  const [itemsSortedByTags, setItemsSorted] = useState<(string | ArticleList[])[]>([]);
-  const [{ data, error, loading }] = configAxios({ url: 'courses', method: 'GET', autoCancel: false });
+  const [itemsSortedByTags, setItemsSorted] = useState<(string | CoursesArticleList[])[]>([]);
+  const [{ data, error, loading: loadingGet }] = configAxios({ url: 'courses', method: 'GET', autoCancel: false });
+  const { setSnackValues } = useContext(SnackbarContext);
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePutQuantity] = configAxios({ method: 'PUT', manual: true });
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePutPurchased] = configAxios({ method: 'PUT', manual: true });
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, executePurge] = configAxios({ url: 'courses', method: 'DELETE', manual: true });
 
   useEffect(() => {
     setItemsSorted(sortByTags(data));
-  }, [data, loading, error]);
+  }, [data, loadingGet, error]);
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
   const handleDialogConfirmation = (open = false, purge?: boolean) => {
     setOpenDialogConfirmation(open);
     if (purge) {
-      // TODO Purger les courses avec les ID
+      // executePurge()
+      // .then(() => setSnackValues({ open: true, message: '🤠 Hiiii-haaaa', severity: 'success', autoHideDuration: 1000 }))
+      // .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
+      // TODO Purger les courses avec les ID en body + queryParam
     }
   };
 
   return (
     <div className='Courses'>
-      {loading && <Loader />}
+      {loadingGet && <Loader />}
       {error && <DataError />}
 
-      {!loading && !error && (
+      {!loadingGet && !error && (
         <Fragment>
           <div className='btn-purge'>
             <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>
@@ -38,13 +49,18 @@ export const Courses = () => {
             </Button>
           </div>
           <FormGroup>
-            {itemsSortedByTags?.map((items: ArticleList[] | string, index: number) => (
+            {itemsSortedByTags?.map((items: CoursesArticleList[] | string, index: number) => (
               <div key={index} className='blocks'>
                 {<h3>{items[0] as string}</h3>}
                 <hr />
                 <div className='container-checkboxes'>
-                  {(items[1] as unknown as ArticleList[]).map((item, itemIndex) => (
-                    <Coches key={itemIndex} item={item}></Coches>
+                  {(items[1] as unknown as CoursesArticleList[]).map((item, itemIndex) => (
+                    <Coches
+                      key={itemIndex}
+                      item={item}
+                      setSnackValues={setSnackValues}
+                      executePut={executePutQuantity}
+                    ></Coches>
                   ))}
                 </div>
               </div>
@@ -64,16 +80,16 @@ export const Courses = () => {
   );
 };
 
-const sortByTags = (items: ArticleList[]): (string | ArticleList[])[] => {
-  const extractAllTags = items?.map(item => item.tags[0] as ArticleTags);
+const sortByTags = (items: CoursesArticleList[]): (string | CoursesArticleList[])[] => {
+  const extractAllTags = items?.map(item => item.tags[0]);
   const tags = extractAllTags?.filter((value, index) => extractAllTags.indexOf(value) === index);
-  const sortedItems: Record<ArticleTags, ArticleList[]> | NonNullable<unknown> = {};
+  const sortedItems: Record<ArticleTags, CoursesArticleList[]> | NonNullable<unknown> = {};
   // @ts-ignore
   tags?.map(t => (sortedItems[t] = []));
   items?.map(item => {
     const tag = item.tags[0];
     // @ts-ignore
-    return sortedItems[tag].push(item); // TODO return à retirer ou pas ? :grimace:
+    return sortedItems[tag].push(item);
   });
 
   // @ts-ignore

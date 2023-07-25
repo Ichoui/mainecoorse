@@ -10,7 +10,7 @@ export const axiosUrl = (url: string) => {
 };
 
 export const configAxios = (props: {
-  url: string;
+  url?: string;
   method: 'POST' | 'GET' | 'PUT' | 'DELETE';
   autoCancel?: boolean;
   manual?: boolean;
@@ -19,5 +19,5 @@ export const configAxios = (props: {
 }) => {
   const { url, method, manual = false, autoCancel = true, useCache = false, params } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useAxios({ headers, url: axiosUrl(url), method, params }, { manual, autoCancel, useCache });
+  return useAxios({ headers, url: axiosUrl(url!), method, params }, { manual, autoCancel, useCache });
 };

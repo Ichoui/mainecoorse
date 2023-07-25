@@ -43,7 +43,6 @@ export const DialogAddCalendar = (props: {
   const [{ loading: putLoading }, putData] = configAxios({
     manual: true,
     method: 'PUT',
-    url: 'calendar',
     autoCancel: false,
   });
 
@@ -58,13 +57,17 @@ export const DialogAddCalendar = (props: {
 
   const handleOk = () => {
     console.log(item);
+    // const a;
+    // const b;
+
+    // TODO concatener les onClose là avec une PromiseAll à voir plus tard toussa
+
     if (calendarCheck) {
       putData({
         data: { itemId: item.id, type: isArticle ? ItemType.ARTICLE : ItemType.RECETTE },
         url: axiosUrl('calendar/divers'),
       }).then(() => onClose());
     }
-    // TODO concatener les onClose là avec une PromiseAll à voir plus tard toussa
 
     if (coursesCheck) {
       const updatedItem = { ...item, articlesList: formik.values.articles };
