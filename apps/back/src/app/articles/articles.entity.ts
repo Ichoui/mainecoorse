@@ -7,7 +7,7 @@ import { DiversEntity } from '../calendar/items/divers.entity';
   name: 'articles',
 })
 export class ArticlesEntity extends BaseEntity implements ItemBase {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()

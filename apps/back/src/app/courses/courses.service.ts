@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ArticleList, ArticleTags } from '@shared-interfaces/items';
+import { ArticleList, ArticleTags, ItemBase } from '@shared-interfaces/items';
+import { CoursesPurchasedDto, CoursesDto, CoursesQuantityDto } from './courses.dto';
 
 @Injectable()
 export class CoursesService {
-  getCourses(): ArticleList[] {
+  async getCourses(): Promise<ArticleList[]> {
     const articles: ArticleList[] = [
       {
         id: 1,
@@ -46,8 +47,18 @@ export class CoursesService {
         tags: [ArticleTags.EPICERIE],
       },
     ];
-
-    // return { message: 'Hello API' };
     return articles;
+  }
+
+  async postArticle(article: CoursesDto): Promise<ItemBase> {
+    return Promise.resolve(undefined);
+  }
+
+  async updateQuantity(body: CoursesQuantityDto): Promise<void> {
+    return Promise.resolve(undefined);
+  }
+
+  async updatePurchasedStatus(body: CoursesPurchasedDto): Promise<void> {
+    return Promise.resolve(undefined);
   }
 }

@@ -7,7 +7,7 @@ import { EDays } from '@shared-interfaces/items';
   name: 'days',
 })
 export class DaysEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'enum', enum: EDays, nullable: false, default: undefined })

@@ -6,7 +6,7 @@ import { RecettesEntity } from '../../recettes/recettes.entity';
   name: 'divers',
 })
 export class DiversEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ nullable: true })
