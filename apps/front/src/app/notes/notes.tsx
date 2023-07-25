@@ -1,5 +1,5 @@
 import './notes.scss';
-import { Fab, IconButton, TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Loader } from '@components/loader/loader';
@@ -7,8 +7,6 @@ import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 import Map404 from '/map404.png';
 import Maple from '/maple.png';
-import { Link } from 'react-router-dom';
-import { AddRounded } from '@mui/icons-material';
 
 export const Notes = (): JSX.Element => {
   const [{ data: getData, loading: getLoading, error: getError }] = configAxios({

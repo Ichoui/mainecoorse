@@ -60,7 +60,7 @@
           },
           {
             "selector": "objectLiteralProperty",
-            "format": ["camelCase"]
+            "format": ["camelCase", "PascalCase"]
           },
           {
             "selector": "enum",

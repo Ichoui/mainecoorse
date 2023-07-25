@@ -37,7 +37,6 @@ export class DaysService {
   }
 
   async putCalendarDay(days: DaysDto): Promise<Days[]> {
-    console.log(days);
     const daysType =
       days.type === ItemType.RECETTE
         ? { recetteId: days.itemId, slug: days.slug }

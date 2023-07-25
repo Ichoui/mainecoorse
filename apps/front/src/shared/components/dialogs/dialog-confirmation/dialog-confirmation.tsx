@@ -24,8 +24,10 @@ export const DialogConfirmation = (props: {
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          🚧 ATTENTION 🚨 !<br />
-          Si tu supprimes, ça ne reviendra pas...
+          <span>
+            🚧 ATTENTION 🚨 !<br />
+            Si tu supprimes, ça ne reviendra pas...
+          </span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

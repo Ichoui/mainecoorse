@@ -17,11 +17,14 @@ export interface ItemBase {
 
 export interface ArticleList {
   id: number;
-  description: string;
-  url: string;
   label: string;
-  tags: Tags[] | string[];
   quantity: number;
+}
+
+export interface CoursesArticleList extends ArticleList {
+  purchased?: boolean;
+  url: string;
+  tags: Tags[];
 }
 
 export interface Days {

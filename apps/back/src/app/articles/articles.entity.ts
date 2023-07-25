@@ -2,6 +2,7 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 't
 import { ItemBase, ItemType, Tags } from '@shared-interfaces/items';
 import { DaysEntity } from '../calendar/days/days.entity';
 import { DiversEntity } from '../calendar/items/divers.entity';
+import { CoursesEntity } from '../courses/courses.entity';
 
 @Entity({
   name: 'articles',
@@ -37,4 +38,7 @@ export class ArticlesEntity extends BaseEntity implements ItemBase {
 
   @OneToMany(() => DiversEntity, divers => divers.articleId)
   diversArticleId: DiversEntity[];
+
+  @OneToMany(() => CoursesEntity, divers => divers.articleId)
+  coursesArticleId: CoursesEntity[];
 }

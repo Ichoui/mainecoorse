@@ -1,10 +1,10 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
-import { ArticleList } from '@shared-interfaces/items';
-import { ChangeEvent, useState } from 'react';
+import { CoursesArticleList } from '@shared-interfaces/items';
+import { ChangeEvent, Fragment, useState } from 'react';
 import './coches.scss';
 import { ManageQuantity } from '@components/manage-quantity/manage-quantity';
 
-export const Coches = (props: { item: ArticleList }) => {
+export const Coches = (props: { item: CoursesArticleList }) => {
   const { item } = props;
   const [checked, setChecked] = useState(false);
 
@@ -16,9 +16,14 @@ export const Coches = (props: { item: ArticleList }) => {
   return (
     <div className='Coches'>
       <FormControlLabel
-        className={checked ? 'checked' : ''}
+        className={`label ${checked ? 'checked' : ''}`}
         control={<Checkbox onChange={handleChange} checked={checked} />}
-        label={item.label}
+        label={
+          <Fragment>
+            <img src={item.url} alt={item.label} />
+            <span>{item.label}</span>
+          </Fragment>
+        }
       />
 
       <div className={`quantity ${checked ? 'disabled' : ''}`}>

@@ -6,6 +6,20 @@
   justify-content: space-between;
   align-items: center;
 
+  .label {
+    :last-child {
+      display: flex;
+      align-items: center;
+      img {
+        width: 29px;
+        height: 29px;
+        margin-right: 10px;
+      }
+      span {
+      }
+    }
+  }
+
   .disabled {
     pointer-events: none;
     color: darken($secondaryText, 33%);

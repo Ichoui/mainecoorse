@@ -10,7 +10,7 @@ import { configAxios } from '@shared/hooks/axios.config';
 
 export const Courses = () => {
   const [itemsSortedByTags, setItemsSorted] = useState<(string | ArticleList[])[]>([]);
-  const [{ data, error, loading }] = configAxios({ url: 'courses', method: 'GET', autoCancel: true });
+  const [{ data, error, loading }] = configAxios({ url: 'courses', method: 'GET', autoCancel: false });
 
   useEffect(() => {
     setItemsSorted(sortByTags(data));

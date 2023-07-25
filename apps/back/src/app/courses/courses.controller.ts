@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, UseInterceptors } from '@nestjs/common';
 
 import { CoursesService } from './courses.service';
 import { ArticleList, ItemBase } from '@shared-interfaces/items';
@@ -16,7 +16,7 @@ export class CoursesController {
   }
 
   @Post()
-  addArticle(@Body() article: CoursesDto): Promise<ItemBase> {
+  addArticle(@Body() article: CoursesDto[]): Promise<ItemBase> {
     return this._coursesService.postArticle(article);
   }
 
@@ -28,5 +28,10 @@ export class CoursesController {
   @Put('purchased')
   updatePurchasedStatus(@Body() purchased: CoursesPurchasedDto): Promise<void> {
     return this._coursesService.updatePurchasedStatus(purchased);
+  }
+
+  @Delete()
+  removeArticles(): Promise<void> {
+    return this._coursesService.removeArticles();
   }
 }

@@ -1,56 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { ArticleList, ArticleTags, ItemBase } from '@shared-interfaces/items';
-import { CoursesPurchasedDto, CoursesDto, CoursesQuantityDto } from './courses.dto';
+import { ArticleList, ItemBase } from '@shared-interfaces/items';
+import { CoursesDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CoursesEntity } from './courses.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CoursesService {
+  constructor(@InjectRepository(CoursesEntity) private _coursesEntityRepository: Repository<CoursesEntity>) {}
+
   async getCourses(): Promise<ArticleList[]> {
-    const articles: ArticleList[] = [
-      {
-        id: 1,
-        label: 'Article 1',
-        quantity: 7,
-        description: 'Ma description',
-        url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.EPICERIE],
-      },
-      {
-        id: 3,
-        label: 'Article 2',
-        quantity: 7,
-        description: 'Ma description',
-        url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.ENTRETIEN],
-      },
-      {
-        id: 4,
-        label: 'Article 3',
-        quantity: 7,
-        description: 'Ma description',
-        url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.ENTRETIEN],
-      },
-      {
-        id: 5,
-        label: 'Article 4',
-        quantity: 7,
-        description: 'Ma description',
-        url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.BOISSONS],
-      },
-      {
-        id: 8,
-        label: 'Article 16',
-        quantity: 7,
-        description: 'Ma description',
-        url: 'https://assets.afcdn.com/recipe/20170112/3678_w640h486c1cx1500cy1073.webp',
-        tags: [ArticleTags.EPICERIE],
-      },
-    ];
-    return articles;
+    const queryArticle: (ArticleList)[] = await this._coursesEntityRepository
+      .createQueryBuilder('courses')
+      .select(
+        'article.id, article.label, article.tags, article.url, courses.quantity, courses.purchased',
+      )
+      .leftJoin('courses.articleId', 'article')
+      .where('courses.articleId is not null')
+      .getRawMany();
+
+    if (!queryArticle) {
+
+    }
+
+    return queryArticle;
   }
 
-  async postArticle(article: CoursesDto): Promise<ItemBase> {
+  async postArticle(article: CoursesDto[]): Promise<ItemBase> {
     return Promise.resolve(undefined);
   }
 
@@ -59,6 +35,10 @@ export class CoursesService {
   }
 
   async updatePurchasedStatus(body: CoursesPurchasedDto): Promise<void> {
+    return Promise.resolve(undefined);
+  }
+
+  async removeArticles(): Promise<void> {
     return Promise.resolve(undefined);
   }
 }
