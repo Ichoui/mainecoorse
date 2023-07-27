@@ -1,12 +1,13 @@
-import { BaseEntity, Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { ArticleList, ItemBase, ItemType, Tags } from '@shared-interfaces/items';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ItemType, Tags } from '@shared-interfaces/items';
 import { DaysEntity } from '../calendar/days/days.entity';
 import { DiversEntity } from '../calendar/divers/divers.entity';
+import { RecetteArticleEntity } from '../recette-article.entity.ts/recette-article.entity';
 
 @Entity({
   name: 'recettes',
 })
-export class RecettesEntity extends BaseEntity implements ItemBase {
+export class RecettesEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -29,12 +30,16 @@ export class RecettesEntity extends BaseEntity implements ItemBase {
     type: 'text',
     array: true,
   })
-  tags: string[] | Tags[]; // Tags[] | string[];
+  tags: string[] | Tags[];
 
-  @Column('jsonb')
-  articlesList: ArticleList[];
+  @Column('int', { array: true, nullable: true })
+  articlesList: number[];
+
 
   // Relations
+  @OneToMany(() => RecetteArticleEntity, recetteArticle => recetteArticle.recette, {nullable: true})
+  recetteArticle?: RecetteArticleEntity[];
+
   @OneToMany(() => DaysEntity, days => days.recetteId)
   daysRecetteId: DaysEntity[];
 

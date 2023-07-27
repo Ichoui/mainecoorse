@@ -16,12 +16,12 @@ export class RecettesController {
   }
 
   @Post()
-  postRecette(@Body() recette: RecettesCreateDto): Promise<ItemBase> {
+  postRecette(@Body() recette: RecettesCreateDto): Promise<void> {
     return this._recettesService.postRecette(recette);
   }
 
   @Put()
-  putRecette(@Query('id') id: number, @Body() recette: RecettesCreateDto): Promise<ItemBase> {
+  putRecette(@Query('id') id: number, @Body() recette: RecettesCreateDto): Promise<void> {
     return this._recettesService.putRecette(id, recette);
   }
 

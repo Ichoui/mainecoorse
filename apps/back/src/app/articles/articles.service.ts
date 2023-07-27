@@ -33,21 +33,21 @@ export class ArticlesService {
     return query;
   }
 
-  async postArticle(articles: ArticlesCreateDto): Promise<ItemBase> {
+  async postArticle(articles: ArticlesCreateDto): Promise<void> {
     const entity = this._articlesEntityRepository.create({ ...articles, itemType: ItemType.ARTICLE });
     if (!entity) {
       throw new NotFoundException();
     }
-    return this._articlesEntityRepository.save(entity);
+    await this._articlesEntityRepository.save(entity);
   }
 
-  async putArticle(id: number, articles: ArticlesUpdateDto): Promise<ItemBase> {
+  async putArticle(id: number, articles: ArticlesUpdateDto): Promise<void> {
     const entity = await this._articlesEntityRepository.findOneBy({ id });
     if (!entity) {
       throw new NotFoundException();
     }
     await this._articlesEntityRepository.update({ id }, { ...articles });
-    return this._articlesEntityRepository.findOneBy({ id });
+    // return this._articlesEntityRepository.findOneBy({ id });
   }
 
   async removeArticle(id: number): Promise<void> {

@@ -12,18 +12,27 @@ export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: (
     }
     setOpen(false);
   };
+  let message = null;
+  let autoHideDuration = 2000;
 
-  useEffect(() => setOpen(snackValues.open), [snackValues]);
+  if (snackValues.error) {
+    autoHideDuration = 4000;
+    message =
+      snackValues.error?.response?.status !== 500 ? `🛑 ${snackValues!.error!.response.data.message}` : '😨 Erreur !';
+  }
+  useEffect(() => {
+    setOpen(snackValues.open);
+  }, [snackValues]);
 
   return (
     <Snackbar
       open={open}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      autoHideDuration={snackValues.autoHideDuration ?? 2000}
+      autoHideDuration={snackValues.autoHideDuration ?? autoHideDuration}
     >
       <Alert onClose={handleClose} variant='filled' severity={snackValues.severity} sx={{ width: 'auto' }}>
-        <Typography fontFamily={'Oswald-medium'}>{snackValues.message}</Typography>
+        <Typography fontFamily={'Oswald-medium'}>{snackValues?.message ?? message}</Typography>
       </Alert>
     </Snackbar>
   );

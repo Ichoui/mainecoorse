@@ -53,13 +53,11 @@ export const Item = (props: { item: ItemBase; itemRemoved: () => void }): JSX.El
           });
           itemRemoved();
         })
-        .catch(err => {
-          const message = err.response.status === 403 ? `🛑 ${err.response.data.message}` : '😨 Erreur !';
+        .catch(error => {
           setSnackValues({
             open: true,
-            message,
+            error,
             severity: 'error',
-            autoHideDuration: err.response.status === 403 ? 4000 : 2000,
           });
         });
     }

@@ -270,7 +270,7 @@ const RecetteForm = withFormik({
     url: props.item?.url,
     description: props.item?.description,
     tags: props.item?.tags,
-    articlesList: props.item?.articlesList ?? [{label: '', quantity: ''}],
+    articlesList: props.item?.articlesList ?? [{ label: '', quantity: '', id: null }],
   }),
   validationSchema: yup.object().shape({
     label: yup
@@ -288,6 +288,7 @@ const RecetteForm = withFormik({
       .array()
       .of(
         yup.object().shape({
+          id: yup.number().required(),
           label: yup.string().required('Fait-un effort ! 🏋'),
           quantity: yup.number().min(1, '0 ? Nope !').required('0+0=😬'),
         }),
@@ -298,8 +299,12 @@ const RecetteForm = withFormik({
   }),
   handleSubmit: (values, formikBag) => {
     const { isNewRecette, navigation, setSnackValues, saveData } = formikBag.props;
+    const valuesToSave = {
+      ...values,
+      articlesList: values.articlesList.map(art => ({ id: art.id, quantity: art.quantity })),
+    };
     saveData({
-      data: { ...values },
+      data: { ...valuesToSave },
     })
       .then(() => {
         setSnackValues({
@@ -309,8 +314,8 @@ const RecetteForm = withFormik({
         });
         navigation('/recettes');
       })
-      .catch(() => {
-        setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
+      .catch((error) => {
+        setSnackValues({ open: true, error, severity: 'error' });
       });
   },
 })(TSXForm);

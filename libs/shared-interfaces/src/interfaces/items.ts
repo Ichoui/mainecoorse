@@ -84,6 +84,7 @@ export interface ISnackbar {
   message?: string;
   severity?: 'success' | 'warning' | 'error' | 'info';
   autoHideDuration?: number;
+  error?: Record<any, any>;
 }
 
 export enum EDays {

@@ -43,8 +43,8 @@ export const EditArticle = (): JSX.Element => {
           });
           navigation('/articles');
         })
-        .catch(() => {
-          setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
+        .catch((error) => {
+          setSnackValues({ open: true, error, severity: 'error' });
         });
     }
   };
@@ -224,7 +224,7 @@ const submit = (
       });
       navigation('/articles');
     })
-    .catch(() => {
-      setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
+    .catch(error => {
+      setSnackValues({ open: true, error, severity: 'error' });
     });
 };
