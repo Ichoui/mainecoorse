@@ -102,9 +102,7 @@ export class RecettesService {
     if (!entity) {
       throw new NotFoundException();
     }
-
-
-
+    // Test first if used in divers / days calendar...
     const existInDivers = await this._diversService.removeForbiddenIfExisting(id, ItemType.RECETTE);
     const existInDays = await this._daysService.removeForbiddenIfExisting(id, ItemType.RECETTE);
 
@@ -112,12 +110,7 @@ export class RecettesService {
       const existIn = [existInDivers, existInDays].filter(item => !!item);
       throw new ForbiddenException(`Recette utilisée dans ${existIn.join(', ')}`);
     }
-    // TODO Supprimer dans recetteArticle avant de passer au reste pour éviter une erreur de contrainte !
-
-
-    const idRelations: number[] = entity.recetteArticle.map(ra => ra.article.id);
-
-
+    // ... then remove relations and then remove entity
     await this._recetteArticleService
       .removeRecetteArticleRelation(entity.id)
       .then(() => this._recettesEntityRepository.remove(entity));

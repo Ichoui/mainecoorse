@@ -20,7 +20,7 @@ export class RecetteArticleService {
     const entities = [];
     if (put) {
       // TODO find old relations and remove them, on PUT method
-      // OR method 2, update existing relations
+      // TODO OR method 2, update existing relations
     }
 
     articles.forEach(article => {
@@ -46,10 +46,17 @@ export class RecetteArticleService {
   }
 
   async removeForbiddenIfExisting(id: number): Promise<string> {
-    const existing = await this._recettesArticleEntityRepository.findOneBy({ id: id });
-    // TODO indiquer quelle recette ou article est concerné
+    const existing = await this._recettesArticleEntityRepository.find({
+      relations: ['recette'],
+      where: { articleId: id },
+    });
+    const arr: string[] = [];
+    existing.map(ra => arr.push(ra.recette.label));
+    const message =
+      arr.length > 2 ? `les recettes ${arr.filter((a, i) => i < 2).join(', ')}` : `les recettes ${arr.join(', ')}`;
+
     if (existing) {
-      return 'recettes';
+      return `les recettes ${message}`;
     }
   }
 }

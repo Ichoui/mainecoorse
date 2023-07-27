@@ -7,7 +7,7 @@ import { ArticlesCreateDto, ArticlesUpdateDto } from './articles.dto';
 import { DiversService } from '../calendar/divers/divers.service';
 import { DaysService } from '../calendar/days/days.service';
 import { CoursesService } from '../courses/courses.service';
-import { RecettesService } from '../recettes/recettes.service';
+import { RecetteArticleService } from '../recette-article.entity.ts/recette-article.service';
 
 @Injectable()
 export class ArticlesService {
@@ -16,7 +16,7 @@ export class ArticlesService {
     private _diversService: DiversService,
     private _daysService: DaysService,
     private _coursesService: CoursesService,
-    private _recettesService: RecettesService,
+    private _recettesArticleService: RecetteArticleService,
   ) {}
 
   async getArticles(): Promise<ItemBase[]> {
@@ -47,7 +47,6 @@ export class ArticlesService {
       throw new NotFoundException();
     }
     await this._articlesEntityRepository.update({ id }, { ...articles });
-    // return this._articlesEntityRepository.findOneBy({ id });
   }
 
   async removeArticle(id: number): Promise<void> {
@@ -59,9 +58,7 @@ export class ArticlesService {
     const existInDivers = await this._diversService.removeForbiddenIfExisting(id, ItemType.ARTICLE);
     const existInDays = await this._daysService.removeForbiddenIfExisting(id, ItemType.ARTICLE);
     const existInCourses = await this._coursesService.removeForbiddenIfExisting(id);
-    const existInRecettes = undefined;
-    // TODO faire les recettes quand relations OK ! :)
-    // const existInRecettes = await this._recettesService.removeForbiddenIfExisting(id);
+    const existInRecettes = await this._recettesArticleService.removeForbiddenIfExisting(id);
 
     if (!!existInDivers || !!existInDays || !!existInCourses || !!existInRecettes) {
       const existIn = [existInDivers, existInDays, existInCourses, existInRecettes].filter(item => !!item);
