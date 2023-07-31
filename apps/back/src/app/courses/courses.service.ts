@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CoursesArticleList, ItemBase } from '@shared-interfaces/items';
-import { CoursesPostDto, CoursesDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
+import { CoursesArticleList } from '@shared-interfaces/items';
+import { CoursesPostDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CoursesEntity } from './courses.entity';
 import { Repository } from 'typeorm';
@@ -49,15 +49,15 @@ export class CoursesService {
   }
 
   async removeArticles(): Promise<CoursesArticleList[]> {
-    const queryArticlesToRemove = await this._coursesEntityRepository.find({where: {purchased: true}});
-    await this._coursesEntityRepository.remove(queryArticlesToRemove)
+    const queryArticlesToRemove = await this._coursesEntityRepository.find({ where: { purchased: true } });
+    await this._coursesEntityRepository.remove(queryArticlesToRemove);
     return this.getCourses();
   }
 
   async removeForbiddenIfExisting(id: number): Promise<string> {
     const existing = await this._coursesEntityRepository.findOneBy({ articleId: id });
     if (existing) {
-      return 'courses'
+      return 'courses';
     }
   }
 }

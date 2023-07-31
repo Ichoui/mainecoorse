@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
 
 import { CoursesService } from './courses.service';
-import { CoursesArticleList, ItemBase } from '@shared-interfaces/items';
+import { CoursesArticleList } from '@shared-interfaces/items';
 import { ReqInterceptor } from '../../shared/interceptor.service';
-import { CoursesPostDto, CoursesDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
+import { CoursesPostDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
 
 @UseInterceptors(ReqInterceptor)
 @Controller('courses')

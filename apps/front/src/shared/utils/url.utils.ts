@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-export async function urlTest(
-  url: string,
-  defaultUrl?: string,
-): Promise<{ typeUrl: string; url: string }> {
+export async function urlTest(url: string, defaultUrl?: string): Promise<{ typeUrl: string; url: string }> {
   return axios
     .get(url)
     .then(() => ({ url: url, typeUrl: 'correct' }))

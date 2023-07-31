@@ -29,7 +29,6 @@ const defaultWinstonLoggerOptions: winston.LoggerOptions = {
   ),
   transports: [new winston.transports.Console({ handleExceptions: true })],
   exitOnError: false,
-
 };
 
 async function bootstrap() {

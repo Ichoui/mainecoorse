@@ -35,9 +35,8 @@ export class RecettesEntity extends BaseEntity {
   @Column('int', { array: true, nullable: true })
   articlesList: number[];
 
-
   // Relations
-  @OneToMany(() => RecetteArticleEntity, recetteArticle => recetteArticle.recette, {nullable: true})
+  @OneToMany(() => RecetteArticleEntity, recetteArticle => recetteArticle.recette, { nullable: true })
   recetteArticle?: RecetteArticleEntity[];
 
   @OneToMany(() => DaysEntity, days => days.recette)

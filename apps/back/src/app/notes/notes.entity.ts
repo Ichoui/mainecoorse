@@ -7,6 +7,6 @@ export class NotesEntity extends BaseEntity {
   @PrimaryGeneratedColumn('rowid')
   oneId: number;
 
-  @Column({type:'varchar'})
+  @Column({ type: 'varchar' })
   notes: string;
 }

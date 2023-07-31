@@ -6,6 +6,6 @@ import { RecetteArticleService } from './recette-article.service';
 @Module({
   imports: [TypeOrmModule.forFeature([RecetteArticleEntity])],
   exports: [RecetteArticleService],
-  providers: [RecetteArticleService]
+  providers: [RecetteArticleService],
 })
 export class RecetteArticleModule {}

@@ -2,7 +2,7 @@ import '../calendar.scss';
 import { Droppable } from '@hello-pangea/dnd';
 import { DeleteForeverRounded } from '@mui/icons-material';
 
-export const BinZone = (props: { identifier: string, isDragging: boolean }) => {
+export const BinZone = (props: { identifier: string; isDragging: boolean }) => {
   const { identifier, isDragging } = props;
 
   return (

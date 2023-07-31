@@ -9,7 +9,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
-import MapleNoResults from '/maple-no-results.png'
+import MapleNoResults from '/maple-no-results.png';
 
 export const Articles = (): JSX.Element => {
   const [{ data, error, loading }, refetchArticles] = configAxios({
@@ -80,9 +80,11 @@ export const Articles = (): JSX.Element => {
         {filteredArticles?.map((article, i) => (
           <Item key={i} item={article} itemRemoved={() => refetchArticles()} />
         ))}
-        {filteredArticles?.length === 0 && !loading && !error && <div className='no-results'>
-          <img src={MapleNoResults} alt='Aucun résultats' />
-        </div>}
+        {filteredArticles?.length === 0 && !loading && !error && (
+          <div className='no-results'>
+            <img src={MapleNoResults} alt='Aucun résultats' />
+          </div>
+        )}
       </div>
       <Fab
         className='add'

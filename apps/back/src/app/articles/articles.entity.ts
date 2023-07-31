@@ -43,6 +43,6 @@ export class ArticlesEntity extends BaseEntity implements ItemBase {
   @OneToMany(() => CoursesEntity, divers => divers.articleId)
   coursesArticleId: CoursesEntity[];
 
-  @OneToMany(() => RecetteArticleEntity, (recetteArticle) => recetteArticle.article)
+  @OneToMany(() => RecetteArticleEntity, recetteArticle => recetteArticle.article)
   recetteArticle: RecetteArticleEntity[];
 }

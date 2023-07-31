@@ -2,9 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ItemBase, ItemType } from '@shared-interfaces/items';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DiversEntity } from './divers.entity';
-import { IsNull, Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { DiversDto } from './divers.dto';
-import { IsNotEmpty } from 'class-validator';
 
 @Injectable()
 export class DiversService {
