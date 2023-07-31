@@ -36,7 +36,6 @@ export const EditRecette = (): JSX.Element => {
   });
 
   useEffect(() => {
-    // urlTest(item?.url ?? '').then(res => setBgi({ url: res, pending: false }));
     urlTest(item?.url ?? '', defaultUrl).then(res => setBgi(res.url));
   }, [setBgi, item?.url]);
 

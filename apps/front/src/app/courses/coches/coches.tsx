@@ -1,11 +1,12 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { CoursesArticleList, ISnackbar } from '@shared-interfaces/items';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import './coches.scss';
 import { ManageQuantity } from '@components/manage-quantity/manage-quantity';
 import { RefetchFunction } from 'axios-hooks';
 import { axiosUrl } from '@shared/hooks/axios.config';
 import { useDebouncedCallback } from 'use-debounce';
+import { urlTest } from '@shared/utils/url.utils';
 
 export const Coches = (props: {
   item: CoursesArticleList;
@@ -35,6 +36,12 @@ export const Coches = (props: {
       .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
   }, 250);
 
+  const [icon, setIcon] = useState<string>('');
+
+  useEffect(() => {
+    urlTest(item?.url ?? '').then(res => setIcon(res.url));
+  }, [setIcon, item?.url]);
+
   return (
     <div className='Coches'>
       <FormControlLabel
@@ -50,7 +57,7 @@ export const Coches = (props: {
         }
         label={
           <Fragment>
-            <img src={item.url} alt={item.label} />
+            <img src={icon} alt={item.label} />
             <span>{item.label}</span>
           </Fragment>
         }
