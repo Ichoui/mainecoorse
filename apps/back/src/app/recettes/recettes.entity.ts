@@ -40,8 +40,8 @@ export class RecettesEntity extends BaseEntity {
   @OneToMany(() => RecetteArticleEntity, recetteArticle => recetteArticle.recette, {nullable: true})
   recetteArticle?: RecetteArticleEntity[];
 
-  @OneToMany(() => DaysEntity, days => days.recetteId)
-  daysRecetteId: DaysEntity[];
+  @OneToMany(() => DaysEntity, days => days.recette)
+  daysRecette: DaysEntity[];
 
   @OneToMany(() => DiversEntity, divers => divers.recetteId)
   diversRecetteId: DiversEntity[];

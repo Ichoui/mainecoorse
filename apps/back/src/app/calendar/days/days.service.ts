@@ -15,20 +15,50 @@ export class DaysService {
   async getCalendarDays(): Promise<Days[]> {
     const queryRecette: ItemBaseWithSlug[] = await this._daysEntityRepository
       .createQueryBuilder('days')
-      .select(
-        'recette.articlesList, recette.id, recette.label, recette.description, recette.url, recette.tags, recette.itemType, days.slug, days.id as "tableIdentifier"',
-      )
-      .leftJoin('days.recetteId', 'recette')
-      .where('days.recetteId is not null')
-      .getRawMany();
+      .leftJoin('days.recette', 'recette')
+      .leftJoin('recette.recetteArticle', 'recetteArticle')
+      .leftJoin('recetteArticle.article', 'article')
+      .select([
+        'days.id',
+        'days.slug',
+        'recette.id',
+        'recette.label',
+        'recette.description',
+        'recette.url',
+        'recette.tags',
+        'recette.itemType',
+        'recetteArticle.quantity',
+        'article.id',
+        'article.label',
+      ])
+      .where('days.recette is not null')
+      .getMany()
+      .then(res =>
+        res.map(r => ({
+          tableIdentifier: r.id,
+          slug: r.slug,
+          id: r.recette.id,
+          label: r.recette.label,
+          description: r.recette.description,
+          url: r.recette.url,
+          tags: r.recette.tags,
+          itemType: r.recette.itemType,
+          articlesList: r.recette.recetteArticle.map(ra => ({
+            id: ra.article.id,
+            quantity: ra.quantity,
+            label: ra.article.label,
+          })),
+        })),
+      );
+    console.log(queryRecette);
 
     const queryArticle: ItemBaseWithSlug[] = await this._daysEntityRepository
       .createQueryBuilder('days')
       .select(
         'article.id, article.label, article.description, article.url, article.tags, article.itemType, days.slug, days.id as "tableIdentifier"',
       )
-      .leftJoin('days.articleId', 'article')
-      .where('days.articleId is not null')
+      .leftJoin('days.article', 'article')
+      .where('days.article is not null')
       .getRawMany();
 
     const itemsRequested: ItemBaseWithSlug[] = queryRecette.concat(queryArticle).sort((a, b) => a.id - b.id);

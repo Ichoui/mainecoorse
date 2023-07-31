@@ -63,7 +63,10 @@ export const DialogAddCalendar = (props: {
 
     if (calendarCheck) {
       promiseArray.push(
-        upsert({ itemId: item.id, type: isArticle ? ItemType.ARTICLE : ItemType.RECETTE, quantity: formik.values?.multiple }, axiosUrl('calendar/divers')),
+        upsert(
+          { itemId: item.id, type: isArticle ? ItemType.ARTICLE : ItemType.RECETTE, quantity: formik.values?.multiple },
+          axiosUrl('calendar/divers'),
+        ),
       );
     }
 

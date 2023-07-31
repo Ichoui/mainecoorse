@@ -14,12 +14,19 @@ export class DaysEntity extends BaseEntity {
   slug: EDays;
 
   @Column({ nullable: true })
-  @ManyToOne(() => ArticlesEntity, article => article.daysArticleId, { nullable: true })
-  @JoinColumn({ name: 'articleId' })
   articleId: number;
 
   @Column({ nullable: true })
-  @ManyToOne(() => RecettesEntity, recette => recette.daysRecetteId, { nullable: true })
-  @JoinColumn({ name: 'recetteId' })
   recetteId: number;
+
+  // RELATIONS
+  // @Column({ nullable: true })
+  @ManyToOne(() => ArticlesEntity, article => article.daysArticle, { nullable: true })
+  @JoinColumn({ name: 'articleId' })
+  article: ArticlesEntity;
+
+  // @Column({ nullable: true })
+  @ManyToOne(() => RecettesEntity, recette => recette.daysRecette, { nullable: true })
+  @JoinColumn({ name: 'recetteId' })
+  recette: RecettesEntity;
 }

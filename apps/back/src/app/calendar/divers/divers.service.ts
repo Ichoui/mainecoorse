@@ -2,8 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ItemBase, ItemType } from '@shared-interfaces/items';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DiversEntity } from './divers.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { DiversDto } from './divers.dto';
+import { IsNotEmpty } from 'class-validator';
 
 @Injectable()
 export class DiversService {
@@ -12,20 +13,47 @@ export class DiversService {
   async getCalendarDiversItems(): Promise<ItemBase[]> {
     const queryRecette: ItemBase[] = await this._diversEntityRepository
       .createQueryBuilder('divers')
-      .select(
-        'recette.articlesList, recette.id, recette.label, recette.description, recette.url, recette.tags, recette.itemType, divers.id as "tableIdentifier"',
-      )
-      .leftJoin('divers.recetteId', 'recette')
-      .where('divers.recetteId is not null')
-      .getRawMany();
+      .leftJoin('divers.recette', 'recette')
+      .leftJoin('recette.recetteArticle', 'recetteArticle')
+      .leftJoin('recetteArticle.article', 'article')
+      .select([
+        'divers.id',
+        'recette.id',
+        'recette.label',
+        'recette.description',
+        'recette.url',
+        'recette.tags',
+        'recette.itemType',
+        'recetteArticle.quantity',
+        'article.id',
+        'article.label',
+      ])
+      .where('divers.recette is not null')
+      .getMany()
+      .then(res =>
+        res.map(r => ({
+          tableIdentifier: r.id,
+          id: r.recette.id,
+          label: r.recette.label,
+          description: r.recette.description,
+          url: r.recette.url,
+          tags: r.recette.tags,
+          itemType: r.recette.itemType,
+          articlesList: r.recette.recetteArticle.map(ra => ({
+            id: ra.article.id,
+            quantity: ra.quantity,
+            label: ra.article.label,
+          })),
+        })),
+      );
 
     const queryArticle: ItemBase[] = await this._diversEntityRepository
       .createQueryBuilder('divers')
       .select(
         'article.id, article.label, article.description, article.url, article.tags, article.itemType, divers.id as "tableIdentifier"',
       )
-      .leftJoin('divers.articleId', 'article')
-      .where('divers.articleId is not null')
+      .leftJoin('divers.article', 'article')
+      .where('divers.article is not null')
       .getRawMany();
 
     return queryRecette.concat(queryArticle);
@@ -33,10 +61,10 @@ export class DiversService {
 
   async putCalendarDiversItem(divers: DiversDto): Promise<ItemBase[]> {
     const diversType = divers.type === ItemType.RECETTE ? { recetteId: divers.itemId } : { articleId: divers.itemId };
-    const entity: DiversEntity[] = []
+    const entity: DiversEntity[] = [];
     if (divers.quantity) {
       for (let i = 0; i < divers.quantity; i++) {
-        entity.push(this._diversEntityRepository.create({ ...diversType }))
+        entity.push(this._diversEntityRepository.create({ ...diversType }));
       }
     }
     if (!entity && entity.length > 0) {

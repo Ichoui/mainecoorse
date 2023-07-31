@@ -34,11 +34,11 @@ export class ArticlesEntity extends BaseEntity implements ItemBase {
   tags: string[] | Tags[]; // Tags[] | string[];
 
   // Relations
-  @OneToMany(() => DaysEntity, days => days.articleId)
-  daysArticleId: DaysEntity[];
+  @OneToMany(() => DaysEntity, days => days.article)
+  daysArticle: DaysEntity[];
 
-  @OneToMany(() => DiversEntity, divers => divers.articleId)
-  diversArticleId: DiversEntity[];
+  @OneToMany(() => DiversEntity, divers => divers.article)
+  diversArticle: DiversEntity[];
 
   @OneToMany(() => CoursesEntity, divers => divers.articleId)
   coursesArticleId: CoursesEntity[];

@@ -10,12 +10,16 @@ export class DiversEntity extends BaseEntity {
   id: number;
 
   @Column({ nullable: true })
-  @ManyToOne(() => ArticlesEntity, article => article.diversArticleId, { nullable: true })
-  @JoinColumn({ name: 'articleId' })
   articleId: number;
 
   @Column({ nullable: true })
-  @ManyToOne(() => RecettesEntity, recette => recette.diversRecetteId, { nullable: true })
-  @JoinColumn({ name: 'recetteId' })
   recetteId: number;
+
+  @ManyToOne(() => ArticlesEntity, article => article.diversArticle, { nullable: true })
+  @JoinColumn({ name: 'articleId' })
+  article: ArticlesEntity;
+
+  @ManyToOne(() => RecettesEntity, recette => recette.recetteArticle, { nullable: true })
+  @JoinColumn({ name: 'recetteId' })
+  recette: RecettesEntity;
 }

@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ItemBase } from '@shared-interfaces/items';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RecetteArticleEntity } from './recette-article.entity';
@@ -10,11 +9,6 @@ export class RecetteArticleService {
   constructor(
     @InjectRepository(RecetteArticleEntity) private _recettesArticleEntityRepository: Repository<RecetteArticleEntity>,
   ) {}
-
-  async findRecetteArticleRelation(): Promise<ItemBase[]> {
-    console.log('ef');
-    return [];
-  }
 
   async upsertRecetteArticleRelation(recetteId: number, articles: ArticlesListDto[], put = false): Promise<number[]> {
     const entities = [];
