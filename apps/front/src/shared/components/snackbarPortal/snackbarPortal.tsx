@@ -14,10 +14,10 @@ export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: (
     setOpen(false);
   };
   let message = null;
-  let autoHideDuration = 2000;
+  let autoHideDuration = 1750;
 
   if (snackValues.error) {
-    autoHideDuration = 4000;
+    autoHideDuration = 3000;
 
     if (snackValues.error?.response?.status === HttpStatus.I_AM_A_TEAPOT) {
       snackValues.severity = 'warning'
