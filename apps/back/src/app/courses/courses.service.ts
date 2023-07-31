@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CoursesArticleList } from '@shared-interfaces/items';
 import { CoursesPostDto, CoursesPurchasedDto, CoursesQuantityDto } from './courses.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -50,6 +50,9 @@ export class CoursesService {
 
   async removeArticles(): Promise<CoursesArticleList[]> {
     const queryArticlesToRemove = await this._coursesEntityRepository.find({ where: { purchased: true } });
+    if (queryArticlesToRemove.length === 0) {
+      throw new HttpException({warning: 'Rien à supprimer ici maggle...'}, HttpStatus.I_AM_A_TEAPOT)
+    }
     await this._coursesEntityRepository.remove(queryArticlesToRemove);
     return this.getCourses();
   }

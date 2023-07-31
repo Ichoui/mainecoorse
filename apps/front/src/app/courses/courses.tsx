@@ -30,7 +30,7 @@ export const Courses = () => {
       executePurge()
         .then(res => setItemsSorted(sortByTags(res.data)))
         .then(() => setSnackValues({ open: true, message: '♻️ Purgatoire en cours...', severity: 'success' }))
-        .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' }));
+        .catch((error) => setSnackValues({ open: true, error, severity: 'error' }));
     }
   };
 

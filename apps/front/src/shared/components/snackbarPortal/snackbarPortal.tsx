@@ -1,6 +1,7 @@
 import { Alert, Snackbar, Typography } from '@mui/material';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { ISnackbar } from '@shared-interfaces/items';
+import { HttpStatus } from '@nestjs/common';
 
 export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: () => void }): JSX.Element => {
   const { snackValues } = props;
@@ -17,8 +18,16 @@ export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: (
 
   if (snackValues.error) {
     autoHideDuration = 4000;
-    message =
-      snackValues.error?.response?.status !== 500 ? `🛑 ${snackValues!.error!.response.data.message}` : '😨 Erreur !';
+
+    if (snackValues.error?.response?.status === HttpStatus.I_AM_A_TEAPOT) {
+      snackValues.severity = 'warning'
+      message = `🤡 ${snackValues!.error!.response.data.warning}`;
+    } else if (snackValues.error?.response?.status !== HttpStatus.INTERNAL_SERVER_ERROR) {
+      message = `🛑 ${snackValues!.error!.response.data.message}`;
+    } else {
+      message = '😨 Erreur !';
+    }
+
   }
   useEffect(() => {
     setOpen(snackValues.open);
