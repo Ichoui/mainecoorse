@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ItemBase, ItemType } from '@shared-interfaces/items';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DiversEntity } from './divers.entity';
@@ -33,8 +33,13 @@ export class DiversService {
 
   async putCalendarDiversItem(divers: DiversDto): Promise<ItemBase[]> {
     const diversType = divers.type === ItemType.RECETTE ? { recetteId: divers.itemId } : { articleId: divers.itemId };
-    const entity = this._diversEntityRepository.create({ ...diversType });
-    if (!entity) {
+    const entity: DiversEntity[] = []
+    if (divers.quantity) {
+      for (let i = 0; i < divers.quantity; i++) {
+        entity.push(this._diversEntityRepository.create({ ...diversType }))
+      }
+    }
+    if (!entity && entity.length > 0) {
       throw new NotFoundException();
     }
     await this._diversEntityRepository.save(entity);
@@ -53,7 +58,7 @@ export class DiversService {
     const value = type === ItemType.RECETTE ? { recetteId: id } : { articleId: id };
     const existing = await this._diversEntityRepository.findOneBy(value);
     if (existing) {
-      return 'calendrier (divers)'
+      return 'calendrier (divers)';
     }
   }
 }
