@@ -22,6 +22,7 @@
   .disabled {
     pointer-events: none;
     color: darken($secondaryText, 33%);
+
     svg {
       color: darken($secondaryText, 33%);
     }
@@ -30,6 +31,9 @@
   label {
     &.checked {
       text-decoration: line-through;
+      img {
+        filter: grayscale(1);
+      }
     }
   }
 }
