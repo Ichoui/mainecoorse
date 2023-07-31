@@ -187,7 +187,7 @@ const TSXForm = (props: any): JSX.Element => {
                         <MenuItem
                           key={`${art.id}-${index}`}
                           value={art.label}
-                          disabled={values.articlesList?.some(v => v.id === art.id)}
+                          disabled={values.articlesList?.some((v: any) => v.id === art.id)}
                           onClick={() =>
                             setFieldValue(`articlesList[${index}]`, {
                               id: art.id,

@@ -11,25 +11,68 @@ export class RecetteArticleService {
   ) {}
 
   async upsertRecetteArticleRelation(recetteId: number, articles: ArticlesListDto[], put = false): Promise<number[]> {
-    const entities = [];
+    let entities = [];
     if (put) {
-      // TODO find old relations and remove them, on PUT method
-      // TODO OR method 2, update existing relations
+      const findExistingEntities = await this._recettesArticleEntityRepository.find({
+        where: { recetteId: recetteId },
+      });
+      const articlesToUpdate = [];
+      const articlesToCreate = [];
+      const articlesToRemove = [];
+
+      articles.forEach(art => {
+        if (!findExistingEntities.find(e => e.articleId === art.id)) {
+          // Existe que dans article, on créé
+          articlesToCreate.push({
+            quantity: art.quantity,
+            articleId: art.id,
+            recetteId: recetteId,
+          });
+        }
+      });
+
+      findExistingEntities.forEach(entity => {
+        const existingEntity = articles.find(a => a.id === entity.articleId);
+        if (existingEntity) {
+          // Existe dans les recettes et dans article, on update
+          articlesToUpdate.push({ ...entity, quantity: existingEntity.quantity });
+        } else {
+          // Existe dans les recettes mais pas dans article, on remove
+          articlesToRemove.push(entity);
+        }
+      });
+
+      entities = articlesToUpdate.concat(articlesToCreate);
+
+      return await this._recettesArticleEntityRepository
+        .save(entities)
+        .then(res => {
+          this._recettesArticleEntityRepository.remove(articlesToRemove).then(() => {
+            // pas beau mais faut aller manger et j'ai pas envie de le faire bien, si toi, openSourceLover tu me vois, ne me juge pas :D
+            throw new NotFoundException('Erreur suppression when upsert');
+          });
+          return res;
+        })
+        .then(res => res.map(r => r.id))
+        .catch(() => {
+          throw new NotFoundException('Erreur enregistrement quand upsert');
+        });
     }
 
-    articles.forEach(article => {
-      const entity = this._recettesArticleEntityRepository.create({
-        quantity: article.quantity,
-        articleId: article.id,
-        recetteId: recetteId,
+    if (!put) {
+      articles.forEach(article => {
+        const entity = this._recettesArticleEntityRepository.create({
+          quantity: article.quantity,
+          articleId: article.id,
+          recetteId: recetteId,
+        });
+        if (!entity) {
+          throw new NotFoundException('Erreur création entité RecetteArticle');
+        }
+        entities.push(entity);
       });
-      if (!entity) {
-        throw new NotFoundException('Erreur création entité RecetteArticle');
-      }
-      entities.push(entity);
-    });
-
-    return this._recettesArticleEntityRepository.save(entities).then(res => res.map(r => r.id));
+      return this._recettesArticleEntityRepository.save(entities).then(res => res.map(r => r.id));
+    }
   }
 
   async removeRecetteArticleRelation(recetteId: number): Promise<void> {

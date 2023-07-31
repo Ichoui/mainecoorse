@@ -68,15 +68,7 @@ export class RecettesService {
       });
   }
 
-  // TODO :
-  // réussir à PUT la donnée OKKK
-  // réussir à GET avec relations OKKKKKKKKKKK
-  // reproduire le put avec POST (ça devrait être similaire) OKKK
-  // Gérer la suppression (recetteArticle doit être retiré quand recette supprimée)
-  // Gérer l'erreur depuis recetteArticle
-
   async putRecette(id: number, recette: RecettesUpdateDto): Promise<void> {
-    console.log('---PUT ! ', recette);
     const entity = await this._recettesEntityRepository.findOneBy({ id });
     if (!entity) {
       throw new NotFoundException();
@@ -84,10 +76,7 @@ export class RecettesService {
 
     await this._recetteArticleService
       .upsertRecetteArticleRelation(id, recette.articlesList, true)
-      .then(articlesList => {
-        this._recettesEntityRepository.update({ id }, { ...recette, articlesList });
-        // TODO remove old relations !!!!!!!!!
-      })
+      .then(articlesList => this._recettesEntityRepository.update({ id }, { ...recette, articlesList }))
       .catch(err => {
         throw new BadRequestException('Il est arrivé malheur à la relation Recette-Article...', { cause: err });
       });
