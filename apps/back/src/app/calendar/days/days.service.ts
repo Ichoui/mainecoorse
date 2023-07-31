@@ -50,7 +50,6 @@ export class DaysService {
           })),
         })),
       );
-    console.log(queryRecette);
 
     const queryArticle: ItemBaseWithSlug[] = await this._daysEntityRepository
       .createQueryBuilder('days')

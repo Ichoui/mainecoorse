@@ -5,21 +5,26 @@ import { Autocomplete, Button, Chip, TextField } from '@mui/material';
 import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import { ArticleTags, ISnackbar, ItemBase } from '@shared-interfaces/items';
 import { configAxios } from '@shared/hooks/axios.config';
 import { RefetchFunction } from 'axios-hooks';
 import { SnackbarContext } from '@app/app';
+import { urlTest } from '@shared/utils/url.utils';
 
 export const EditArticle = (): JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://img.cuisineaz.com/660x660/2013/12/20/i47006-raclette.jpeg';
+  const [bgi, setBgi] = useState<string>(defaultUrl);
   const isNewArticle = articleId === 'new';
   const item: ItemBase = useLocation().state;
-  const bgi = item?.url ?? defaultUrl;
   const { setSnackValues } = useContext(SnackbarContext);
   const navigation = useNavigate();
+
+  useEffect(() => {
+    urlTest(item?.url ?? '', defaultUrl).then(res => setBgi(res.url));
+  }, [setBgi, item?.url]);
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, removeArticle] = configAxios({
@@ -43,7 +48,7 @@ export const EditArticle = (): JSX.Element => {
           });
           navigation('/articles');
         })
-        .catch((error) => {
+        .catch(error => {
           setSnackValues({ open: true, error, severity: 'error' });
         });
     }

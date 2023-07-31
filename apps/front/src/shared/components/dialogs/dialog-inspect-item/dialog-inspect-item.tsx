@@ -2,6 +2,9 @@ import '../dialog.scss';
 import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
 import { ItemBase } from '@shared-interfaces/items';
+import React, { useEffect, useState } from 'react';
+import { urlTest } from '@shared/utils/url.utils';
+import { LoaderThree } from '@shared/svg/loader-three';
 
 export const DialogInspectItem = (props: {
   open: boolean;
@@ -14,12 +17,22 @@ export const DialogInspectItem = (props: {
     onClose();
   };
 
+  const [itemUrl, setItemUrl] = useState({ url: '', pending: true, typeUrl: '' });
+  useEffect(() => {
+    urlTest(item?.url ?? '').then(res => setItemUrl({ url: res.url, pending: false, typeUrl: res.typeUrl }));
+  }, [item?.url, setItemUrl]);
+
   return (
     <Dialog open={open} keepMounted TransitionComponent={DialogTransitionUp} fullWidth>
       <DialogTitle>{item.label}</DialogTitle>
       <DialogContent>
         <div className='dialog-content'>
-          <img src={item.url} alt={item.label} />
+          {itemUrl?.pending && (
+            <div className='isLoadingImage'>
+              <LoaderThree />
+            </div>
+          )}
+          {!itemUrl?.pending && <img src={itemUrl?.url} alt={item.label} className={itemUrl?.typeUrl} />}
           <p>{item.description}</p>
           {item?.tags && (
             <div className='tags'>

@@ -5,10 +5,25 @@
   flex-direction: column;
   gap: 10px;
   img {
-    width: 100%;
-    height: 150px;
+    width: fit-content;
+    height: 200px;
     border-radius: $radius;
+    margin: 0 auto;
+    &.correct {
+      // Case where image is a valid url custom
+    }
+
+    &.incorrect {
+      // Case where image is icon
+    }
   }
+  .isLoadingImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+  }
+
   .tags {
     display: flex;
     gap: 5px;

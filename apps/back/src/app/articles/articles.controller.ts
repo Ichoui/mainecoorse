@@ -4,6 +4,7 @@ import { ArticlesService } from './articles.service';
 import { ItemBase } from '@shared-interfaces/items';
 import { ReqInterceptor } from '../../shared/interceptor.service';
 import { ArticlesCreateDto, ArticlesUpdateDto } from './articles.dto';
+import * as fs from 'fs';
 
 @UseInterceptors(ReqInterceptor)
 @Controller('articles')

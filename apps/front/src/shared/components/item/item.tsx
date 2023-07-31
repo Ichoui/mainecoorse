@@ -1,5 +1,5 @@
 import './item.scss';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardActionArea,
@@ -19,6 +19,8 @@ import { ItemBase, ItemType } from '@shared-interfaces/items';
 import { DialogAddCalendar } from '@components/dialogs/dialog-add-calendar/dialog-add-calendar';
 import { SnackbarContext } from '@app/app';
 import { configAxios } from '@shared/hooks/axios.config';
+import { urlTest } from '@shared/utils/url.utils';
+import { LoaderThree } from '@shared/svg/loader-three';
 
 export const Item = (props: { item: ItemBase; itemRemoved: () => void }): JSX.Element => {
   const { item, itemRemoved } = props;
@@ -71,13 +73,31 @@ export const Item = (props: { item: ItemBase; itemRemoved: () => void }): JSX.El
   const [openDialogAddTo, setOpenDialogAddTo] = useState(false);
   const handleDialogAddTo = (open = false) => setOpenDialogAddTo(open);
 
+  const [itemUrl, setItemUrl] = useState({ url: './sand-clock.png', pending: true, typeUrl: '' });
+  useEffect(() => {
+    urlTest(item?.url ?? '').then(res => setItemUrl({ url: res.url, pending: false, typeUrl: res.typeUrl }));
+  }, [item?.url, setItemUrl]);
+
   return (
     <div className='item'>
       <Card variant='outlined'>
         {/* DATA*/}
         <CardActionArea onClick={() => handleDialogInspectItem(true)}>
           <CardContent className='itemContent'>
-            <CardMedia component='img' alt={item.label} height='110' image={item.url} />
+            {!itemUrl?.pending && (
+              <CardMedia
+                component='img'
+                alt={item.label}
+                height='110'
+                image={itemUrl?.url}
+                className={itemUrl?.typeUrl}
+              />
+            )}
+            {itemUrl?.pending && (
+              <div className='isLoadingImage'>
+                <LoaderThree />
+              </div>
+            )}
             <Typography className='typo' gutterBottom variant='h6' component='div'>
               {item.label}
             </Typography>

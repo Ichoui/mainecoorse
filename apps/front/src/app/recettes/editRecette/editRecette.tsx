@@ -5,19 +5,21 @@ import { Autocomplete, Button, Chip, IconButton, MenuItem, TextField, Typography
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { ArticleList, ISnackbar, ItemBase, RecetteTags } from '@shared-interfaces/items';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import { configAxios } from '@shared/hooks/axios.config';
 import { SnackbarContext } from '@app/app';
 import { RefetchFunction } from 'axios-hooks';
+import { urlTest } from '@shared/utils/url.utils';
 
 export const EditRecette = (): JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://alsace-1bc06.kxcdn.com/img/ybc_blog/post/Choucroute_big.jpg';
   const isNewRecette = recetteId === 'new';
   const item: ItemBase = useLocation().state;
-  const bgi = item?.url ?? defaultUrl;
+  // const [bgi, setBgi] = useState({ url: defaultUrl, pending: true });
+  const [bgi, setBgi] = useState<string>(defaultUrl);
 
   const { setSnackValues } = useContext(SnackbarContext);
   const navigation = useNavigate();
@@ -32,6 +34,11 @@ export const EditRecette = (): JSX.Element => {
     manual: true,
     params: { id: item?.id },
   });
+
+  useEffect(() => {
+    // urlTest(item?.url ?? '').then(res => setBgi({ url: res, pending: false }));
+    urlTest(item?.url ?? '', defaultUrl).then(res => setBgi(res.url));
+  }, [setBgi, item?.url]);
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
@@ -314,7 +321,7 @@ const RecetteForm = withFormik({
         });
         navigation('/recettes');
       })
-      .catch((error) => {
+      .catch(error => {
         setSnackValues({ open: true, error, severity: 'error' });
       });
   },

@@ -4,6 +4,7 @@
   width: calc(50% - $gapItems);
 
   .itemContent {
+    padding: 5px;
     .typo {
       overflow: hidden;
       white-space: nowrap;
@@ -14,6 +15,23 @@
       padding-top: 5px;
     }
     img {
+      &.correct {
+        // Case where image is a valid url custom
+      }
+
+      &.incorrect {
+        // Case where image is icon
+        width: auto;
+        margin: 0 auto;
+      }
+    }
+    .isLoadingImage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      height: 110px;
+      width: 100%;
     }
   }
 
@@ -21,14 +39,14 @@
     justify-content: space-between;
     padding: 0 8px;
   }
-
 }
 
 #more-menu ul {
   color: $mainText;
   padding: 0;
   background-color: $backgroundColor;
-  li, a {
+  li,
+  a {
     padding: 0.2rem 10px !important;
     p {
       display: flex;
