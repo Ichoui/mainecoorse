@@ -20,12 +20,10 @@ export class DaysEntity extends BaseEntity {
   recetteId: number;
 
   // RELATIONS
-  // @Column({ nullable: true })
   @ManyToOne(() => ArticlesEntity, article => article.daysArticle, { nullable: true })
   @JoinColumn({ name: 'articleId' })
   article: ArticlesEntity;
 
-  // @Column({ nullable: true })
   @ManyToOne(() => RecettesEntity, recette => recette.daysRecette, { nullable: true })
   @JoinColumn({ name: 'recetteId' })
   recette: RecettesEntity;
