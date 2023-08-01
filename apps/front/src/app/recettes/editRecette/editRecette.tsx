@@ -5,7 +5,7 @@ import { Autocomplete, Button, Chip, IconButton, MenuItem, TextField, Typography
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, RefObject, useContext, useEffect, useRef, useState } from 'react';
 import { ArticleList, ISnackbar, ItemBase, RecetteTags } from '@shared-interfaces/items';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import { configAxios } from '@shared/hooks/axios.config';
@@ -13,6 +13,7 @@ import { SnackbarContext } from '@app/app';
 import { RefetchFunction } from 'axios-hooks';
 import { urlTest } from '@shared/utils/url.utils';
 import { sortItemsByLabel } from '@shared/utils/sort.utils';
+import { LoaderThree } from '@shared/svg/loader-three';
 
 export const EditRecette = (): JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
@@ -96,6 +97,18 @@ const TSXForm = (props: any): JSX.Element => {
   } = props;
   // @ts-ignore
   const recettesTags = Object.values(RecetteTags);
+  const imageWebInputRef = useRef<HTMLDivElement>(null);
+  const [previewSize, setPreviewSize] = useState<number>(0);
+  const [previewImg, setPreviewImg] = useState({ url: '', pending: false });
+  useEffect(() => {
+    setPreviewSize(imageWebInputRef.current?.offsetHeight ?? 50);
+    initializeUrlTest(values.url)
+  }, []);
+
+  const initializeUrlTest = (val: string): void => {
+    setPreviewImg({ url: val, pending: true });
+    urlTest(val ?? '', undefined, true).then(res => setPreviewImg({ url: res.url, pending: false }));
+  };
 
   return (
     <form onSubmit={handleSubmit} autoComplete='off'>
@@ -111,18 +124,28 @@ const TSXForm = (props: any): JSX.Element => {
         helperText={touched.label ? errors.label : ''}
         error={touched.label && Boolean(errors.label)}
       />
-      <TextField
-        label='Image Web*'
-        placeholder='https://potee-egal-choucroute.de'
-        type='text'
-        name='url'
-        value={values.url}
-        variant='outlined'
-        onChange={handleChange}
-        helperText={touched.url ? errors.url : ''}
-        error={touched.url && Boolean(errors.url)}
-        className='inputs'
-      />
+      <div className='image-web'>
+        <TextField
+          label='Image Web*'
+          placeholder='https://potee-egal-choucroute.de'
+          type='text'
+          name='url'
+          value={values.url}
+          variant='outlined'
+          onChange={event => {
+            initializeUrlTest(event.target.value)
+            return handleChange(event);
+          }}
+          helperText={touched.url ? errors.url : ''}
+          error={touched.url && Boolean(errors.url)}
+          className='inputs'
+          ref={imageWebInputRef}
+        />
+        {!previewImg?.pending && (
+          <img src={previewImg.url} alt='' style={{ height: previewSize + 'px', width: previewSize + 'px' }} />
+        )}
+        {previewImg?.pending && <LoaderThree />}
+      </div>
       <Autocomplete
         multiple
         className='inputs'
@@ -186,11 +209,13 @@ const TSXForm = (props: any): JSX.Element => {
                       groupBy={option => option.label[0]}
                       options={[
                         { id: '', label: '', quantity: null },
-                        ...sortItemsByLabel(articlesData?.map((ad: ItemBase) => ({
-                          id: ad.id,
-                          label: ad.label,
-                          quantity: null,
-                        })) || []),
+                        ...sortItemsByLabel(
+                          articlesData?.map((ad: ItemBase) => ({
+                            id: ad.id,
+                            label: ad.label,
+                            quantity: null,
+                          })) || [],
+                        ),
                       ]}
                       disableClearable={true}
                       getOptionDisabled={opt => values.articlesList.some((v: { id: number }) => v.id === opt.id)}

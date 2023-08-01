@@ -1,10 +1,22 @@
 import axios from 'axios';
 
-export async function urlTest(url: string, defaultUrl?: string): Promise<{ typeUrl: string; url: string }> {
+export async function urlTest(
+  url: string,
+  defaultUrl?: string,
+  callbackInitialValue?: boolean,
+): Promise<{ typeUrl: string; url: string }> {
   return axios
     .get(url)
     .then(() => ({ url: url, typeUrl: 'correct' }))
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
+      if (callbackInitialValue) {
+        if (err) {
+          return {url: '', typeUrl: 'incorrect'}
+        }
+        return { url: url, typeUrl: 'default' };
+      }
+
       if (defaultUrl) {
         return { url: defaultUrl, typeUrl: 'default' };
       } else {

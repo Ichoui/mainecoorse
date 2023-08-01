@@ -73,7 +73,7 @@ export const Item = (props: { item: ItemBase; itemRemoved: () => void }): JSX.El
   const [openDialogAddTo, setOpenDialogAddTo] = useState(false);
   const handleDialogAddTo = (open = false) => setOpenDialogAddTo(open);
 
-  const [itemUrl, setItemUrl] = useState({ url: './sand-clock.png', pending: true, typeUrl: '' });
+  const [itemUrl, setItemUrl] = useState({ url: '', pending: true, typeUrl: '' });
   useEffect(() => {
     urlTest(item?.url ?? '').then(res => setItemUrl({ url: res.url, pending: false, typeUrl: res.typeUrl }));
   }, [item?.url, setItemUrl]);

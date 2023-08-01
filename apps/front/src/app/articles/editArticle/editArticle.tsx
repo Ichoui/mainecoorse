@@ -5,13 +5,14 @@ import { Autocomplete, Button, Chip, TextField } from '@mui/material';
 import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
 import * as yup from 'yup';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import { ArticleTags, ISnackbar, ItemBase } from '@shared-interfaces/items';
 import { configAxios } from '@shared/hooks/axios.config';
 import { RefetchFunction } from 'axios-hooks';
 import { SnackbarContext } from '@app/app';
 import { urlTest } from '@shared/utils/url.utils';
+import { LoaderThree } from '@shared/svg/loader-three';
 
 export const EditArticle = (): JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
@@ -80,7 +81,6 @@ const ArticleForm = (props: {
   setSnackValues: ({ open, message, severity }: ISnackbar) => void;
 }): JSX.Element => {
   const { handleRemove, isNewArticle, openDialogConfirmation, item, navigation, setSnackValues } = props;
-
   const [{ loading }, saveData] = configAxios({
     url: 'articles',
     method: isNewArticle ? 'POST' : 'PUT',
@@ -91,13 +91,16 @@ const ArticleForm = (props: {
   // @ts-ignore
   const articlesTags = Object.values(ArticleTags);
 
+  const imageWebInputRef = useRef<HTMLDivElement>(null);
+  const [previewSize, setPreviewSize] = useState<number>(0);
+  const [previewImg, setPreviewImg] = useState({ url: '', pending: false });
+
   const initialValues: Partial<ItemBase> = {
     label: item?.label,
     url: item?.url,
     description: item?.description,
     tags: item?.tags,
   };
-
   const validationSchema = yup.object().shape({
     label: yup
       .string()
@@ -119,6 +122,16 @@ const ArticleForm = (props: {
     onSubmit: values => submit(values, saveData, navigation, setSnackValues, isNewArticle),
   });
 
+  useEffect(() => {
+    setPreviewSize(imageWebInputRef.current?.offsetHeight ?? 50);
+    initializeUrlTest(item?.url)
+  }, []);
+
+  const initializeUrlTest = (val: string): void => {
+    setPreviewImg({ url: val, pending: true });
+    urlTest(val ?? '', undefined, true).then(res => setPreviewImg({ url: res.url, pending: false }));
+  };
+
   return (
     <form onSubmit={formik.handleSubmit} autoComplete='off'>
       <TextField
@@ -133,19 +146,28 @@ const ArticleForm = (props: {
         helperText={formik.touched.label ? formik.errors.label : ''}
         error={formik.touched.label && Boolean(formik.errors.label)}
       />
-
-      <TextField
-        label='Image Web*'
-        placeholder='https://munster-alsace.de'
-        type='text'
-        name='url'
-        value={formik.values.url}
-        variant='outlined'
-        onChange={formik.handleChange}
-        helperText={formik.touched.url ? formik.errors.url : ''}
-        error={formik.touched.url && Boolean(formik.errors.url)}
-        className='inputs'
-      />
+      <div className='image-web'>
+        <TextField
+          label='Image Web*'
+          placeholder='https://munster-alsace.de'
+          type='text'
+          name='url'
+          value={formik.values.url}
+          variant='outlined'
+          onChange={event => {
+            initializeUrlTest(event.target.value)
+            return formik.handleChange(event);
+          }}
+          helperText={formik.touched.url ? formik.errors.url : ''}
+          error={formik.touched.url && Boolean(formik.errors.url)}
+          className='inputs'
+          ref={imageWebInputRef}
+        />
+        {!previewImg?.pending && (
+          <img src={previewImg.url} alt='' style={{ height: previewSize + 'px', width: previewSize + 'px' }} />
+        )}
+        {previewImg?.pending && <LoaderThree />}
+      </div>
       <Autocomplete
         multiple
         className='inputs'
