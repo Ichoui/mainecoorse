@@ -186,7 +186,7 @@ const TSXForm = (props: any): JSX.Element => {
                       options={[
                         { id: '', label: '', quantity: null },
                         ...(articlesData
-                          .map((ad: ItemBase) => ({ id: ad.id, label: ad.label, quantity: null }))
+                          ?.map((ad: ItemBase) => ({ id: ad.id, label: ad.label, quantity: null }))
                           .sort((a: ItemBase, b: ItemBase) => -b.label[0].localeCompare(a.label[0])) || []),
                       ]}
                       disableClearable={true}
