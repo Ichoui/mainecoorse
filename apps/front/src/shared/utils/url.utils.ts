@@ -9,7 +9,6 @@ export async function urlTest(
     .get(url)
     .then(() => ({ url: url, typeUrl: 'correct' }))
     .catch((err) => {
-      console.log(err);
       if (callbackInitialValue) {
         if (err) {
           return {url: '', typeUrl: 'incorrect'}
