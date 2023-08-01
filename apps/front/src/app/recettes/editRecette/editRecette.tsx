@@ -12,6 +12,7 @@ import { configAxios } from '@shared/hooks/axios.config';
 import { SnackbarContext } from '@app/app';
 import { RefetchFunction } from 'axios-hooks';
 import { urlTest } from '@shared/utils/url.utils';
+import { sortItemsByLabel } from '@shared/utils/sort.utils';
 
 export const EditRecette = (): JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
@@ -185,9 +186,11 @@ const TSXForm = (props: any): JSX.Element => {
                       groupBy={option => option.label[0]}
                       options={[
                         { id: '', label: '', quantity: null },
-                        ...(articlesData
-                          ?.map((ad: ItemBase) => ({ id: ad.id, label: ad.label, quantity: null }))
-                          .sort((a: ItemBase, b: ItemBase) => -b.label[0].localeCompare(a.label[0])) || []),
+                        ...(sortItemsByLabel(articlesData)?.map((ad: ItemBase) => ({
+                          id: ad.id,
+                          label: ad.label,
+                          quantity: null,
+                        })) || []),
                       ]}
                       disableClearable={true}
                       getOptionDisabled={opt => values.articlesList.some((v: { id: number }) => v.id === opt.id)}

@@ -20,7 +20,7 @@ export interface ArticleList {
   id: number;
   label: string;
   quantity: number;
-  url: string
+  url?: string
 }
 
 export interface CoursesArticleList extends ArticleList {
@@ -51,7 +51,10 @@ export enum ArticleTags {
   LEGUMES = 'Légumes',
   FRUITS = 'Fruits',
   VIANDES = 'Viandes',
+  CHARCUTERIE = 'Charcuterie',
   EPICERIE = 'Epicerie',
+  SURGELES = 'Surgelés',
+  CONSERVES = 'Conserves',
   LAITAGES = 'Laitages',
   BOULANGERIE = 'Boulangerie',
   ENTRETIEN = 'Entretien',

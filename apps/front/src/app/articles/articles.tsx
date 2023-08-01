@@ -10,6 +10,7 @@ import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 import MapleNoResults from '/maple-no-results.png';
+import { sortItemsByLabel } from '@shared/utils/sort.utils';
 
 export const Articles = (): JSX.Element => {
   const [{ data, error, loading }, refetchArticles] = configAxios({
@@ -21,7 +22,7 @@ export const Articles = (): JSX.Element => {
   const [filteredArticles, setFilteredArticles] = useState<ItemBase[]>([]);
 
   useEffect(() => {
-    setArticles(data);
+    setArticles(sortItemsByLabel(data));
     setFilteredArticles(data);
   }, [data, loading, error]);
 

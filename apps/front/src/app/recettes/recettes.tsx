@@ -10,6 +10,7 @@ import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import MapleNoResults from '/maple-no-results.png';
 import { configAxios } from '@shared/hooks/axios.config';
+import { sortItemsByLabel } from '@shared/utils/sort.utils';
 
 export const Recettes = (): JSX.Element => {
   const [{ data, error, loading }, refetchRecettes] = configAxios({
@@ -23,7 +24,7 @@ export const Recettes = (): JSX.Element => {
   const recettesTags = Object.values(RecetteTags);
 
   useEffect(() => {
-    setRecettes(data);
+    setRecettes(sortItemsByLabel(data));
     setFilteredRecettes(data);
   }, [data, loading, error]);
 
