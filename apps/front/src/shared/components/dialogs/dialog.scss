@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  font-size: 1.2rem;
   img {
     width: fit-content;
     height: 200px;
@@ -23,12 +24,20 @@
     justify-content: center;
     height: 200px;
   }
+  .complements, .description  {
+    margin: 5px;
+  }
 
   .tags {
     display: flex;
     gap: 5px;
+    padding: 10px 0;
   }
   .ingredients-listing {
+    img {
+      width: 20px;
+      height: 20px;
+    }
     p {
       margin: 0;
       padding-left: 10px;

@@ -102,14 +102,14 @@ const ArticleForm = (props: {
     label: yup
       .string()
       .min(2, 'Pas assez de lettres 😬')
-      .max(25, 'Trop de lettres 😡')
+      .max(40, 'Trop de lettres 😡')
       .required('A remplir, banane ! 🍌'),
     url: yup
       .string()
       .url('Gruge pas, on veut un lien pas long !')
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
-    description: yup.string().max(512, 'Trop long ton fichu texte ! 😡').required('Un autographe svp 🖋️'),
+    description: yup.string().max(1024, 'Trop long ton fichu texte ! 😡').required('Un autographe svp 🖋️'),
     tags: yup.array().min(1, 'Tu voulais des tags, tu les mets ! 🧌').required(),
   });
 
@@ -146,19 +146,6 @@ const ArticleForm = (props: {
         error={formik.touched.url && Boolean(formik.errors.url)}
         className='inputs'
       />
-      <TextField
-        label='Description*'
-        placeholder='On se fait une petite Raclette, une Tartiflette ou une Fondue ? 🫕'
-        name='description'
-        value={formik.values.description}
-        variant='outlined'
-        onChange={formik.handleChange}
-        helperText={formik.touched.description ? formik.errors.description : ''}
-        error={formik.touched.description && Boolean(formik.errors.description)}
-        className='inputs'
-        rows={4}
-        multiline
-      />
       <Autocomplete
         multiple
         className='inputs'
@@ -181,6 +168,20 @@ const ArticleForm = (props: {
           />
         )}
       />
+      <TextField
+        label='Description*'
+        placeholder='On se fait une petite Raclette, une Tartiflette ou une Fondue ? 🫕'
+        name='description'
+        value={formik.values.description}
+        variant='outlined'
+        onChange={formik.handleChange}
+        helperText={formik.touched.description ? formik.errors.description : ''}
+        error={formik.touched.description && Boolean(formik.errors.description)}
+        className='inputs'
+        minRows={3}
+        multiline
+      />
+
       <div className='actions'>
         {!isNewArticle && (
           <Button

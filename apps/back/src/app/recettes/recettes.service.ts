@@ -27,6 +27,7 @@ export class RecettesService {
         return query.map(recette => {
           const articlesList = recette.recetteArticle.map(ra => ({
             id: ra.article.id,
+            url: ra.article.url,
             quantity: ra.quantity,
             label: ra.article.label,
           }));

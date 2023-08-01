@@ -12,10 +12,10 @@ export class ArticlesEntity extends BaseEntity implements ItemBase {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 40 })
   label: string;
 
-  @Column({ type: 'varchar', length: 512 })
+  @Column({ type: 'varchar', length: 1024 })
   description: string;
 
   @Column({

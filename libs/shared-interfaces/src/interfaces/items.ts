@@ -12,6 +12,7 @@ export interface ItemBase {
   tags: Tags[] | string[];
   articlesList?: ArticleList[];
 
+  complements?: string;
   tableIdentifier?: number; // calendar Items, from days or divers table
 }
 
@@ -19,6 +20,7 @@ export interface ArticleList {
   id: number;
   label: string;
   quantity: number;
+  url: string
 }
 
 export interface CoursesArticleList extends ArticleList {
@@ -64,7 +66,7 @@ export enum RecetteTags {
   ENTREE = 'Entrée',
   PLAT = 'Plat',
   DESSERT = 'Dessert',
-  PETIT_DEJEUNER = 'PetitDéjeuner',
+  PETIT_DEJEUNER = 'Petit Déjeuner',
   COURT = 'Court',
   MOYEN = 'Moyen',
   LONG = 'Long',

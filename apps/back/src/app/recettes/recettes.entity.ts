@@ -11,11 +11,14 @@ export class RecettesEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 40 })
   label: string;
 
-  @Column({ type: 'varchar', length: 512 })
+  @Column({ type: 'varchar', length: 1024 })
   description: string;
+
+  @Column({ type: 'varchar', length: 1024, nullable: true })
+  complements: string;
 
   @Column({
     type: 'enum',

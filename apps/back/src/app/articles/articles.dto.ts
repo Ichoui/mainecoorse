@@ -8,12 +8,12 @@ export class ArticlesCreateDto {
 
   @IsNotEmpty()
   @IsString()
-  @MaxLength(25)
+  @MaxLength(40)
   label: string;
 
   @IsNotEmpty()
   @IsString()
-  @MaxLength(512)
+  @MaxLength(1024)
   description: string;
 
   @IsNotEmpty()

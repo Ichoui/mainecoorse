@@ -23,9 +23,11 @@ export class DiversService {
         'recette.url',
         'recette.tags',
         'recette.itemType',
+        'recette.complements',
         'recetteArticle.quantity',
         'article.id',
         'article.label',
+        'article.url'
       ])
       .where('divers.recette is not null')
       .getMany()
@@ -38,10 +40,12 @@ export class DiversService {
           url: r.recette.url,
           tags: r.recette.tags,
           itemType: r.recette.itemType,
+          complements: r.recette.complements,
           articlesList: r.recette.recetteArticle.map(ra => ({
             id: ra.article.id,
             quantity: ra.quantity,
             label: ra.article.label,
+            url: ra.article.url
           })),
         })),
       );

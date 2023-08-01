@@ -122,19 +122,6 @@ const TSXForm = (props: any): JSX.Element => {
         error={touched.url && Boolean(errors.url)}
         className='inputs'
       />
-      <TextField
-        label='Description*'
-        placeholder='Qui a dit que le magret et la choucroute ça se mariait pas bien ? 🦆'
-        name='description'
-        value={values.description}
-        variant='outlined'
-        onChange={handleChange}
-        helperText={touched.description ? errors.description : ''}
-        error={touched.description && Boolean(errors.description)}
-        className='inputs'
-        rows={4}
-        multiline
-      />
       <Autocomplete
         multiple
         className='inputs'
@@ -159,6 +146,30 @@ const TSXForm = (props: any): JSX.Element => {
           />
         )}
       />
+      <TextField
+        label='Description*'
+        placeholder='Qui a dit que le magret et la choucroute ça se mariait pas bien ? 🦆'
+        name='description'
+        value={values.description}
+        variant='outlined'
+        onChange={handleChange}
+        helperText={touched.description ? errors.description : ''}
+        error={touched.description && Boolean(errors.description)}
+        className='inputs'
+        minRows={3}
+        multiline
+      />
+      <TextField
+        label='Compléments'
+        placeholder='Un peu de Sel ou de Poivre ? 🧂e'
+        name='complements'
+        value={values?.complements ?? ''}
+        variant='outlined'
+        onChange={handleChange}
+        className='inputs'
+        minRows={3}
+        multiline
+      />
 
       <div className='articlesList'>
         <FieldArray name='articlesList'>
@@ -167,43 +178,50 @@ const TSXForm = (props: any): JSX.Element => {
               {(values.articlesList as ArticleList[])?.map((p, index) => {
                 return (
                   <div key={index} className='articlesListForm'>
-                    <TextField
-                      select // because of outlined label does not display with <Select> tag ... bug
-                      label='Article'
+                    <Autocomplete
                       className='article'
-                      name={`articlesList[${index}].label`}
-                      value={p?.label ?? ''}
-                      defaultValue={p?.label ?? ''}
-                      variant='outlined'
-                      helperText={
-                        touched.articlesList && errors?.articlesList?.[index]?.label
-                          ? errors?.articlesList[index].label
-                          : ''
-                      }
-                      error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.label)}
-                    >
-                      {articlesData?.map((art: ItemBase) => (
-                        <MenuItem
-                          key={`${art.id}-${index}`}
-                          value={art.label}
-                          disabled={values.articlesList?.some((v: any) => v.id === art.id)}
-                          onClick={() =>
-                            setFieldValue(`articlesList[${index}]`, {
-                              id: art.id,
-                              label: art.label,
-                              quantity: values.articlesList[index]?.quantity ?? 1, // On peut dissocier l'ajout d'un article et de la quantité :)
-                            })
+                      size='small'
+                      value={p}
+                      groupBy={option => option.label[0]}
+                      options={[
+                        { id: '', label: '', quantity: null },
+                        ...(articlesData
+                          .map((ad: ItemBase) => ({ id: ad.id, label: ad.label, quantity: null }))
+                          .sort((a: ItemBase, b: ItemBase) => -b.label[0].localeCompare(a.label[0])) || []),
+                      ]}
+                      disableClearable={true}
+                      getOptionDisabled={opt => values.articlesList.some((v: { id: number }) => v.id === opt.id)}
+                      filterSelectedOptions={true}
+                      getOptionLabel={art => (art?.label ? art.label : '')}
+                      isOptionEqualToValue={(opt, val) => opt.id === val.id}
+                      onChange={(e: object, art: ArticleList | null) => {
+                        setFieldValue(`articlesList[${index}]`, {
+                          id: art?.id,
+                          label: art?.label,
+                          quantity: values.articlesList[index]?.quantity ?? 1, // On peut dissocier l'ajout d'un article et de la quantité :)
+                        });
+                      }}
+                      renderInput={params => (
+                        <TextField
+                          {...params}
+                          variant='outlined'
+                          label={index >= 1 ? 'Article' : 'Article*'}
+                          error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.label)}
+                          helperText={
+                            touched.articlesList && errors?.articlesList?.[index]?.label
+                              ? errors?.articlesList[index].label
+                              : ''
                           }
-                        >
-                          {art.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                        />
+                      )}
+                    />
+
                     <TextField
                       label='Qte'
                       className='quantity'
                       name={`articlesList[${index}].quantity`}
                       value={p.quantity}
+                      size='small'
                       type='number'
                       variant='outlined'
                       helperText={
@@ -220,7 +238,8 @@ const TSXForm = (props: any): JSX.Element => {
                   </div>
                 );
               })}
-              <Button onClick={() => push({ quantity: '', label: '' })} variant='outlined'>
+
+              <Button onClick={() => push({ id: '', quantity: '', label: '' })} variant='outlined'>
                 Ajouter
               </Button>
               <Typography color='error'>
@@ -278,31 +297,33 @@ const RecetteForm = withFormik({
     description: props.item?.description,
     tags: props.item?.tags,
     articlesList: props.item?.articlesList ?? [{ label: '', quantity: '', id: null }],
+    complements: props.item?.complements,
   }),
   validationSchema: yup.object().shape({
     label: yup
       .string()
       .min(2, 'Pas assez de lettres 😬')
-      .max(25, 'Trop de lettres 😡')
+      .max(40, 'Trop de lettres 😡')
       .required('A remplir, banane ! 🍌'),
     url: yup
       .string()
       .url("C'est pas une vrai URL ça 🙀")
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
-    description: yup.string().max(256, 'Trop long ton fichu texte ! 😡').required('Encore un autographe svp 🖋️️'),
+    description: yup.string().max(1024, 'Trop long ton fichu texte ! 😡').required('Encore un autographe svp 🖋️️'),
     articlesList: yup
       .array()
       .of(
         yup.object().shape({
           id: yup.number().required(),
-          label: yup.string().required('Fait-un effort ! 🏋'),
-          quantity: yup.number().min(1, '0 ? Nope !').required('0+0=😬'),
+          label: yup.string().required('Un dernier effort... 🏋🏼‍♀️'),
+          quantity: yup.number().min(1, '0 ? Tu rêves').required(`0+0=😬`),
         }),
       )
-      .min(2, 'Une recette avec un seul ingrédient... Voyons donc ! 🫠')
-      .required('Au moins 2 ingrédients !'),
+      .min(1, 'Une recette sans ingrédients... Voyons donc ! 🫠')
+      .required('Met-moi un fichu ingrédient ! 🚨'),
     tags: yup.array().min(1, 'NAMEHO ! Mets-en au moins 1 quoi ! 🧌').required('O-BLI-GA-TOIRE, OK ? 🤬'),
+    complements: yup.string().optional(),
   }),
   handleSubmit: (values, formikBag) => {
     const { isNewRecette, navigation, setSnackValues, saveData } = formikBag.props;
