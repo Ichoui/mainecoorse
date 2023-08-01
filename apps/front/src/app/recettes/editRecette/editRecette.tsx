@@ -186,7 +186,7 @@ const TSXForm = (props: any): JSX.Element => {
                       groupBy={option => option.label[0]}
                       options={[
                         { id: '', label: '', quantity: null },
-                        ...(sortItemsByLabel(articlesData)?.map((ad: ItemBase) => ({
+                        ...sortItemsByLabel(articlesData?.map((ad: ItemBase) => ({
                           id: ad.id,
                           label: ad.label,
                           quantity: null,
