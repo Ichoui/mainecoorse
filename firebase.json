@@ -4,7 +4,9 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "dist/apps/back",
+      "apps/back"
     ],
     "rewrites": [
       {
@@ -12,5 +14,18 @@
         "destination": "/index.html"
       }
     ]
-  }
+  },
+  "functions": [
+    {
+      "source": "dist/apps/back",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "dist/apps/front",
+        "apps/front"
+      ]
+    }
+  ]
 }

@@ -1,10 +1,30 @@
 # Mainecoorse
 
-https://nx.dev/react-tutorial/1-code-generation
+https://nx.dev/react-tutorial/1-code-generation 
+
 https://nx.dev/packages/nest
 
+## Description
 
-## Generate code
+Nest et Firebase utilisation [NESTxFIREBASE](https://reza-rahmati.medium.com/setup-nest-and-firebase-functions-in-a-new-project-631ba1435289)
+
+Autre lien helpful : https://itnext.io/nx-nest-firebase-the-dream-616e8ee71920 
+
+## Journal de Debug GCP
+https://console.cloud.google.com/welcome?authuser=0&hl=fr&project=mainecoorse 
+Menu > Journaux > Explorateur de journaux
+
+Permet de voir tous logs d'erreur
+
+
+## PostgreSQL
+
+Tester la base de prod sans proxy : depuis le fichier .env, il faut remplacer les logins et le host équivalent à la prod, mais pas le mode
+
+
+
+----------------------------------------------------------
+## Generate code with NX
 
 If you happen to use Nx plugins, you can leverage code generators that might come with it.
 

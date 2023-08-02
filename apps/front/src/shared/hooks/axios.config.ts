@@ -5,7 +5,11 @@ export const headers = {
 };
 
 export const axiosUrl = (url: string) => {
-  const baseUrl = 'http://localhost:3945/api/mc/';
+  // console.log(import.meta.env);
+  // https://vitejs.dev/guide/env-and-mode.html
+  // const baseUrl = 'http://localhost:3945/mc/';
+  const baseUrl = 'https://us-central1-mainecoorse.cloudfunctions.net/mc/';
+  // const baseUrl = 'http://localhost:5000/mainecoorse/us-central1/mc/';
   return baseUrl + url;
 };
 

@@ -1,18 +1,16 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-import { Logger } from '@nestjs/common';
+import { Logger, NestApplicationOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { json, urlencoded } from 'express';
 import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app/app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import morgan from 'morgan';
+import * as functions from 'firebase-functions';
+import express from 'express';
+import { Express } from 'express-serve-static-core';
 
 const defaultWinstonLoggerOptions: winston.LoggerOptions = {
   level: process.env['LOG_LEVEL'],
@@ -30,10 +28,11 @@ const defaultWinstonLoggerOptions: winston.LoggerOptions = {
   transports: [new winston.transports.Console({ handleExceptions: true })],
   exitOnError: false,
 };
+const server = express();
 
-async function bootstrap() {
+async function bootstrap(server: Express | NestApplicationOptions) {
   // const app = await NestFactory.create(AppModule);
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(server), {
     logger: WinstonModule.createLogger(defaultWinstonLoggerOptions),
   });
   const logger = new Logger('Main');
@@ -49,17 +48,27 @@ async function bootstrap() {
     }),
   );
 
-  const globalPrefix = 'api/mc';
-  app.setGlobalPrefix(globalPrefix);
+  const secondSegmentPrefix = 'mc';
+  // app.setGlobalPrefix(secondSegmentPrefix);
 
+  app.disable('x-powered-by');
+  app.disable('X-Powered-By');
   app.enableCors();
   app.use(cookieParser());
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
-  const port = process.env.PORT || 3945;
-  await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  if (process.env.MODE === 'DEV') {
+    // On prod mode, app don't need to listen at a port, due to firebase cloud functions which already do that
+    const port = process.env.PORT || 3945;
+    await app.listen(port);
+    Logger.log(`🚀 Application is running on: http://localhost:${port}/${secondSegmentPrefix}`);
+  }
+  return app.init();
 }
 
-bootstrap();
+bootstrap(server)
+  .then(() => console.warn(`🚀 Application is running on: http://${process.env.URL_FIREBASE_BACK}`))
+  .catch(err => console.error('Erreur depuis main.ts', err));
+
+export const mc = functions.https.onRequest(server); // api const is the entry point
