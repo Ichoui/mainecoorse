@@ -68,7 +68,7 @@ async function bootstrap(server: Express | NestApplicationOptions) {
 }
 
 bootstrap(server)
-  .then(() => console.warn(`🚀 Application is running on: http://${process.env.URL_FIREBASE_BACK}`))
+  .then(() => console.warn(`🚀 Application is running on: http://ALLEZ LE FOOT`))
   .catch(err => console.error('Erreur depuis main.ts', err));
 
 export const mc = functions.https.onRequest(server); // api const is the entry point
