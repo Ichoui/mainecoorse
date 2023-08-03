@@ -47,8 +47,9 @@ export class RecetteArticleService {
       return await this._recettesArticleEntityRepository
         .save(entities)
         .then(res => {
-          this._recettesArticleEntityRepository.remove(articlesToRemove).then(() => {
+          this._recettesArticleEntityRepository.remove(articlesToRemove).catch(() => {
             // pas beau mais faut aller manger et j'ai pas envie de le faire bien, si toi, openSourceLover tu me vois, ne me juge pas :D
+            // TODO à refaire car ça pète en prod...
             throw new NotFoundException('Erreur suppression when upsert');
           });
           return res;

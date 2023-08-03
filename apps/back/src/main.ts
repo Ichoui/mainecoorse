@@ -38,7 +38,7 @@ async function createServer(server: Express | NestApplicationOptions) {
       logger: WinstonModule.createLogger(defaultWinstonLoggerOptions),
       cors: {
         // https://github.com/expressjs/cors#configuration-options
-        origin: [process.env.DB_HOST, 'http://localhost:1418', process.env.FRONT_URL],
+        origin: [process.env.DB_HOST, 'http://localhost:1418', process.env.FRONT_URL, 'http://localhost:5000'],
         methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
       },
     },

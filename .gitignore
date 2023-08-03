@@ -46,3 +46,4 @@ firebase-debug.log
 
 /apps/front/environments/.env
 /apps/front/environments/.env.production
+/firebase-debug.1.log
