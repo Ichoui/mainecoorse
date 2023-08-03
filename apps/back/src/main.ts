@@ -65,7 +65,7 @@ async function createServer(server: Express | NestApplicationOptions) {
   // app.enableCors({
   // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   // allowedHeaders: ['Content-Type', 'Access-Control-Allow-Origin'],
-  // origin: ['http://localhost:1418', 'https://mainecoorse.web.app', '5.196.224.11'],
+  // origin: ['http://localhost:1418', '', ''],
   // preflightContinue: false,
   // });
 
