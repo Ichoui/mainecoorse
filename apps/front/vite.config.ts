@@ -5,6 +5,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/front',
   plugins: [tsconfigPaths(), react()],
+  envDir:'environments',
   server: {
     port: 1418,
     host: 'localhost',

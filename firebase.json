@@ -1,13 +1,7 @@
 {
   "hosting": {
     "public": "dist/apps/front",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**",
-      "dist/apps/back",
-      "apps/back"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "dist/apps/back", "apps/back"],
     "rewrites": [
       {
         "source": "**",
@@ -18,14 +12,7 @@
   "functions": [
     {
       "source": "dist/apps/back",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "dist/apps/front",
-        "apps/front"
-      ]
+      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log", "dist/apps/front", "apps/front"]
     }
   ]
 }

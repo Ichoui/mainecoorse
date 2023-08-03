@@ -2,15 +2,24 @@ import useAxios from 'axios-hooks';
 
 export const headers = {
   maple: true,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  // 'Access-Control-Allow-Origin': '*',
 };
 
 export const axiosUrl = (url: string) => {
-  // console.log(import.meta.env);
   // https://vitejs.dev/guide/env-and-mode.html
-  // const baseUrl = 'http://localhost:3945/mc/';
-  const baseUrl = 'https://us-central1-mainecoorse.cloudfunctions.net/mc/';
-  // const baseUrl = 'http://localhost:5000/mainecoorse/us-central1/mc/';
-  return baseUrl + url;
+  let baseUrl;
+  const prefix = 'mc/'
+  const env: ImportMetaEnv = import.meta.env;
+  if (env.VITE_DEBUG_MODE === 'true' && env.DEV) {
+    baseUrl = env.VITE_HOST_FUNCTION;
+  } else if (env.VITE_DEBUG_PROD_MODE === 'true' && env.DEV) {
+    baseUrl = env.VITE_HOST_PROD;
+  } else {
+    baseUrl = env.VITE_HOST;
+  }
+
+  return baseUrl + prefix + url;
 };
 
 export const configAxios = (props: {
@@ -19,7 +28,7 @@ export const configAxios = (props: {
   autoCancel?: boolean;
   manual?: boolean;
   useCache?: boolean;
-  params?: unknown
+  params?: unknown;
 }) => {
   const { url, method, manual = false, autoCancel = true, useCache = false, params } = props;
   // eslint-disable-next-line react-hooks/rules-of-hooks

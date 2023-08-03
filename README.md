@@ -21,6 +21,26 @@ Permet de voir tous logs d'erreur
 
 Tester la base de prod sans proxy : depuis le fichier .env, il faut remplacer les logins et le host équivalent à la prod, mais pas le mode
 
+## Environnements
+### Front
+Voir dans le dossier environnements
+
+### Back 
+Voir à la racine du projet
+
+
+## Deploymenet
+
+Front<br>
+`npm run build:front`<br>
+`npm run firebase:deploy:front`
+
+Back<br>
+`npm run build:back`<br>
+`npm run firebase:deploy:back`
+
+A noter : lors du build du back, il faut que le fichier .env.prod soit envoyé dans '/dist/apps/back' et soit appelé _.env_ 
+
 
 
 ----------------------------------------------------------
