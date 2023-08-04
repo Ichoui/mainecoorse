@@ -14,7 +14,7 @@ Autre lien helpful : https://itnext.io/nx-nest-firebase-the-dream-616e8ee71920
 https://console.cloud.google.com/welcome?authuser=0&hl=fr&project=mainecoorse 
 Menu > Journaux > Explorateur de journaux
 
-Permet de voir tous logs d'erreur
+Permet de voir tous logs d'erreur.
 
 
 ## PostgreSQL

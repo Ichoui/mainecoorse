@@ -7,67 +7,46 @@ import { AppModule } from './app/app.module';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
-import morgan from 'morgan';
 import * as functions from 'firebase-functions';
 import { Express } from 'express-serve-static-core';
+import morgan from 'morgan';
 
-const defaultWinstonLoggerOptions: winston.LoggerOptions = {
-  level: process.env['LOG_LEVEL'],
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json(),
-    winston.format.splat(),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    winston.format.printf((meta: any) => {
-      const message = typeof meta.message === 'undefined' ? JSON.stringify(meta) : meta.message;
-      const context: string = meta.context || meta.stack?.join?.('|') || 'Undefined';
-      return `${meta.timestamp} [${context}] ${meta.level}: ${message.trim()}`;
-    }),
-  ),
-  transports: [new winston.transports.Console({ handleExceptions: true })],
-  exitOnError: false,
-};
 const server = express();
-
 async function createServer(server: Express | NestApplicationOptions) {
-  // const app = await NestFactory.create(AppModule);
+  const cors = {
+    // https://github.com/expressjs/cors#configuration-options
+    origin: [process.env.DB_HOST, 'http://localhost:1418', process.env.FRONT_URL, 'http://localhost:5000'],
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+  };
+  let options: NestApplicationOptions;
+
+  if (process.env.MODE === 'DEV') {
+    const defaultWinstonLoggerOptions: winston.LoggerOptions = {
+      level: process.env['LOG_LEVEL'],
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+        winston.format.splat(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        winston.format.printf((meta: any) => {
+          const message = typeof meta.message === 'undefined' ? JSON.stringify(meta) : meta.message;
+          const context: string = meta.context || meta.stack?.join?.('|') || 'Undefined';
+          return `${meta.timestamp} [${context}] ${meta.level}: ${message.trim()}`;
+        }),
+      ),
+      transports: [new winston.transports.Console({ handleExceptions: true })],
+      exitOnError: false,
+    };
+    options = { logger: WinstonModule.createLogger(defaultWinstonLoggerOptions), cors };
+  } else {
+    options = { cors };
+  }
+
   const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(
     AppModule,
     new ExpressAdapter(server),
-    {
-      logger: WinstonModule.createLogger(defaultWinstonLoggerOptions),
-      cors: {
-        // https://github.com/expressjs/cors#configuration-options
-        origin: [process.env.DB_HOST, 'http://localhost:1418', process.env.FRONT_URL, 'http://localhost:5000'],
-        methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-      },
-    },
+    options,
   );
-  const logger = new Logger('Main');
-
-  // use winston on myself!
-  app.use(
-    morgan('dev', {
-      stream: {
-        write(str: string) {
-          logger.debug(str);
-        },
-      },
-    }),
-  );
-
-  // app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-  // res.header('Access-Control-Allow-Origin', ['', '', 'http://localhost:1418']);
-  // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
-  // next();
-  // });
-
-  // app.enableCors({
-  // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  // allowedHeaders: ['Content-Type', 'Access-Control-Allow-Origin'],
-  // origin: ['http://localhost:1418', '', ''],
-  // preflightContinue: false,
-  // });
 
   app.disable('x-powered-by');
   app.disable('X-Powered-By');
@@ -78,6 +57,17 @@ async function createServer(server: Express | NestApplicationOptions) {
   if (process.env.MODE === 'DEV') {
     const prefix = 'mc';
     const port = 3945;
+    const logger = new Logger('Main');
+    // use winston on myself!
+    app.use(
+      morgan('dev', {
+        stream: {
+          write(str: string) {
+            logger.debug(str);
+          },
+        },
+      }),
+    );
 
     // On prod mode, app don't need to listen at a port, due to firebase cloud functions which already do that
     app.setGlobalPrefix(prefix); // Seulement ici, la const exportée de la Firebase Fonction fait office de préfixe ...
