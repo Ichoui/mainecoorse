@@ -1,8 +1,5 @@
 # Mainecoorse
 
-https://nx.dev/react-tutorial/1-code-generation 
-
-https://nx.dev/packages/nest
 
 ## Description
 
@@ -14,7 +11,9 @@ Autre lien helpful : https://itnext.io/nx-nest-firebase-the-dream-616e8ee71920
 https://console.cloud.google.com/welcome?authuser=0&hl=fr&project=mainecoorse 
 Menu > Journaux > Explorateur de journaux
 
-Permet de voir tous logs d'erreur.
+Permet de voir tous logs d'erreur via GCP
+
+A noter : URL trouvable depuis l'interface Firebase Functions, en cliquant sur la fonction !
 
 
 ## PostgreSQL
@@ -23,13 +22,14 @@ Tester la base de prod sans proxy : depuis le fichier .env, il faut remplacer le
 
 ## Environnements
 ### Front
-Voir dans le dossier environnements
+Voir dans le dossier environnements du projet front
 
 ### Back 
-Voir à la racine du projet
+Voir à la racine du projet back
 
 
-## Deploymenet
+## Deploymenent
+Fichier de config firebase.json > https://firebase.google.com/docs/hosting/full-config?hl=fr
 
 Front<br>
 `npm run build:front`<br>
@@ -45,6 +45,11 @@ A noter : lors du build du back, il faut que le fichier .env.prod soit envoyé d
 
 ----------------------------------------------------------
 ## Generate code with NX
+
+## NX x ReactJS
+https://nx.dev/react-tutorial/1-code-generation
+
+https://nx.dev/packages/nest
 
 If you happen to use Nx plugins, you can leverage code generators that might come with it.
 

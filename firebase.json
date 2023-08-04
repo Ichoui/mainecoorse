@@ -6,6 +6,9 @@
       {
         "source": "**",
         "destination": "/index.html"
+      },{
+        "source": "/mc",
+        "function": "mc"
       }
     ]
   },
