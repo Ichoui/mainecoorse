@@ -25,6 +25,7 @@
 
       &.incorrect {
         // Case where image is icon
+        filter: blur(3px) drop-shadow(6px 6px 10px red) invert(70%);
       }
     }
     .isLoadingImage {

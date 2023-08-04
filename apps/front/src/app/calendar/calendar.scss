@@ -70,10 +70,13 @@
         width: 90%;
         text-align: center;
       }
+      .chip {
+        width: 45%;
+      }
       .MuiChip-root {
         display: flex;
         justify-content: space-between;
-        width: 8em;
+        //width: 8em;
         -webkit-user-drag: element;
 
         span {

@@ -17,6 +17,7 @@ export const DraggedChips = (props: {
       {(provided, snapshot) => (
         <div
           style={{ opacity: snapshot.isDragging ? 0.4 : 1 }}
+          className='chip'
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
