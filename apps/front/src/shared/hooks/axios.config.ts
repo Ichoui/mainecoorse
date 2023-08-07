@@ -9,13 +9,13 @@ export const headers = {
 export const axiosUrl = (url: string) => {
   // https://vitejs.dev/guide/env-and-mode.html
   let baseUrl;
-  const prefix = 'mc/'
   const env: ImportMetaEnv = import.meta.env;
+  const prefix = env.VITE_PREFIX;
   if (env.VITE_DEBUG_MODE === 'true' && env.DEV) {
     baseUrl = env.VITE_HOST_FUNCTION;
   } else if (env.VITE_DEBUG_PROD_MODE === 'true' && env.DEV) {
     baseUrl = env.VITE_HOST_PROD;
-  } else {
+  } else if (env.PROD) {
     baseUrl = env.VITE_HOST;
   }
 
