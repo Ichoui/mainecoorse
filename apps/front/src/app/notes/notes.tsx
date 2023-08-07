@@ -2,7 +2,7 @@ import './notes.scss';
 import { IconButton, TextField } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { Loader } from '@components/loader/loader';
+import { Loader } from '@components/loaders/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 import Map404 from '/map404.png';

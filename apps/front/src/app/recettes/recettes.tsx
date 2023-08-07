@@ -6,7 +6,7 @@ import { AddRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { Loader } from '@components/loader/loader';
+import { Loader } from '@components/loaders/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import MapleNoResults from '/maple-no-results.png';
 import { configAxios } from '@shared/hooks/axios.config';

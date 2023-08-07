@@ -6,14 +6,14 @@ import { AddRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { Loader } from '@components/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 import MapleNoResults from '/maple-no-results.png';
 import { sortItemsByLabel } from '@shared/utils/sort.utils';
+import { Loader } from '@components/loaders/loader/loader';
 
 export const Articles = (): JSX.Element => {
-  const [{ data, error, loading }, refetchArticles] = configAxios({
+  const [{ data, error, loading }, fetchArticles] = configAxios({
     url: 'articles',
     method: 'GET',
     autoCancel: false,
@@ -79,7 +79,7 @@ export const Articles = (): JSX.Element => {
 
       <div className='listing'>
         {filteredArticles?.map((article, i) => (
-          <Item key={i} item={article} itemRemoved={() => refetchArticles()} />
+          <Item key={i} item={article} itemRemoved={() => fetchArticles()} />
         ))}
         {filteredArticles?.length === 0 && !loading && !error && (
           <div className='no-results'>

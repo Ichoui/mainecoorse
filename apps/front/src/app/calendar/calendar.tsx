@@ -7,7 +7,7 @@ import { DragDropContext, useKeyboardSensor, useMouseSensor } from '@hello-pange
 import update from 'immutability-helper';
 import useTouchSensor from './use-touch-sensor';
 import { BinZone } from '@app/calendar/drag-zone/bin-zone';
-import { Loader } from '@components/loader/loader';
+import { Loader } from '@components/loaders/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { axiosUrl, configAxios } from '@shared/hooks/axios.config';
 import { RefetchFunction } from 'axios-hooks';

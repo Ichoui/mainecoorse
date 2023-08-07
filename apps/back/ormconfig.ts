@@ -11,9 +11,9 @@ export default {
   entities: [__dirname + '/**/*.entity.ts'],
   synchronize: env.DB_SYNCHRONIZE === 'true',
   ssl: false,
-  applicationName: 'ORM : Maple le Coon',
-  logNotifications: true, // ?? A tester
-  logging: env.MODE === 'DEV' ? true : ['query', 'error'],
+  applicationName: 'ORM x Maple',
+  logging: env.MODE === 'DEV' ? true : ['error'],
   retryAttempts: 1,
   autoLoadEntities: true,
+
 } as TypeOrmModuleOptions;

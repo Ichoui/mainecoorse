@@ -72,7 +72,6 @@ export class DaysService {
     }
 
     const itemsRequested: ItemBaseWithSlug[] = queryRecette.concat(queryArticle).sort((a, b) => a.id - b.id);
-    console.warn(queryRecette);
     SkeletonDays.forEach(day => (day.items = itemsRequested.filter(item => item.slug === day.slug)));
     return SkeletonDays;
   }
@@ -86,7 +85,6 @@ export class DaysService {
     if (!entity) {
       throw new NotFoundException('L\'entité days n\'existe pas');
     }
-    console.warn(entity);
     return await this._daysEntityRepository.save(entity).then(() => this.getCalendarDays());
   }
 

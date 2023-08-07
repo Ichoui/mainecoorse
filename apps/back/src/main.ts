@@ -80,4 +80,4 @@ createServer(server)
   })
   .catch(err => Logger.error('Erreur depuis main.ts', err));
 
-export const mc = onRequest(server);
+export const mc = onRequest({ maxInstances: 50 }, server);

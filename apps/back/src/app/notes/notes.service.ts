@@ -12,11 +12,9 @@ export class NotesService {
     const entity: NotesEntity = await this._notesEntityRepository.findOne({ where: { oneId: 1 } });
     if (!entity) {
       const createEntity = this._notesEntityRepository.create({ oneId: 1, notes: '' });
-      return this._notesEntityRepository
-        .save(createEntity)
-        .then(() => '');
+      return this._notesEntityRepository.save(createEntity).then(() => '');
     } else {
-      return manageNoteData(entity)
+      return manageNoteData(entity);
     }
   }
 

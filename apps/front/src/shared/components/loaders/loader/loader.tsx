@@ -1,4 +1,4 @@
-import Maple from './maple.png';
+import Maple from '../maple.png';
 import './loader.scss';
 
 export const Loader = (): JSX.Element => {

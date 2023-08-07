@@ -1,4 +1,4 @@
-import React, { createContext, SyntheticEvent, useState } from 'react';
+import React, { createContext, SyntheticEvent, useEffect, useState } from 'react';
 import { IconButton, Tab, Tabs, ThemeProvider } from '@mui/material';
 import {
   CalendarMonthRounded,
@@ -13,6 +13,9 @@ import { backgroundThemeColor, headerThemeColor, themeOptions } from '@styles/th
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { SnackbarPortal } from '@components/snackbarPortal/snackbarPortal';
 import { ISnackbar } from '@shared-interfaces/items';
+import { configAxios } from '@shared/hooks/axios.config';
+import { Loader } from '@components/loaders/loader/loader';
+import { PingBounce } from '@components/loaders/ping-bounce/ping-bounce';
 
 type SnackDefaultValue = {
   snackValues: ISnackbar;
@@ -20,7 +23,9 @@ type SnackDefaultValue = {
 };
 export const SnackbarContext = createContext<SnackDefaultValue>({
   snackValues: { open: false },
-  setSnackValues: () => { /*Init*/},
+  setSnackValues: () => {
+    /*Init*/
+  },
 });
 
 export const App = (): JSX.Element => {
@@ -40,6 +45,25 @@ export const App = (): JSX.Element => {
     setValue(newValue);
 
   const [snackValues, setSnackValues] = useState<ISnackbar>({ open: false });
+
+  const [{}, fetchPing] = configAxios({ method: 'GET', url: 'ping', manual: true });
+
+  const [appReady, setAppReady] = useState(false);
+  useEffect(() => {
+    let timer: NodeJS.Timer;
+    if (!appReady) {
+      // Permet principalement l'attente que la fonction firebase soit chaude
+      // On attend que l'application soit ready pour affichier l'application
+      timer = setInterval(() => {
+        fetchPing().then(e => setAppReady(true));
+      }, 2500);
+    }
+
+    // Rafraîchissez le timeout lors du nettoyage.
+    return () => {
+      clearInterval(timer);
+    };
+  }, [fetchPing, setAppReady, appReady]);
 
   return (
     <ThemeProvider theme={themeOptions}>
@@ -64,11 +88,15 @@ export const App = (): JSX.Element => {
 
       {/* CONTAINER + OUTLET ROUTAGE */}
       <section className='container' style={backgroundThemeColor}>
+        {!appReady && <PingBounce />}
+
         {/*https://stackoverflow.com/questions/65256599/how-to-make-snackbar-a-global-component-withcontext*/}
-        <SnackbarContext.Provider value={{ snackValues, setSnackValues }}>
-          <Outlet />
-          <SnackbarPortal snackValues={snackValues} closeSnackbar={() => setSnackValues({ open: false })} />
-        </SnackbarContext.Provider>
+        {appReady && (
+          <SnackbarContext.Provider value={{ snackValues, setSnackValues }}>
+            <Outlet />
+            <SnackbarPortal snackValues={snackValues} closeSnackbar={() => setSnackValues({ open: false })} />
+          </SnackbarContext.Provider>
+        )}
       </section>
 
       {/* TABS */}

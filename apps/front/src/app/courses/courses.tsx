@@ -4,7 +4,7 @@ import { Button, FormGroup } from '@mui/material';
 import { Coches } from '@app/courses/coches/coches';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { Loader } from '@components/loader/loader';
+import { Loader } from '@components/loaders/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 import { SnackbarContext } from '@app/app';
