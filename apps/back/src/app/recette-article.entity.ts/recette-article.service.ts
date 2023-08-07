@@ -47,16 +47,18 @@ export class RecetteArticleService {
       return await this._recettesArticleEntityRepository
         .save(entities)
         .then(res => {
-          this._recettesArticleEntityRepository.remove(articlesToRemove).catch(() => {
-            // pas beau mais faut aller manger et j'ai pas envie de le faire bien, si toi, openSourceLover tu me vois, ne me juge pas :D
-            // TODO à refaire car ça pète en prod...
-            throw new NotFoundException('Erreur suppression when upsert');
-          });
+          if (articlesToRemove.length > 0) {
+            this._recettesArticleEntityRepository.remove(articlesToRemove).catch((error) => {
+              // pas beau mais faut aller manger et j'ai pas envie de le faire bien, si toi, openSourceLover tu me vois, ne me juge pas :D
+              // TODO à refaire car ça pète en prod...
+              throw new NotFoundException(error, 'Erreur suppression when upsert');
+            });
+          }
           return res;
         })
         .then(res => res.map(r => r.id))
-        .catch(() => {
-          throw new NotFoundException('Erreur enregistrement quand upsert');
+        .catch((error) => {
+          throw new NotFoundException(error,'Erreur enregistrement quand upsert');
         });
     }
 
@@ -78,8 +80,8 @@ export class RecetteArticleService {
 
   async removeRecetteArticleRelation(recetteId: number): Promise<void> {
     const entities = await this._recettesArticleEntityRepository.find({ where: { recetteId: recetteId } });
-    await this._recettesArticleEntityRepository.remove(entities).catch(() => {
-      throw new NotFoundException('Erreur suppression relation RecetteArticle');
+    await this._recettesArticleEntityRepository.remove(entities).catch((error) => {
+      throw new NotFoundException(error,'Erreur suppression relation RecetteArticle');
     });
   }
 

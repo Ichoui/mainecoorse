@@ -1,11 +1,11 @@
-import { Logger, NestApplicationOptions } from '@nestjs/common';
+import { Injectable, Logger, LoggerService, NestApplicationOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import express, { json, urlencoded } from 'express';
 import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app/app.module';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
-import { WinstonModule } from 'nest-winston';
+import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import * as functions from 'firebase-functions';
 import { Express } from 'express-serve-static-core';
@@ -20,7 +20,7 @@ async function createServer(server: Express | NestApplicationOptions) {
   };
   let options: NestApplicationOptions;
 
-  if (process.env.MODE === 'DEV') {
+  // if (process.env.MODE === 'DEV') {
     const defaultWinstonLoggerOptions: winston.LoggerOptions = {
       level: process.env['LOG_LEVEL'],
       format: winston.format.combine(
@@ -31,22 +31,24 @@ async function createServer(server: Express | NestApplicationOptions) {
         winston.format.printf((meta: any) => {
           const message = typeof meta.message === 'undefined' ? JSON.stringify(meta) : meta.message;
           const context: string = meta.context || meta.stack?.join?.('|') || 'Undefined';
-          return `${meta.timestamp} [${context}] ${meta.level}: ${message.trim()}`;
+          return `${process.env.mode === 'DEV' ? meta.timestamp + ' ' :''}[${context}] ${meta.level}> ${message.trim()}`;
         }),
       ),
       transports: [new winston.transports.Console({ handleExceptions: true })],
       exitOnError: false,
     };
+  // eslint-disable-next-line prefer-const
     options = { logger: WinstonModule.createLogger(defaultWinstonLoggerOptions), cors };
-  } else {
-    options = { cors };
-  }
+  // } else {
+  //   options = { cors };
+  // }
 
   const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(
     AppModule,
     new ExpressAdapter(server),
     options,
   );
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
   app.disable('x-powered-by');
   app.disable('X-Powered-By');
@@ -69,10 +71,10 @@ async function createServer(server: Express | NestApplicationOptions) {
       }),
     );
 
-    // On prod mode, app don't need to listen at a port, due to firebase cloud functions which already do that
+    // En mode production, l'application n'a pas besoin d'écouter sur un port, car les fonctions cloud de Firebase le font déjà.
     app.setGlobalPrefix(prefix); // Seulement ici, la const exportée de la Firebase Fonction fait office de préfixe ...
     await app.listen(port);
-    Logger.log(`🚀 Application is probably running on: http://localhost:${port}/${prefix}`);
+    Logger.log(`🚀 Application is probably running on: http://localhost:${port}`);
   }
   return app.init();
 }
@@ -81,6 +83,6 @@ createServer(server)
   .then(() => {
     Logger.log(`🚀 Application is running on: ${process.env.MODE}`);
   })
-  .catch(err => console.error('Erreur depuis main.ts', err));
+  .catch(err => Logger.error('Erreur depuis main.ts', err));
 
 export const mc = functions.https.onRequest(server); // api const is the entry point

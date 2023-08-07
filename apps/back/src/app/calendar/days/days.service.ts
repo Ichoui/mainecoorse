@@ -31,7 +31,7 @@ export class DaysService {
         'recetteArticle.quantity',
         'article.id',
         'article.label',
-        'article.url'
+        'article.url',
       ])
       .where('days.recette is not null')
       .getMany()
@@ -50,7 +50,7 @@ export class DaysService {
             id: ra.article.id,
             quantity: ra.quantity,
             label: ra.article.label,
-            url: ra.article.url
+            url: ra.article.url,
           })),
         })),
       );
@@ -64,6 +64,13 @@ export class DaysService {
       .where('days.article is not null')
       .getRawMany();
 
+    if (!queryArticle) {
+      throw new NotFoundException("Days : problème d'article");
+    }
+    if (!queryRecette) {
+      throw new NotFoundException('Days : problème de recette');
+    }
+
     const itemsRequested: ItemBaseWithSlug[] = queryRecette.concat(queryArticle).sort((a, b) => a.id - b.id);
     SkeletonDays.forEach(day => (day.items = itemsRequested.filter(item => item.slug === day.slug)));
     return SkeletonDays;
@@ -76,7 +83,7 @@ export class DaysService {
         : { articleId: days.itemId, slug: days.slug };
     const entity = this._daysEntityRepository.create({ ...daysType });
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('L\'entité days n\'existe pas');
     }
     await this._daysEntityRepository.save(entity);
     return this.getCalendarDays();
@@ -85,7 +92,7 @@ export class DaysService {
   async deleteCalendarDay(id: number): Promise<void> {
     const entity = await this._daysEntityRepository.findOneBy({ id });
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('Problème de supression dans les jours');
     }
     await this._daysEntityRepository.remove(entity);
   }
@@ -94,7 +101,7 @@ export class DaysService {
     const value = type === ItemType.RECETTE ? { recetteId: id } : { articleId: id };
     const existing = await this._daysEntityRepository.findOneBy(value);
     if (existing) {
-      return 'calendrier (jours)'
+      return 'calendrier (jours)';
     }
   }
 }

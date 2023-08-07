@@ -40,7 +40,7 @@ export class RecettesService {
       });
 
     if (!query) {
-      throw new NotFoundException();
+      throw new NotFoundException('Aucune recette listée');
     }
     return query;
   }
@@ -53,7 +53,7 @@ export class RecettesService {
     });
 
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('Impossible de créer la recette');
     }
     let recetteId: number;
     await this._recettesEntityRepository
@@ -72,7 +72,7 @@ export class RecettesService {
   async putRecette(id: number, recette: RecettesUpdateDto): Promise<void> {
     const entity = await this._recettesEntityRepository.findOneBy({ id });
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('Impossible d\'éditer la recette');
     }
 
     await this._recetteArticleService
@@ -90,7 +90,7 @@ export class RecettesService {
     });
 
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('Impossible de supprimer la recette');
     }
     // Test first if used in divers / days calendar...
     const existInDivers = await this._diversService.removeForbiddenIfExisting(id, ItemType.RECETTE);

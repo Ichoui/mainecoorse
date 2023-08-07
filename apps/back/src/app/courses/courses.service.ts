@@ -17,7 +17,7 @@ export class CoursesService {
       .where('courses.articleId is not null')
       .getRawMany();
     if (!queryArticle) {
-      throw new NotFoundException();
+      throw new NotFoundException('Pas d\'articles !');
     }
     return queryArticle;
   }

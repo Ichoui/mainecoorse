@@ -28,7 +28,7 @@ export class ArticlesService {
       .getRawMany();
 
     if (!query) {
-      throw new NotFoundException();
+      throw new NotFoundException('Aucun article listé');
     }
     return query;
   }
@@ -36,7 +36,7 @@ export class ArticlesService {
   async postArticle(articles: ArticlesCreateDto): Promise<void> {
     const entity = this._articlesEntityRepository.create({ ...articles, itemType: ItemType.ARTICLE });
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('Impossible de créer l\'article');
     }
     await this._articlesEntityRepository.save(entity);
   }
@@ -44,7 +44,7 @@ export class ArticlesService {
   async putArticle(id: number, articles: ArticlesUpdateDto): Promise<void> {
     const entity = await this._articlesEntityRepository.findOneBy({ id });
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('Impossible d\'éditer l\'article');
     }
     await this._articlesEntityRepository.update({ id }, { ...articles });
   }
@@ -52,7 +52,7 @@ export class ArticlesService {
   async removeArticle(id: number): Promise<void> {
     const entity = await this._articlesEntityRepository.findOneBy({ id });
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('Impossible de supprimer l\'article');
     }
 
     const existInDivers = await this._diversService.removeForbiddenIfExisting(id, ItemType.ARTICLE);

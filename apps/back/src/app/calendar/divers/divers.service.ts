@@ -59,6 +59,14 @@ export class DiversService {
       .where('divers.article is not null')
       .getRawMany();
 
+    if (!queryArticle) {
+      throw new NotFoundException("Divers : problème d'article");
+    }
+    if (!queryRecette) {
+      throw new NotFoundException('Divers : problème de recette');
+    }
+
+
     return queryRecette.concat(queryArticle);
   }
 
@@ -71,7 +79,7 @@ export class DiversService {
       }
     }
     if (!entity && entity.length > 0) {
-      throw new NotFoundException();
+      throw new NotFoundException('L\'entité days n\'existe pas');
     }
     await this._diversEntityRepository.save(entity);
     return this.getCalendarDiversItems();
@@ -80,7 +88,7 @@ export class DiversService {
   async deleteCalendarDiversItem(id: number): Promise<void> {
     const entity = await this._diversEntityRepository.findOneBy({ id });
     if (!entity) {
-      throw new NotFoundException();
+      throw new NotFoundException('Problème de supression dans les jours');
     }
     await this._diversEntityRepository.remove(entity);
   }
