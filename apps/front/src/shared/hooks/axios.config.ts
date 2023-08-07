@@ -15,10 +15,9 @@ export const axiosUrl = (url: string) => {
     baseUrl = env.VITE_HOST_FUNCTION;
   } else if (env.VITE_DEBUG_PROD_MODE === 'true' && env.DEV) {
     baseUrl = env.VITE_HOST_PROD;
-  } else if (env.PROD) {
+  } else {
     baseUrl = env.VITE_HOST;
   }
-
   return baseUrl + prefix + url;
 };
 
