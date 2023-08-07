@@ -125,7 +125,6 @@ export const Calendar = () => {
           setDivers(update(divers, { $splice: [[source.index, 1]] }));
 
           updateDaysAndDivers('divers', 'days', item, dragBag);
-
         } else {
           /////////////////
           // Depuis JOUR vers JOUR
@@ -141,8 +140,10 @@ export const Calendar = () => {
         }
       }
     },
-    [days, divers],
+    [executePut, executeRemove, setSnackValues, days, divers],
   );
+
+  // useEffect(() => {}, [executePut, executeRemove, setSnackValues, days, divers]);
 
   const handleOnBeforeCapture = () => {
     setIsDragging(true);
@@ -224,30 +225,27 @@ const updateDaysAndDivers = (
   const { slug, executePut, executeRemove, setSnackValues, setDivers, setDays } = dragBag;
   const remove = (params: any, url: string) => executeRemove({ params: { ...params }, url });
   const put = (data: any, url: string) => executePut({ data: { ...data }, url });
-  let promiseAll: Promise<unknown> = Promise.resolve();
+  let chainedRequest: Promise<unknown> = Promise.resolve();
 
   if (source === 'divers' && destination === 'days') {
-    promiseAll = Promise.all([
-      remove({ id: item.tableIdentifier }, axiosUrl('calendar/divers')),
-      put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')),
-    ]).then(([, put]) => setDays(put.data));
+    chainedRequest = remove({ id: item.tableIdentifier }, axiosUrl('calendar/divers'))
+      .then(() => put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')))
+      .then(res => setDays(res.data));
   }
 
   if (source === 'days' && destination === 'divers') {
-    promiseAll = Promise.all([
-      remove({ id: item.tableIdentifier }, axiosUrl('calendar/days')),
-      put({ itemId: item.id, type: item.itemType }, axiosUrl('calendar/divers')),
-    ]).then(([, put]) => setDivers(put.data));
+    chainedRequest = remove({ id: item.tableIdentifier }, axiosUrl('calendar/days'))
+      .then(() => put({ itemId: item.id, type: item.itemType }, axiosUrl('calendar/divers')))
+      .then(res => setDivers(res.data));
   }
 
   if (source === 'days' && destination === 'days') {
-    promiseAll = Promise.all([
-      remove({ id: item.tableIdentifier }, axiosUrl('calendar/days')),
-      put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')),
-    ]).then(([, put]) => setDays(put.data));
+    chainedRequest = remove({ id: item.tableIdentifier }, axiosUrl('calendar/days'))
+      .then(() => put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')))
+      .then(res => setDays(res.data));
   }
 
-  promiseAll
+  chainedRequest
     .then(() => setSnackValues({ open: true, message: '🤠 Hiiii-haaaa', severity: 'success', autoHideDuration: 1000 }))
     .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
 };

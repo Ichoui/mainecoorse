@@ -49,16 +49,14 @@ export class RecetteArticleService {
         .then(res => {
           if (articlesToRemove.length > 0) {
             this._recettesArticleEntityRepository.remove(articlesToRemove).catch((error) => {
-              // pas beau mais faut aller manger et j'ai pas envie de le faire bien, si toi, openSourceLover tu me vois, ne me juge pas :D
-              // TODO à refaire car ça pète en prod...
-              throw new NotFoundException(error, 'Erreur suppression when upsert');
+              throw new NotFoundException(error, 'Erreur suppression quand upsert recetteArticle');
             });
           }
           return res;
         })
         .then(res => res.map(r => r.id))
         .catch((error) => {
-          throw new NotFoundException(error,'Erreur enregistrement quand upsert');
+          throw new NotFoundException(error,'Erreur enregistrement quand upsert recetteArticle');
         });
     }
 

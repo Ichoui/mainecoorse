@@ -27,7 +27,7 @@ export class DiversService {
         'recetteArticle.quantity',
         'article.id',
         'article.label',
-        'article.url'
+        'article.url',
       ])
       .where('divers.recette is not null')
       .getMany()
@@ -45,7 +45,7 @@ export class DiversService {
             id: ra.article.id,
             quantity: ra.quantity,
             label: ra.article.label,
-            url: ra.article.url
+            url: ra.article.url,
           })),
         })),
       );
@@ -66,20 +66,24 @@ export class DiversService {
       throw new NotFoundException('Divers : problème de recette');
     }
 
-
     return queryRecette.concat(queryArticle);
   }
 
   async putCalendarDiversItem(divers: DiversDto): Promise<ItemBase[]> {
     const diversType = divers.type === ItemType.RECETTE ? { recetteId: divers.itemId } : { articleId: divers.itemId };
     const entity: DiversEntity[] = [];
-    if (divers.quantity) {
+
+    if (divers?.quantity) {
+      // Depuis la modal de création
       for (let i = 0; i < divers.quantity; i++) {
         entity.push(this._diversEntityRepository.create({ ...diversType }));
       }
+    } else {
+      // Depuis le calendrier
+      entity.push(this._diversEntityRepository.create({ ...diversType }));
     }
     if (!entity && entity.length > 0) {
-      throw new NotFoundException('L\'entité days n\'existe pas');
+      throw new NotFoundException("L'entité days n'existe pas");
     }
     await this._diversEntityRepository.save(entity);
     return this.getCalendarDiversItems();
