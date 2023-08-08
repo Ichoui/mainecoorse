@@ -1,4 +1,3 @@
-import './editArticle.scss';
 import '@styles/forms.scss';
 import { Params, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Chip, TextField } from '@mui/material';

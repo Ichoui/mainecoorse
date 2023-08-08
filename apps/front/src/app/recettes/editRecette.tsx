@@ -1,11 +1,10 @@
-import './editRecette.scss';
 import '@styles/forms.scss';
 import { Params, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Autocomplete, Button, Chip, IconButton, MenuItem, TextField, Typography } from '@mui/material';
+import { Autocomplete, Button, Chip, IconButton, TextField, Typography } from '@mui/material';
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { FieldArray, withFormik } from 'formik';
 import * as yup from 'yup';
-import React, { Fragment, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { ArticleList, ISnackbar, ItemBase, RecetteTags } from '@shared-interfaces/items';
 import { DialogConfirmation } from '@components/dialogs/dialog-confirmation/dialog-confirmation';
 import { configAxios } from '@shared/hooks/axios.config';
