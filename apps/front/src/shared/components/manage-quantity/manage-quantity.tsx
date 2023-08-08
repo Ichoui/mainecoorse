@@ -16,7 +16,6 @@ export const ManageQuantity = (props: {
     if (!checked) {
       let newQuantity = quantity;
 
-      console.log(quantity - 1);
       if (!add && quantity - stepUp <= 0) {
         // On bloque le fait de pouvoir descendre à 0, car il faut au minimum la valeur du Step (1 ou 0.5 la plupart des cas)
         return;

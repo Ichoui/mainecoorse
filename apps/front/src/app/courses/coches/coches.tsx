@@ -36,8 +36,11 @@ export const Coches = (props: {
       .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
   }, 250);
 
-  const [icon, setIcon] = useState<string>('');
+  useEffect(() => {
+    setChecked(item.purchased);
+  }, [item]);
 
+  const [icon, setIcon] = useState<string>('');
   useEffect(() => {
     urlTest(item?.url ?? '').then(res => setIcon(res.url));
   }, [setIcon, item?.url]);
