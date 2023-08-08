@@ -1,5 +1,7 @@
 # Mainecoorse
 
+Made with Maple love ♥
+
 ## Description
 
 Nest et Firebase utilisation [NESTxFIREBASE](https://reza-rahmati.medium.com/setup-nest-and-firebase-functions-in-a-new-project-631ba1435289)
