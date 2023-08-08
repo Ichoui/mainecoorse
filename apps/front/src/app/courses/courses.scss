@@ -12,6 +12,9 @@
   .blocks {
     width: 90%;
     margin: 0 auto;
+    @media only screen and (min-width: $large) {
+      width: 80%;
+    }
     h3 {
       text-transform: uppercase;
       color: $primary;

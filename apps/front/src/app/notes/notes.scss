@@ -1,10 +1,16 @@
 @import '@styles/shared';
 
 .Notes {
-  width: 90%;
   margin: 0 auto;
   height: 100%;
   overflow-y: scroll;
+  .wrapper {
+    margin: 0 auto;
+    width: 90%;
+    @media only screen and (min-width: $large) {
+      max-width: 80%;
+    }
+  }
   h2 {
     text-align: center;
     color: $primary;
@@ -22,14 +28,13 @@
       width: 100%;
       height: 100%;
     }
-
   }
   .maple404test {
     display: flex;
     justify-content: center;
     align-items: center;
     img {
-    width: 100%;
+      width: 100%;
     }
   }
 }

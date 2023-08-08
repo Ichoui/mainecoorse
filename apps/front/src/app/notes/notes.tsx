@@ -28,38 +28,38 @@ export const Notes = (): JSX.Element => {
     executePost({
       data: { notes },
     })
-      .then(() =>
-        setSnackValues({ open: true, message: '🎶 Notes pour trop tard...', severity: 'success' }),
-      )
+      .then(() => setSnackValues({ open: true, message: '🎶 Notes pour trop tard...', severity: 'success' }))
       .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' }));
   }, 500);
 
   return (
     <div className='Notes'>
-      <h2>Pense-bête</h2>
-      {getLoading && <Loader />}
-      {getError && <DataError />}
-      {!getLoading && !getError && (
-        <TextField
-          variant='outlined'
-          label='Notes'
-          defaultValue={value ?? getData}
-          placeholder='Pense, écrit, tape, romance, transcrit, compose, exprime, rédige, consigne, note... 🗒️'
-          onChange={e => handleChange(e.target.value)}
-          minRows={5}
-          multiline
-        ></TextField>
-      )}
+      <div className='wrapper'>
+        <h2>Pense-bête</h2>
+        {getLoading && <Loader />}
+        {getError && <DataError />}
+        {!getLoading && !getError && (
+          <TextField
+            variant='outlined'
+            label='Notes'
+            defaultValue={value ?? getData}
+            placeholder='Pense, écrit, tape, romance, transcrit, compose, exprime, rédige, consigne, note... 🗒️'
+            onChange={e => handleChange(e.target.value)}
+            minRows={5}
+            multiline
+          ></TextField>
+        )}
 
-      <IconButton aria-label='map-btn' className='map-btn' onClick={() => setMapCoon(!mapCoon)}>
-        <img src={Maple} alt='map' />
-      </IconButton>
+        <IconButton aria-label='map-btn' className='map-btn' onClick={() => setMapCoon(!mapCoon)}>
+          <img src={Maple} alt='map' />
+        </IconButton>
 
-      {mapCoon && (
-        <div className='maple404test'>
-          <img src={Map404} alt='TestMaple404' />
-        </div>
-      )}
+        {mapCoon && (
+          <div className='maple404test'>
+            <img src={Map404} alt='TestMaple404' />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

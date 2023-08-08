@@ -15,6 +15,17 @@
   overflow-y: scroll;
   overflow-x: hidden;
 
+  .divers,
+  .day,
+  .separator-divers-day {
+    width: 90%;
+    margin: 0 auto;
+
+    @media only screen and (min-width: $large) {
+     width: 80%;
+    }
+  }
+
   .divers {
     height: fit-content;
     min-height: 6em;
@@ -27,7 +38,6 @@
   .separator-divers-day {
     border-color: $secondary;
     background-color: $secondary;
-    margin: 0 auto;
   }
 
   .day {
@@ -41,7 +51,6 @@
   }
 
   hr {
-    width: 90%;
     user-select: none;
     border-color: $white;
     background-color: $white;
@@ -72,6 +81,9 @@
       }
       .chip {
         width: 45%;
+        @media only screen and (min-width: $large) {
+         width: 20%;
+        }
       }
       .MuiChip-root {
         display: flex;
