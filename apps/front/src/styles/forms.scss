@@ -24,8 +24,14 @@
     gap: 15px;
     width: 100%;
     align-items: center;
+    @media only screen and (min-width: $large) {
+      width: 50%;
+      margin: 0 auto;
+    }
+
     .inputs {
       width: 80%;
+
       &:first-child {
         margin-top: 25px;
       }
@@ -39,9 +45,16 @@
       .inputs {
         margin-top: 0;
         width: 75%;
+        @media only screen and (min-width: $large) {
+          width: 90%;
+        }
       }
       img {
         max-width: 25%;
+        align-self: baseline;
+        @media only screen and (min-width: $large) {
+          width: 10%;
+        }
       }
     }
   }
@@ -61,11 +74,26 @@
     .articlesListForm {
       display: flex;
       gap: 10px;
-      .article {
-        width: 60%;
+      .inputs-article {
+        width: 90%;
+        display: flex;
+        gap: 10px;
+        .article {
+          width: 75%;
+        }
+        .quantity {
+          width: calc(25% - 10px);
+        }
       }
-      .quantity {
-        width: 20%;
+      > button {
+        width: 10%;
+        align-items: baseline;
+      }
+    }
+    > button {
+      @media only screen and (min-width: $large) {
+        width: 50%;
+        margin: 0 auto;
       }
     }
   }

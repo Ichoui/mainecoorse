@@ -101,7 +101,7 @@ const TSXForm = (props: any): JSX.Element => {
   const [previewImg, setPreviewImg] = useState({ url: '', pending: false });
   useEffect(() => {
     setPreviewSize(imageWebInputRef.current?.offsetHeight ?? 50);
-    initializeUrlTest(values.url)
+    initializeUrlTest(values.url);
   }, []);
 
   const initializeUrlTest = (val: string): void => {
@@ -132,7 +132,7 @@ const TSXForm = (props: any): JSX.Element => {
           value={values.url}
           variant='outlined'
           onChange={event => {
-            initializeUrlTest(event.target.value)
+            initializeUrlTest(event.target.value);
             return handleChange(event);
           }}
           helperText={touched.url ? errors.url : ''}
@@ -201,6 +201,8 @@ const TSXForm = (props: any): JSX.Element => {
               {(values.articlesList as ArticleList[])?.map((p, index) => {
                 return (
                   <div key={index} className='articlesListForm'>
+                    <div className='inputs-article'>
+
                     <Autocomplete
                       className='article'
                       size='small'
@@ -259,6 +261,8 @@ const TSXForm = (props: any): JSX.Element => {
                       error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.quantity)}
                       onChange={handleChange}
                     />
+                    </div>
+
                     <IconButton onClick={() => remove(index)} color='error'>
                       <DeleteRounded />
                     </IconButton>
@@ -269,9 +273,9 @@ const TSXForm = (props: any): JSX.Element => {
               <Button onClick={() => push({ id: '', quantity: '', label: '' })} variant='outlined'>
                 Ajouter
               </Button>
-              <Typography color='error'>
-                {Boolean(errors.articlesList) && typeof errors.articlesList === 'string' ? errors.articlesList : ''}
-              </Typography>
+              {Boolean(errors.articlesList) && typeof errors.articlesList === 'string' && (
+                <Typography color='error'>{errors.articlesList}</Typography>
+              )}
             </Fragment>
           )}
         </FieldArray>

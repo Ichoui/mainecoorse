@@ -7,9 +7,9 @@ import { Articles } from '@app/articles/articles';
 import { Calendar } from '@app/calendar/calendar';
 import { Recettes } from '@app/recettes/recettes';
 import { Courses } from '@app/courses/courses';
-import { EditArticle } from '@app/articles/editArticle/editArticle';
+import { EditArticle } from '@app/articles/editArticle';
 import { Notes } from '@app/notes/notes';
-import { EditRecette } from '@app/recettes/editRecette/editRecette';
+import { EditRecette } from '@app/recettes/editRecette';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
