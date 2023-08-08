@@ -20,7 +20,7 @@ export const EditRecette = (): JSX.Element => {
   const isNewRecette = recetteId === 'new';
   const item: ItemBase = useLocation().state;
   // const [bgi, setBgi] = useState({ url: defaultUrl, pending: true });
-  const [bgi, setBgi] = useState<string>(defaultUrl);
+  const [bgi, setBgi] = useState<string>(item?.url ?? defaultUrl);
 
   const { setSnackValues } = useContext(SnackbarContext);
   const navigation = useNavigate();
@@ -102,7 +102,7 @@ const TSXForm = (props: any): JSX.Element => {
   useEffect(() => {
     setPreviewSize(imageWebInputRef.current?.offsetHeight ?? 50);
     initializeUrlTest(values.url);
-  }, []);
+  }, [values.url]);
 
   const initializeUrlTest = (val: string): void => {
     setPreviewImg({ url: val, pending: true });
@@ -202,65 +202,64 @@ const TSXForm = (props: any): JSX.Element => {
                 return (
                   <div key={index} className='articlesListForm'>
                     <div className='inputs-article'>
+                      <Autocomplete
+                        className='article'
+                        size='small'
+                        value={p}
+                        groupBy={option => option.label[0]}
+                        options={[
+                          { id: '', label: '', quantity: null },
+                          ...sortItemsByLabel(
+                            articlesData?.map((ad: ItemBase) => ({
+                              id: ad.id,
+                              label: ad.label,
+                              quantity: null,
+                            })) || [],
+                          ),
+                        ]}
+                        disableClearable={true}
+                        getOptionDisabled={opt => values.articlesList.some((v: { id: number }) => v.id === opt.id)}
+                        filterSelectedOptions={true}
+                        getOptionLabel={art => (art?.label ? art.label : '')}
+                        isOptionEqualToValue={(opt, val) => opt.id === val.id}
+                        onChange={(e: object, art: ArticleList | null) => {
+                          setFieldValue(`articlesList[${index}]`, {
+                            id: art?.id,
+                            label: art?.label,
+                            quantity: values.articlesList[index]?.quantity ?? 1, // On peut dissocier l'ajout d'un article et de la quantité :)
+                          });
+                        }}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            variant='outlined'
+                            label={index >= 1 ? 'Article' : 'Article*'}
+                            error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.label)}
+                            helperText={
+                              touched.articlesList && errors?.articlesList?.[index]?.label
+                                ? errors?.articlesList[index].label
+                                : ''
+                            }
+                          />
+                        )}
+                      />
 
-                    <Autocomplete
-                      className='article'
-                      size='small'
-                      value={p}
-                      groupBy={option => option.label[0]}
-                      options={[
-                        { id: '', label: '', quantity: null },
-                        ...sortItemsByLabel(
-                          articlesData?.map((ad: ItemBase) => ({
-                            id: ad.id,
-                            label: ad.label,
-                            quantity: null,
-                          })) || [],
-                        ),
-                      ]}
-                      disableClearable={true}
-                      getOptionDisabled={opt => values.articlesList.some((v: { id: number }) => v.id === opt.id)}
-                      filterSelectedOptions={true}
-                      getOptionLabel={art => (art?.label ? art.label : '')}
-                      isOptionEqualToValue={(opt, val) => opt.id === val.id}
-                      onChange={(e: object, art: ArticleList | null) => {
-                        setFieldValue(`articlesList[${index}]`, {
-                          id: art?.id,
-                          label: art?.label,
-                          quantity: values.articlesList[index]?.quantity ?? 1, // On peut dissocier l'ajout d'un article et de la quantité :)
-                        });
-                      }}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          variant='outlined'
-                          label={index >= 1 ? 'Article' : 'Article*'}
-                          error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.label)}
-                          helperText={
-                            touched.articlesList && errors?.articlesList?.[index]?.label
-                              ? errors?.articlesList[index].label
-                              : ''
-                          }
-                        />
-                      )}
-                    />
-
-                    <TextField
-                      label='Qte'
-                      className='quantity'
-                      name={`articlesList[${index}].quantity`}
-                      value={p.quantity}
-                      size='small'
-                      type='number'
-                      variant='outlined'
-                      helperText={
-                        touched.articlesList && errors?.articlesList?.[index]?.quantity
-                          ? errors?.articlesList[index]?.quantity
-                          : ''
-                      }
-                      error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.quantity)}
-                      onChange={handleChange}
-                    />
+                      <TextField
+                        label='Qte'
+                        className='quantity'
+                        name={`articlesList[${index}].quantity`}
+                        value={p.quantity}
+                        size='small'
+                        type='number'
+                        variant='outlined'
+                        helperText={
+                          touched.articlesList && errors?.articlesList?.[index]?.quantity
+                            ? errors?.articlesList[index]?.quantity
+                            : ''
+                        }
+                        error={touched.articlesList && Boolean(errors?.articlesList?.[index]?.quantity)}
+                        onChange={handleChange}
+                      />
                     </div>
 
                     <IconButton onClick={() => remove(index)} color='error'>

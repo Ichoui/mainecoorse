@@ -16,9 +16,9 @@ import { LoaderThree } from '@shared/svg/loader-three';
 export const EditArticle = (): JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://img.cuisineaz.com/660x660/2013/12/20/i47006-raclette.jpeg';
-  const [bgi, setBgi] = useState<string>(defaultUrl);
   const isNewArticle = articleId === 'new';
   const item: ItemBase = useLocation().state;
+  const [bgi, setBgi] = useState<string>(item?.url ?? defaultUrl);
   const { setSnackValues } = useContext(SnackbarContext);
   const navigation = useNavigate();
 
