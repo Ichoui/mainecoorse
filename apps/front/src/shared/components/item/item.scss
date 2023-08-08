@@ -3,6 +3,10 @@
 .item {
   width: calc(50% - $gapItems);
 
+  @media (min-width: $tablets) {
+    width: 20%;
+  }
+
   .itemContent {
     padding: 5px;
     .typo {

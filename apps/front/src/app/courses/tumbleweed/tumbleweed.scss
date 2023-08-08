@@ -2,7 +2,15 @@
 
 .Tumbleweeds {
   position: relative;
-  margin-top: 50% ;
+  margin-top: calc(50dvh - 75px - 75px);
+  @media (min-width: $tablets) {
+    //display: flex;
+    //margin-top: initial;
+  }
+
+  @media (min-width: $large) {
+
+  }
 
   .tumbleweed {
     position: absolute;

@@ -43,9 +43,7 @@ export const DialogInspectItem = (props: {
 
           {!isArticle && (
             <div className='ingredients-listing'>
-              <i>
-                <strong>Ingrédients</strong>
-              </i>
+              <strong>Ingrédients</strong>
               <br />
               {item.articlesList?.map((art, i) => (
                 <p key={i}>
@@ -57,9 +55,7 @@ export const DialogInspectItem = (props: {
 
           {item?.complements && (
             <p className='complements'>
-              <i>
-                <strong>Le petit +</strong>
-              </i>
+              <strong>Le petit +</strong>
               <br />
               {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
               <span dangerouslySetInnerHTML={{ __html: `${item.complements}` }} />
@@ -68,7 +64,7 @@ export const DialogInspectItem = (props: {
 
           <p
             className='description'
-            dangerouslySetInnerHTML={{ __html: `<i><strong>Description</strong></i><br/> ${item.description}` }}
+            dangerouslySetInnerHTML={{ __html: `<strong>Description</strong><br/> ${item.description}` }}
           />
         </div>
       </DialogContent>

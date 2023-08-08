@@ -1,4 +1,4 @@
-import './recettes.scss';
+import '@styles/recette-article.scss';
 import { Item } from '@components/item/item';
 import { ItemBase, RecetteTags } from '@shared-interfaces/items';
 import { Autocomplete, Chip, Fab, TextField } from '@mui/material';

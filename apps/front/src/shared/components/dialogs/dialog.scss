@@ -28,6 +28,10 @@
   .complements, .description  {
     margin: 5px;
     white-space: pre-line;
+    strong {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+    }
   }
 
   .tags {

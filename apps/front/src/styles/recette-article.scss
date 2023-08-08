@@ -1,6 +1,6 @@
-@import '@styles/shared';
+@import './shared';
 
-.Recettes {
+.Articles , .Recettes{
   width: 100%;
   height: 100%;
   overflow-y: scroll;
@@ -19,8 +19,15 @@
     gap: 15px;
     width: 90%;
     margin: 15px auto;
-  }
 
+    @media only screen and (min-width: $desktop) {
+      flex-direction: row;
+      > div{
+        width: 400px;
+      }
+    }
+
+  }
 
   .listing {
     display: flex;
@@ -29,5 +36,10 @@
     justify-content: center;
     gap: $gapItems;
     padding: 15px 0 50px;
+
+    @media only screen and (min-width: $large) {
+      max-width: 80%;
+      margin: 0 auto;
+    }
   }
 }
