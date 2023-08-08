@@ -75,7 +75,7 @@ export const DialogAddCalendar = (props: {
       if (isArticle) {
         articles.push({ id: item.id, quantity: formik.values?.multiple });
       } else {
-        articles = formik.values.articles!.map(val => ({ id: val.id, quantity: val.quantity }));
+        articles = formik.values.articles!.map(val => ({ id: val.id, quantity: Math.ceil(val.quantity * 2) / 2 }));
       }
       promiseArray.push(upsert({ articles }, axiosUrl('courses'), 'POST'));
     }

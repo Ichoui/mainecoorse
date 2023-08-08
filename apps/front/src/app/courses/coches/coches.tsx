@@ -64,7 +64,7 @@ export const Coches = (props: {
       />
 
       <div className={`quantity ${checked ? 'disabled' : ''}`}>
-        <ManageQuantity itemQuantity={item.quantity} checked={checked} onChange={handleQuantity} />
+        <ManageQuantity itemQuantity={item.quantity} stepUp={0.5} checked={checked} onChange={handleQuantity} />
       </div>
     </div>
   );

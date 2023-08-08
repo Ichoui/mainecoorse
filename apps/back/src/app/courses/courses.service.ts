@@ -51,7 +51,7 @@ export class CoursesService {
   async removeArticles(): Promise<CoursesArticleList[]> {
     const queryArticlesToRemove = await this._coursesEntityRepository.find({ where: { purchased: true } });
     if (queryArticlesToRemove.length === 0) {
-      throw new HttpException({warning: 'Rien à supprimer ici maggle...'}, HttpStatus.I_AM_A_TEAPOT)
+      throw new HttpException({warning: 'Rien à purger ici maggle...'}, HttpStatus.I_AM_A_TEAPOT)
     }
     await this._coursesEntityRepository.remove(queryArticlesToRemove);
     return this.getCourses();

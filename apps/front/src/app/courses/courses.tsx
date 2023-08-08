@@ -8,6 +8,7 @@ import { Loader } from '@components/loaders/loader/loader';
 import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 import { SnackbarContext } from '@app/app';
+import { Tumbleweed } from '@app/courses/tumbleweed/tumbleweed';
 
 export const Courses = () => {
   const [itemsSortedByTags, setItemsSorted] = useState<(string | CoursesArticleList[])[]>([]);
@@ -30,7 +31,7 @@ export const Courses = () => {
       executePurge()
         .then(res => setItemsSorted(sortByTags(res.data)))
         .then(() => setSnackValues({ open: true, message: '♻️ Purgatoire en cours...', severity: 'success' }))
-        .catch((error) => setSnackValues({ open: true, error, severity: 'error' }));
+        .catch(error => setSnackValues({ open: true, error, severity: 'error' }));
     }
   };
 
@@ -41,29 +42,34 @@ export const Courses = () => {
 
       {!loadingGet && !error && (
         <Fragment>
-          <div className='btn-purge'>
-            <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>
-              Purger
-            </Button>
-          </div>
-          <FormGroup>
-            {itemsSortedByTags?.map((items: CoursesArticleList[] | string, index: number) => (
-              <div key={index} className='blocks'>
-                {<h3>{items[0] as string}</h3>}
-                <hr />
-                <div className='container-checkboxes'>
-                  {(items[1] as unknown as CoursesArticleList[]).map((item, itemIndex) => (
-                    <Coches
-                      key={itemIndex}
-                      item={item}
-                      setSnackValues={setSnackValues}
-                      executePut={executePutQuantity}
-                    ></Coches>
-                  ))}
-                </div>
+          {itemsSortedByTags.length === 0 && <Tumbleweed />}
+          {itemsSortedByTags.length > 0 && (
+            <Fragment>
+              <div className='btn-purge'>
+                <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>
+                  Purger
+                </Button>
               </div>
-            ))}
-          </FormGroup>
+              <FormGroup>
+                {itemsSortedByTags?.map((items: CoursesArticleList[] | string, index: number) => (
+                  <div key={index} className='blocks'>
+                    {<h3>{items[0] as string}</h3>}
+                    <hr />
+                    <div className='container-checkboxes'>
+                      {(items[1] as unknown as CoursesArticleList[]).map((item, itemIndex) => (
+                        <Coches
+                          key={itemIndex}
+                          item={item}
+                          setSnackValues={setSnackValues}
+                          executePut={executePutQuantity}
+                        ></Coches>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </FormGroup>
+            </Fragment>
+          )}
         </Fragment>
       )}
       {/*OPEN DIALOG TO CONFIRM DELETE */}

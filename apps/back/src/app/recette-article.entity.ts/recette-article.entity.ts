@@ -23,6 +23,6 @@ export class RecetteArticleEntity extends BaseEntity {
   @JoinColumn({ name: 'recetteId' })
   recette: RecettesEntity;
 
-  @Column('int')
+  @Column('float')
   quantity: number;
 }

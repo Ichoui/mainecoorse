@@ -345,7 +345,7 @@ const RecetteForm = withFormik({
         yup.object().shape({
           id: yup.number().required(),
           label: yup.string().required('Un dernier effort... 🏋🏼‍♀️'),
-          quantity: yup.number().min(1, '0 ? Tu rêves').required(`0+0=😬`),
+          quantity: yup.number().min(0.5, 'Si peu ?🤏🏼').required(`0+0=😬`),
         }),
       )
       .min(1, 'Une recette sans ingrédients... Voyons donc ! 🫠')

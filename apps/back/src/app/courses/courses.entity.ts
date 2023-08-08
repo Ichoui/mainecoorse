@@ -13,7 +13,7 @@ export class CoursesEntity extends BaseEntity {
   @JoinColumn({ name: 'articleId' })
   articleId: number;
 
-  @Column()
+  @Column('float')
   quantity: number;
 
   @Column()
