@@ -91,6 +91,7 @@ export const Item = (props: { item: ItemBase; itemRemoved: () => void }): JSX.El
                 height='110'
                 image={itemUrl?.url}
                 className={itemUrl?.typeUrl}
+                style={isArticle ? {width: 'auto'} : {width: '-webkit-fill-available'}}
               />
             )}
             {itemUrl?.pending && (
