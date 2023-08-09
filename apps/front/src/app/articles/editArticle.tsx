@@ -28,6 +28,7 @@ export const EditArticle = (): JSX.Element => {
       setBgi(res.url);
       const image = new Image();
       image.onload = function (e) {
+        // @ts-ignore
         if (this.width === this.height) {
           setBackgroundSize('contain');
         } else {

@@ -43,6 +43,7 @@ export const EditRecette = (): JSX.Element => {
 
       const image = new Image();
       image.onload = function () {
+        // @ts-ignore
         if (this.width === this.height) {
           setBackgroundSize('contain');
         } else {

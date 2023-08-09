@@ -24,20 +24,21 @@ A noter : URL trouvable depuis l'interface Firebase Functions, en cliquant sur l
 Depuis le fichier .env, il faut remplacer les logins et le host équivalent à la prod, mais pas le mode
 
 ### Backup / Restauration de Bdd depuis pgAdmin4
-On extrait la bdd de manière récurrente 
+
+On extrait la bdd de manière récurrente
+
 - Clic droit sur le nom de bdd > Backup : Nom du fichier, pas d'options.
-On peut restaurer la bdd 
+  On peut restaurer la bdd
 - Clic droit sur le nom de la bdd à restaurer > Restore : Nom du fichier, options [Queries: Clean Before Restore]
 
-## Environnements
+## NPM Packages
 
-### Front
+Quand on met à jour le ./package.json, attention à bien mettre à jour **MANUELLEMENT** le package suivant : `apps/back/src/package.json`
 
-Voir dans le dossier environnements du projet front
-
-### Back
-
-Voir à la racine du projet back
+`npm outdated`
+`npm update`
+ou encore le package npm-check-update
+`ncu`
 
 ## Deploymenent
 
@@ -54,6 +55,16 @@ Back<br>
 Lors du build du back, il faut que le fichier .env.prod soit envoyé dans '/dist/apps/back' et soit appelé _.env_. On le fait à la main via un script.
 
 Lors du build du front, il faut que le fichier .env.production soit buildé également. ViteJS s'en occupe pour nous.
+
+## Environnements
+
+### Front
+
+Voir dans le dossier environnements du projet front
+
+### Back
+
+Voir à la racine du projet back
 
 ## CORS
 
