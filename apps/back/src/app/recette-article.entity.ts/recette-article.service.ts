@@ -48,15 +48,15 @@ export class RecetteArticleService {
         .save(entities)
         .then(res => {
           if (articlesToRemove.length > 0) {
-            this._recettesArticleEntityRepository.remove(articlesToRemove).catch((error) => {
+            this._recettesArticleEntityRepository.remove(articlesToRemove).catch(error => {
               throw new NotFoundException(error, 'Erreur suppression quand upsert recetteArticle');
             });
           }
           return res;
         })
         .then(res => res.map(r => r.id))
-        .catch((error) => {
-          throw new NotFoundException(error,'Erreur enregistrement quand upsert recetteArticle');
+        .catch(error => {
+          throw new NotFoundException(error, 'Erreur enregistrement quand upsert recetteArticle');
         });
     }
 
@@ -78,8 +78,8 @@ export class RecetteArticleService {
 
   async removeRecetteArticleRelation(recetteId: number): Promise<void> {
     const entities = await this._recettesArticleEntityRepository.find({ where: { recetteId: recetteId } });
-    await this._recettesArticleEntityRepository.remove(entities).catch((error) => {
-      throw new NotFoundException(error,'Erreur suppression relation RecetteArticle');
+    await this._recettesArticleEntityRepository.remove(entities).catch(error => {
+      throw new NotFoundException(error, 'Erreur suppression relation RecetteArticle');
     });
   }
 
@@ -91,10 +91,14 @@ export class RecetteArticleService {
     const arr: string[] = [];
     existing.map(ra => arr.push(ra.recette.label));
     const message =
-      arr.length > 2 ? `les recettes ${arr.filter((a, i) => i < 2).join(', ')}` : `les recettes ${arr.join(', ')}`;
+      arr.length > 2
+        ? `les recettes ${arr.filter((a, i) => i < 2).join(', ')} et ${arr.length - 2} autre recette${
+            arr.length - 2 === 1 ? '' : 's'
+          }`
+        : `${arr.length === 1 ? 'la recette' : 'les recettes'} ${arr.join(', ')}`;
 
-    if (existing) {
-      return `les recettes ${message}`;
+    if (existing.length > 0) {
+      return `${message}`;
     }
   }
 }

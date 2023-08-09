@@ -35,10 +35,9 @@ On extrait la bdd de manière récurrente
 
 Quand on met à jour le ./package.json, attention à bien mettre à jour **MANUELLEMENT** le package suivant : `apps/back/src/package.json`
 
-`npm outdated`
-`npm update`
-ou encore le package npm-check-update
-`ncu`
+`npm outdated` pour voir les packages dépassés
+`ncu` pour mettre à jour les packages dépassés dans le package.json
+et terminer avec un npm install
 
 ## Deploymenent
 

@@ -264,7 +264,5 @@ const submit = (
       });
       navigation('/articles');
     })
-    .catch(error => {
-      setSnackValues({ open: true, error, severity: 'error' });
-    });
+    .catch(error => setSnackValues({ open: true, error, severity: 'error' }));
 };

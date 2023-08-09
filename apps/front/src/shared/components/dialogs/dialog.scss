@@ -27,10 +27,12 @@
     height: 200px;
   }
   .complements, .description , .ingredients {
-    margin: 5px;
+    margin: 5px 0;
     white-space: pre-line;
+    overflow: hidden;
+    overflow-wrap: break-word;
     strong {
-      font-family: 'Oswald-Bold';
+      font-family: 'Oswald-Bold', sans-serif;
       font-size: 1.1rem;
       text-transform: uppercase;
     }

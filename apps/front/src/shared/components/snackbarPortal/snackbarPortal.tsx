@@ -21,9 +21,9 @@ export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: (
 
     if (snackValues.error?.response?.status === HttpStatus.I_AM_A_TEAPOT) {
       snackValues.severity = 'warning'
-      message = `🤡 ${snackValues!.error!.response.data.warning}`;
+      message = `🤡 ${snackValues!.error!.response?.data?.warning}`;
     } else if (snackValues.error?.response?.status !== HttpStatus.INTERNAL_SERVER_ERROR) {
-      message = `🛑 ${snackValues!.error!.response.data.message}`;
+      message = `🛑 ${snackValues!.error!.response?.data?.message ?? snackValues!.error!.message}`;
     } else {
       message = '😨 Erreur !';
     }
