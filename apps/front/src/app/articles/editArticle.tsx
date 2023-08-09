@@ -21,10 +21,22 @@ export const EditArticle = (): JSX.Element => {
   const [bgi, setBgi] = useState<string>(item?.url ?? defaultUrl);
   const { setSnackValues } = useContext(SnackbarContext);
   const navigation = useNavigate();
+  const [backgroundSize, setBackgroundSize] = useState<string>('contain'); // add state for background size
 
   useEffect(() => {
-    urlTest(item?.url ?? '', defaultUrl).then(res => setBgi(res.url));
-  }, [setBgi, item?.url]);
+    urlTest(item?.url ?? '', defaultUrl).then(res => {
+      setBgi(res.url);
+      const image = new Image();
+      image.onload = function (e) {
+        if (this.width === this.height) {
+          setBackgroundSize('contain');
+        } else {
+          setBackgroundSize('cover');
+        }
+      };
+      image.src = res.url;
+    });
+  }, [item?.url]);
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, removeArticle] = configAxios({
@@ -57,7 +69,7 @@ export const EditArticle = (): JSX.Element => {
   return (
     <div className='editItem'>
       <div className='image'>
-        <span style={{ backgroundImage: 'url(' + bgi + ')' }}></span>
+        <span style={{ backgroundSize, backgroundImage: 'url(' + bgi + ')' }}></span>
       </div>
       <ArticleForm
         openDialogConfirmation={openDialogConfirmation}
@@ -123,7 +135,7 @@ const ArticleForm = (props: {
 
   useEffect(() => {
     setPreviewSize(imageWebInputRef.current?.offsetHeight ?? 50);
-    initializeUrlTest(item?.url)
+    initializeUrlTest(item?.url);
   }, []);
 
   const initializeUrlTest = (val: string): void => {
@@ -154,7 +166,7 @@ const ArticleForm = (props: {
           value={formik.values.url}
           variant='outlined'
           onChange={event => {
-            initializeUrlTest(event.target.value)
+            initializeUrlTest(event.target.value);
             return formik.handleChange(event);
           }}
           helperText={formik.touched.url ? formik.errors.url : ''}

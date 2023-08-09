@@ -42,7 +42,7 @@ export const DialogInspectItem = (props: {
           )}
 
           {!isArticle && (
-            <div className='ingredients-listing'>
+            <div className='ingredients'>
               <strong>Ingrédients</strong>
               <br />
               {item.articlesList?.map((art, i) => (

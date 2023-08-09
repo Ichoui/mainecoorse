@@ -35,10 +35,23 @@ export const EditRecette = (): JSX.Element => {
     manual: true,
     params: { id: item?.id },
   });
+  const [backgroundSize, setBackgroundSize] = useState<string>('contain'); // add state for background size
 
   useEffect(() => {
-    urlTest(item?.url ?? '', defaultUrl).then(res => setBgi(res.url));
-  }, [setBgi, item?.url]);
+    urlTest(item?.url ?? '', defaultUrl).then(res => {
+      setBgi(res.url);
+
+      const image = new Image();
+      image.onload = function () {
+        if (this.width === this.height) {
+          setBackgroundSize('contain');
+        } else {
+          setBackgroundSize('cover');
+        }
+      };
+      image.src = res.url;
+    });
+  }, [item?.url]);
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
@@ -62,7 +75,7 @@ export const EditRecette = (): JSX.Element => {
   return (
     <div className='editItem'>
       <div className='image'>
-        <span style={{ backgroundImage: 'url(' + bgi + ')' }}></span>
+        <span style={{ backgroundSize, backgroundImage: 'url(' + bgi + ')' }}></span>
       </div>
 
       <RecetteForm
