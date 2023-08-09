@@ -18,6 +18,9 @@ export class RecettesEntity extends BaseEntity {
   description: string;
 
   @Column({ type: 'varchar', length: 1024, nullable: true })
+  link: string;
+
+  @Column({ type: 'varchar', length: 1024, nullable: true })
   complements: string;
 
   @Column({

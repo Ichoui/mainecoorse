@@ -12,8 +12,9 @@ export interface ItemBase {
   tags: Tags[] | string[];
   articlesList?: ArticleList[];
 
-  complements?: string;
   tableIdentifier?: number; // calendar Items, from days or divers table
+  complements?: string;
+  link?: string;
 }
 
 export interface ArticleList {

@@ -65,7 +65,7 @@ export class RecettesService {
       })
       .catch(() => {
         this.removeRecette(recetteId);
-        throw new BadRequestException('Il est arrivé malheur à la relation Recette-Article...');
+        throw new BadRequestException('Il est arrivé malheur à la relation Recette-Article en création...');
       });
   }
 
@@ -79,7 +79,7 @@ export class RecettesService {
       .upsertRecetteArticleRelation(id, recette.articlesList, true)
       .then(articlesList => this._recettesEntityRepository.update({ id }, { ...recette, articlesList }))
       .catch(err => {
-        throw new BadRequestException('Il est arrivé malheur à la relation Recette-Article...', { cause: err });
+        throw new BadRequestException('Il est arrivé malheur à la relation Recette-Article en édition...', { cause: err });
       });
   }
 

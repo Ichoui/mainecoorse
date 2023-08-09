@@ -1,10 +1,11 @@
 import '../dialog.scss';
-import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Fab } from '@mui/material';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
 import { ItemBase } from '@shared-interfaces/items';
 import React, { useEffect, useState } from 'react';
 import { urlTest } from '@shared/utils/url.utils';
 import { LoaderThree } from '@shared/svg/loader-three';
+import { OpenInNewRounded } from '@mui/icons-material';
 
 export const DialogInspectItem = (props: {
   open: boolean;
@@ -40,6 +41,12 @@ export const DialogInspectItem = (props: {
               ))}
             </div>
           )}
+
+          {!isArticle && item?.link && (<div className='link'>
+            <Fab size="small" color="primary" aria-label="open in browser" href={item.link} target='_blank' >
+              <OpenInNewRounded/>
+            </Fab>
+          </div>)}
 
           {!isArticle && (
             <div className='ingredients'>

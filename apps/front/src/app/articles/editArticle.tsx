@@ -164,6 +164,7 @@ const ArticleForm = (props: {
           placeholder='https://munster-alsace.de'
           type='text'
           name='url'
+          size='small'
           value={formik.values.url}
           variant='outlined'
           onChange={event => {

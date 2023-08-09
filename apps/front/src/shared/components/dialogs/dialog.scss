@@ -26,7 +26,9 @@
     justify-content: center;
     height: 200px;
   }
-  .complements, .description , .ingredients {
+  .complements,
+  .description,
+  .ingredients {
     margin: 5px 0;
     white-space: pre-line;
     overflow: hidden;
@@ -44,6 +46,15 @@
     gap: 5px;
     padding: 10px 0;
   }
+
+  .link {
+    position: relative;
+    > a {
+      position: absolute;
+      right: 0;
+    }
+  }
+
   .ingredients {
     img {
       width: 20px;

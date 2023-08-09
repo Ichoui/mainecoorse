@@ -143,6 +143,7 @@ const TSXForm = (props: any): JSX.Element => {
           placeholder='https://potee-egal-choucroute.de'
           type='text'
           name='url'
+          size='small'
           value={values.url}
           variant='outlined'
           onChange={event => {
@@ -159,6 +160,19 @@ const TSXForm = (props: any): JSX.Element => {
         )}
         {previewImg?.pending && <LoaderThree />}
       </div>
+      <TextField
+        label='Lien'
+        placeholder='Lien vers le World Wide Web 🔗'
+        type='text'
+        name='link'
+        size='small'
+        value={values.link}
+        variant='outlined'
+        className='inputs'
+        onChange={handleChange}
+        helperText={touched.link ? errors.link : ''}
+        error={touched.link && Boolean(errors.link)}
+      />
       <Autocomplete
         multiple
         className='inputs'
@@ -339,6 +353,7 @@ const RecetteForm = withFormik({
     label: props.item?.label,
     url: props.item?.url,
     description: props.item?.description,
+    link: props.item?.link,
     tags: props.item?.tags,
     articlesList: props.item?.articlesList ?? [{ label: '', quantity: '', id: null }],
     complements: props.item?.complements,
@@ -354,6 +369,11 @@ const RecetteForm = withFormik({
       .url("C'est pas une vrai URL ça 🙀")
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
+    link: yup
+      .string()
+      .url("URL ou rien 👾")
+      .max(1024, 'Trop long ton lien ! 😡')
+      .notRequired(),
     description: yup.string().max(1024, 'Trop long ton fichu texte ! 😡').required('Encore un autographe svp 🖋️️'),
     articlesList: yup
       .array()

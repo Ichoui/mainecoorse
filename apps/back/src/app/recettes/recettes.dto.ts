@@ -19,6 +19,11 @@ export class RecettesCreateDto {
   @IsOptional()
   @IsString()
   @MaxLength(1024)
+  link: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(1024)
   complements: string;
 
   @IsNotEmpty()
