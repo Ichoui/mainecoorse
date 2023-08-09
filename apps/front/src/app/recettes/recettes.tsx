@@ -30,7 +30,7 @@ export const Recettes = (): JSX.Element => {
 
   const handleSearch = useDebouncedCallback(value => {
     const filter = recettes?.filter(f => f.label.toLowerCase().includes(value.toLowerCase()));
-    setFilteredRecettes(filter.length > 0 ? filter : recettes);
+    setFilteredRecettes(filter.length === 0 && !value ? recettes : filter);
   }, 200);
 
   const handleTags = (e: object, tags: RecetteTags[]) => {
@@ -42,7 +42,7 @@ export const Recettes = (): JSX.Element => {
       });
       return acc;
     }, []);
-    setFilteredRecettes(tags.length > 0 ? filter : recettes);
+    setFilteredRecettes(tags.length === 0 ? recettes : filter);
   };
 
   return (

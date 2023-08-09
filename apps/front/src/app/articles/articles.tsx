@@ -31,7 +31,7 @@ export const Articles = (): JSX.Element => {
 
   const handleSearch = useDebouncedCallback(value => {
     const filter = articles?.filter(f => f.label.toLowerCase().includes(value.toLowerCase()));
-    setFilteredArticles(filter.length > 0 ? filter : articles);
+    setFilteredArticles(filter.length === 0 && !value ? articles : filter);
   }, 200);
 
   const handleTags = (e: object, tags: ArticleTags[]) => {
@@ -43,7 +43,7 @@ export const Articles = (): JSX.Element => {
       });
       return acc;
     }, []);
-    setFilteredArticles(tags.length > 0 ? filter : articles);
+    setFilteredArticles(tags.length === 0 ? articles : filter);
   };
 
   return (
@@ -78,9 +78,7 @@ export const Articles = (): JSX.Element => {
       {error && <DataError />}
 
       <div className='listing'>
-        {filteredArticles?.map((article, i) => (
-          <Item key={i} item={article} itemRemoved={() => fetchArticles()} />
-        ))}
+        {filteredArticles?.map((article, i) => <Item key={i} item={article} itemRemoved={() => fetchArticles()} />)}
         {filteredArticles?.length === 0 && !loading && !error && (
           <div className='no-results'>
             <img src={MapleNoResults} alt='Aucun résultats' />
