@@ -12,7 +12,7 @@ export const axiosUrl = (url: string) => {
   const env: ImportMetaEnv = import.meta.env;
   const prefix = env.VITE_PREFIX;
   if (env.VITE_DEBUG_MODE === 'true' && env.DEV) {
-    baseUrl = env.VITE_HOST_FUNCTION;
+    baseUrl = env.VITE_HOST_EMULATOR;
   } else if (env.VITE_DEBUG_PROD_MODE === 'true' && env.DEV) {
     baseUrl = env.VITE_HOST_PROD;
   } else {

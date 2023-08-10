@@ -16,7 +16,7 @@
     "rename-env": "copy .\\apps\\back\\.env.prod dist\\apps\\back\\.env",
     "firebase:logs": "firebase functions:log",
     "firebase:serve-functions": "firebase serve --only functions",
-    "firebase:test": "firebase emulators:start --only functions --inspect-functions",
+    "firebase:emulator": "firebase emulators:start --only functions --inspect-functions --debug",
     "ncu": "ncu",
     "test:ncu": "ncu --doctor -u",
     "build:front": "nx build front --skip-nx-cache",
