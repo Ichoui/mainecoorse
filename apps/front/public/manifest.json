@@ -1,0 +1,45 @@
+{
+  "name": "MaineCoorse",
+  "description": "Un Maine Coon qui veut du bien à ton porte-feuille quand tu vas chez Carrefour !",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "maskable512.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calendrier",
+      "url": "/calendar",
+      "icons": [{ "src": "logo.png", "sizes": "228x228" }]
+    },
+    {
+      "name": "Courses",
+      "url": "/courses",
+      "icons": [{ "src": "logo.png", "sizes": "228x228" }]
+    },
+    {
+      "name": "Notes",
+      "url": "/notes",
+      "icons": [{ "src": "logo.png", "sizes": "228x228" }]
+    },
+    {
+      "name": "Recettes",
+      "url": "/recettes",
+      "icons": [{ "src": "logo.png", "sizes": "228x228" }]
+    }
+  ],
+  "id": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#684e9b",
+  "background_color": "#1b1d21"
+}
