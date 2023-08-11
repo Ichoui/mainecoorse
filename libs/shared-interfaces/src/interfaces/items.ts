@@ -15,6 +15,7 @@ export interface ItemBase {
   tableIdentifier?: number; // calendar Items, from days or divers table
   complements?: string;
   link?: string;
+  approved?: boolean;
 }
 
 export interface ArticleList {

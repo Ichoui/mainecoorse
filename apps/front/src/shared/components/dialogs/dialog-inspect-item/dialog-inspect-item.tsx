@@ -6,6 +6,9 @@ import React, { useEffect, useState } from 'react';
 import { urlTest } from '@shared/utils/url.utils';
 import { LoaderThree } from '@shared/svg/loader-three';
 import { OpenInNewRounded } from '@mui/icons-material';
+import disapproved from '/disapproved.png';
+import approved from '/approved.png';
+import { isBoolean } from 'class-validator';
 
 export const DialogInspectItem = (props: {
   open: boolean;
@@ -33,20 +36,39 @@ export const DialogInspectItem = (props: {
               <LoaderThree />
             </div>
           )}
-          {!itemUrl?.pending && <img src={itemUrl?.url} alt={item.label} className={itemUrl?.typeUrl} />}
-          {item?.tags && (
-            <div className='tags'>
-              {item.tags?.map((tag, i) => (
-                <Chip key={i} label={tag} variant='outlined' />
-              ))}
+          {!itemUrl?.pending && (
+            <div className='image'>
+
+              <img src={itemUrl?.url} alt={item.label} className={itemUrl?.typeUrl} />
             </div>
           )}
 
-          {!isArticle && item?.link && (<div className='link'>
-            <Fab size="small" color="primary" aria-label="open in browser" href={item.link} target='_blank' >
-              <OpenInNewRounded/>
-            </Fab>
-          </div>)}
+          {item?.tags && (
+            <div className='row'>
+              {item?.approved && (
+                <div className='approbation approved'>
+                  <img src={approved} alt='Maple approves' />
+                </div>
+              )}
+              {isBoolean(item.approved) && !item.approved && (
+                <div className='approbation disapproved'>
+                  <img src={disapproved} alt='Maple disapproves' />
+                </div>
+              )}
+
+            <div className='tags'>{item.tags?.map((tag, i) => <Chip key={i} label={tag} variant='outlined' />)}</div>
+            </div>
+          )}
+
+
+
+          {!isArticle && item?.link && (
+            <div className='link'>
+              <Fab size='small' color='primary' aria-label='open in browser' href={item.link} target='_blank'>
+                <OpenInNewRounded />
+              </Fab>
+            </div>
+          )}
 
           {!isArticle && (
             <div className='ingredients'>

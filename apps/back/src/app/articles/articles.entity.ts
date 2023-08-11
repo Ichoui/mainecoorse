@@ -33,6 +33,10 @@ export class ArticlesEntity extends BaseEntity implements ItemBase {
   })
   tags: string[] | Tags[]; // Tags[] | string[];
 
+
+  @Column({ nullable: true, default: null })
+  approved: boolean;
+
   // Relations
   @OneToMany(() => DaysEntity, days => days.article)
   daysArticle: DaysEntity[];

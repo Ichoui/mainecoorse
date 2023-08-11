@@ -14,7 +14,6 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { SnackbarPortal } from '@components/snackbarPortal/snackbarPortal';
 import { ISnackbar } from '@shared-interfaces/items';
 import { configAxios } from '@shared/hooks/axios.config';
-import { Loader } from '@components/loaders/loader/loader';
 import { PingBounce } from '@components/loaders/ping-bounce/ping-bounce';
 
 type SnackDefaultValue = {

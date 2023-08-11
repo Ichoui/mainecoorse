@@ -45,11 +45,6 @@ export const Courses = () => {
           {itemsSortedByTags.length === 0 && <Tumbleweed />}
           {itemsSortedByTags.length > 0 && (
             <Fragment>
-              <div className='btn-purge'>
-                <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>
-                  Purger
-                </Button>
-              </div>
               <FormGroup>
                 {itemsSortedByTags?.map((items: CoursesArticleList[] | string, index: number) => (
                   <div key={index} className='blocks'>
@@ -68,6 +63,11 @@ export const Courses = () => {
                   </div>
                 ))}
               </FormGroup>
+              <div className='btn-purge'>
+                <Button type='button' color='error' variant='outlined' onClick={() => handleDialogConfirmation(true)}>
+                  Purger
+                </Button>
+              </div>
             </Fragment>
           )}
         </Fragment>
