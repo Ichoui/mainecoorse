@@ -38,13 +38,6 @@ export const DialogInspectItem = (props: {
           )}
           {!itemUrl?.pending && (
             <div className='image'>
-
-              <img src={itemUrl?.url} alt={item.label} className={itemUrl?.typeUrl} />
-            </div>
-          )}
-
-          {item?.tags && (
-            <div className='row'>
               {item?.approved && (
                 <div className='approbation approved'>
                   <img src={approved} alt='Maple approves' />
@@ -55,12 +48,13 @@ export const DialogInspectItem = (props: {
                   <img src={disapproved} alt='Maple disapproves' />
                 </div>
               )}
-
-            <div className='tags'>{item.tags?.map((tag, i) => <Chip key={i} label={tag} variant='outlined' />)}</div>
+              <img src={itemUrl?.url} alt={item.label} className={itemUrl?.typeUrl} />
             </div>
           )}
 
-
+          {item?.tags && (
+            <div className='tags'>{item.tags?.map((tag, i) => <Chip key={i} label={tag} variant='outlined' />)}</div>
+          )}
 
           {!isArticle && item?.link && (
             <div className='link'>
