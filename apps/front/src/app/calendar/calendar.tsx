@@ -89,7 +89,7 @@ export const Calendar = () => {
             [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
           }),
         );
-        updateDaysAndDivers('days', 'divers', item, dragBag);
+        updateDaysAndDivers({ source: 'days', destination: 'divers' }, item, dragBag);
       } else if (destination.droppableId === 'bin') {
         /////////////////
         // Supprimer ITEM depuis DIVERS
@@ -124,7 +124,7 @@ export const Calendar = () => {
 
           setDivers(update(divers, { $splice: [[source.index, 1]] }));
 
-          updateDaysAndDivers('divers', 'days', item, dragBag);
+          updateDaysAndDivers({ source: 'divers', destination: 'days' }, item, dragBag);
         } else {
           /////////////////
           // Depuis JOUR vers JOUR
@@ -136,7 +136,7 @@ export const Calendar = () => {
               [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } }, // add
             }),
           );
-          updateDaysAndDivers('days', 'days', item, dragBag);
+          updateDaysAndDivers({ source: 'days', destination: 'days' }, item, dragBag);
         }
       }
     },
@@ -210,8 +210,7 @@ export const Calendar = () => {
 };
 
 const updateDaysAndDivers = (
-  source: 'divers' | 'days',
-  destination: 'divers' | 'days',
+  to: { source: 'divers' | 'days'; destination: 'divers' | 'days' },
   item: ItemBase,
   dragBag: {
     slug: string; // jours de la semaine ou divers
@@ -227,19 +226,19 @@ const updateDaysAndDivers = (
   const put = (data: any, url: string) => executePut({ data: { ...data }, url });
   let chainedRequest: Promise<unknown> = Promise.resolve();
 
-  if (source === 'divers' && destination === 'days') {
+  if (to.source === 'divers' && to.destination === 'days') {
     chainedRequest = remove({ id: item.tableIdentifier }, axiosUrl('calendar/divers'))
       .then(() => put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')))
       .then(res => setDays(res.data));
   }
 
-  if (source === 'days' && destination === 'divers') {
+  if (to.source === 'days' && to.destination === 'divers') {
     chainedRequest = remove({ id: item.tableIdentifier }, axiosUrl('calendar/days'))
       .then(() => put({ itemId: item.id, type: item.itemType }, axiosUrl('calendar/divers')))
       .then(res => setDivers(res.data));
   }
 
-  if (source === 'days' && destination === 'days') {
+  if (to.source === 'days' && to.destination === 'days') {
     chainedRequest = remove({ id: item.tableIdentifier }, axiosUrl('calendar/days'))
       .then(() => put({ itemId: item.id, type: item.itemType, slug }, axiosUrl('calendar/days')))
       .then(res => setDays(res.data));
