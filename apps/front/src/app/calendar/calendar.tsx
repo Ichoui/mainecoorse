@@ -17,6 +17,7 @@ import { SnackbarContext } from '@app/app';
 export const Calendar = () => {
   const [divers, setDivers] = useState<ItemBase[]>([]);
   const [days, setDays] = useState<Days[]>([]);
+  const [stopDragging, setStopDragging] = useState(false);
   const { setSnackValues } = useContext(SnackbarContext);
 
   const [{ data: getItemsData, error: itemsError, loading: loadingItem }] = configAxios({
@@ -89,7 +90,7 @@ export const Calendar = () => {
             [dragZoneIndex(e.source.droppableId)]: { items: { $splice: [[source.index, 1]] } },
           }),
         );
-        updateDaysAndDivers({ source: 'days', destination: 'divers' }, item, dragBag);
+        updateDaysAndDivers({ source: 'days', destination: 'divers' }, item, dragBag, val => setStopDragging(val));
       } else if (destination.droppableId === 'bin') {
         /////////////////
         // Supprimer ITEM depuis DIVERS
@@ -124,7 +125,7 @@ export const Calendar = () => {
 
           setDivers(update(divers, { $splice: [[source.index, 1]] }));
 
-          updateDaysAndDivers({ source: 'divers', destination: 'days' }, item, dragBag);
+          updateDaysAndDivers({ source: 'divers', destination: 'days' }, item, dragBag, val => setStopDragging(val));
         } else {
           /////////////////
           // Depuis JOUR vers JOUR
@@ -136,7 +137,7 @@ export const Calendar = () => {
               [dragZoneIndex(e.destination.droppableId)]: { items: { $push: [item] } }, // add
             }),
           );
-          updateDaysAndDivers({ source: 'days', destination: 'days' }, item, dragBag);
+          updateDaysAndDivers({ source: 'days', destination: 'days' }, item, dragBag, val => setStopDragging(val));
         }
       }
     },
@@ -174,6 +175,7 @@ export const Calendar = () => {
               items={divers}
               identifier='divers'
               onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+              stopDragging={stopDragging}
             />
           </div>
           <hr className='separator-divers-day' />
@@ -185,6 +187,7 @@ export const Calendar = () => {
                 items={day.items}
                 identifier={day.slug}
                 onClick={(confirm, item) => handleDialogInspectItem(confirm, item)}
+                stopDragging={stopDragging}
               />
               <hr />
             </div>
@@ -220,11 +223,13 @@ const updateDaysAndDivers = (
     setDivers: (value: ((prevState: ItemBase[]) => ItemBase[]) | ItemBase[]) => void;
     setDays: (value: ((prevState: Days[]) => Days[]) | Days[]) => void;
   },
+  draggingForbidden: (val: boolean) => void,
 ) => {
   const { slug, executePut, executeRemove, setSnackValues, setDivers, setDays } = dragBag;
   const remove = (params: any, url: string) => executeRemove({ params: { ...params }, url });
   const put = (data: any, url: string) => executePut({ data: { ...data }, url });
   let chainedRequest: Promise<unknown> = Promise.resolve();
+  draggingForbidden(true);
 
   if (to.source === 'divers' && to.destination === 'days') {
     chainedRequest = remove({ id: item.tableIdentifier }, axiosUrl('calendar/divers'))
@@ -246,5 +251,6 @@ const updateDaysAndDivers = (
 
   chainedRequest
     .then(() => setSnackValues({ open: true, message: '🤠 Hiiii-haaaa', severity: 'success', autoHideDuration: 1000 }))
+    .then(() => draggingForbidden(false))
     .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
 };

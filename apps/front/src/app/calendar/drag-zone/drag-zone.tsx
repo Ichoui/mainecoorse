@@ -9,14 +9,16 @@ export const DragZone = (props: {
   identifier: string;
   onClick: (confirm: boolean, item: ItemBase) => void;
   onDelete?: (remove: boolean) => void | undefined;
+  stopDragging: boolean;
 }) => {
-  const { items, identifier, onClick, onDelete } = props;
+  const { items, identifier, onClick, onDelete, stopDragging } = props;
 
   return (
     <Droppable
       droppableId={identifier}
       mode='virtual'
       direction='horizontal'
+      isDropDisabled={stopDragging}
       renderClone={(provided, snapshot, rubric) => (
         <ReparentingPortal
           item={items[rubric.source.index]}
@@ -32,6 +34,7 @@ export const DragZone = (props: {
           <div className={`${snapshot.isDraggingOver ? 'active' : ''}`}>
             {items?.map((item, index) => (
               <DraggedChips
+                stopDragging={stopDragging}
                 key={identifier + '-' + index}
                 item={item}
                 identifier={identifier + '-' + index}
