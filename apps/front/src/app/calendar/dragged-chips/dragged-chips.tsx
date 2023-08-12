@@ -2,7 +2,6 @@ import { ItemBase } from '@shared-interfaces/items';
 import '../calendar.scss';
 import { Draggable } from '@hello-pangea/dnd';
 import { ReparentingPortal } from '@app/calendar/portal/portal';
-import { useEffect } from 'react';
 
 export const DraggedChips = (props: {
   item: ItemBase;
@@ -13,20 +12,13 @@ export const DraggedChips = (props: {
   stopDragging: boolean;
 }) => {
   const { item, identifier, index, onClick, onDelete, stopDragging } = props;
-  useEffect(() => {}, [stopDragging]);
 
   return (
-    <Draggable
-      draggableId={identifier}
-      isDragDisabled={stopDragging}
-      index={index}
-      key={identifier}
-      disableInteractiveElementBlocking={stopDragging}
-    >
+    <Draggable draggableId={identifier} isDragDisabled={stopDragging} index={index} key={identifier}>
       {(provided, snapshot) => (
         <div
-          style={{ opacity: snapshot.isDragging ? 0.4 : 1, pointerEvents: stopDragging ? 'none' : 'auto' }}
-          className='chip'
+          style={{ opacity: snapshot.isDragging ? 0.4 : 1 }}
+          className={`chip ${stopDragging ? 'block-redrag-element' : ''}`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}

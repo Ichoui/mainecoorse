@@ -25,6 +25,7 @@ export class DiversService {
         'recette.tags',
         'recette.itemType',
         'recette.complements',
+        'recette.approved',
         'recetteArticle.quantity',
         'article.id',
         'article.label',
@@ -43,6 +44,7 @@ export class DiversService {
           tags: r.recette.tags,
           itemType: r.recette.itemType,
           complements: r.recette.complements,
+          approved: r.recette.approved,
           articlesList: r.recette.recetteArticle.map(ra => ({
             id: ra.article.id,
             quantity: ra.quantity,
