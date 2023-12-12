@@ -9,6 +9,7 @@ import {
 } from '@mui/icons-material';
 import './app.scss';
 import maple from '/logo.png';
+import skyrimTroll from '/skyrim.mp3';
 import { backgroundThemeColor, headerThemeColor, themeOptions } from '@styles/theme';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { SnackbarPortal } from '@components/snackbarPortal/snackbarPortal';
@@ -39,6 +40,7 @@ export const App = (): JSX.Element => {
       return 'articles';
     }
   };
+  const [skyrim, setSkyrim] = useState<boolean>(true);
   const [value, setValue] = useState<string | boolean>(location());
   const handleChangeTab = (event: SyntheticEvent, newValue: 'articles' | 'calendar' | 'recettes' | 'courses') =>
     setValue(newValue);
@@ -64,6 +66,7 @@ export const App = (): JSX.Element => {
     };
   }, [fetchPing, setAppReady, appReady]);
 
+
   return (
     <ThemeProvider theme={themeOptions}>
       {/* HEADER */}
@@ -74,7 +77,14 @@ export const App = (): JSX.Element => {
           </IconButton>
         </NavLink>
 
-        <span className='logo'>
+        <span className='logo' onClick={() => setSkyrim(!skyrim)}>
+          {skyrim && (
+            <div style={{display: 'none'}}>
+              <audio autoPlay={true}>
+                <source src={skyrimTroll} type='audio/mp3' />
+              </audio>
+            </div>
+          )}
           <img src={maple} alt='Logo mainecoorse' />
         </span>
 

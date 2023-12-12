@@ -50,6 +50,7 @@ export interface ItemsDays {
 export type Tags = ArticleTags | RecetteTags;
 
 export enum ArticleTags {
+  BASICS = 'Basics',
   LEGUMES = 'Légumes',
   FRUITS = 'Fruits',
   VIANDES = 'Viandes',
