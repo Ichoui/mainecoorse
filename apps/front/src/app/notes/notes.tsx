@@ -1,6 +1,6 @@
 import './notes.scss';
 import { IconButton, TextField } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Loader } from '@components/loaders/loader/loader';
 import { DataError } from '@components/data-error/data-error';
@@ -8,10 +8,17 @@ import { configAxios } from '@shared/hooks/axios.config';
 import Map404 from '/map404.png';
 import Maple from '/maple.png';
 import { SnackbarContext } from '@app/app';
+import { Flags } from '@components/flags/flags';
 
 export const Notes = (): JSX.Element => {
   const [{ data: getData, loading: getLoading, error: getError }] = configAxios({
     url: 'notes',
+    method: 'GET',
+    autoCancel: false,
+  });
+
+  const [{ data: getSettings, loading: getLoadingSettings, error: getSettingsError }] = configAxios({
+    url: 'settings',
     method: 'GET',
     autoCancel: false,
   });
@@ -35,19 +42,26 @@ export const Notes = (): JSX.Element => {
   return (
     <div className='Notes'>
       <div className='wrapper'>
-        <h2>Pense-bête</h2>
+        {/*{getLoading && getLoadingSettings && <Loader />}*/}
+        {/*{(getError || getSettingsError) && <DataError />}*/}
+        {/*{!getLoading && !getError && !getSettingsError && !getLoadingSettings && (*/}
         {getLoading && <Loader />}
         {getError && <DataError />}
         {!getLoading && !getError && (
-          <TextField
-            variant='outlined'
-            label='Notes'
-            defaultValue={value ?? getData}
-            placeholder='Pense, écrit, tape, romance, transcrit, compose, exprime, rédige, consigne, note... 🗒️'
-            onChange={e => handleChange(e.target.value)}
-            minRows={5}
-            multiline
-          ></TextField>
+          <Fragment>
+            <h2>Pense-bête</h2>
+            <TextField
+              variant='outlined'
+              label='Notes'
+              defaultValue={value ?? getData}
+              placeholder='Pense, écrit, tape, romance, transcrit, compose, exprime, rédige, consigne, note... 🗒️'
+              onChange={e => handleChange(e.target.value)}
+              minRows={5}
+              multiline
+            ></TextField>
+            <h2>Pays de bouffe</h2>
+            <Flags setSnackValues={setSnackValues} settings={getSettings}></Flags>
+          </Fragment>
         )}
 
         <IconButton aria-label='map-btn' className='map-btn' onClick={() => setMapCoon(!mapCoon)}>
