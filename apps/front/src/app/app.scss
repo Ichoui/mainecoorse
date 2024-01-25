@@ -11,8 +11,23 @@
     width: 100%;
     justify-content: space-between;
     .logo {
+      position: relative;
       img {
         width: 90px;
+      }
+      .bouffe {
+        position: absolute;
+        &.lys {
+          width: 15px;
+          top: 25px;
+          right: 0;
+        }
+
+        &.occitan {
+          top: 48px;
+          right: 5px;
+          width: 20px;
+        }
       }
     }
     .active button svg {
@@ -37,8 +52,7 @@
     a {
       font-family: Oswald-Regular, sans-serif;
       &:not(.Mui-selected) {
-      color: $white;
-
+        color: $white;
       }
     }
   }
