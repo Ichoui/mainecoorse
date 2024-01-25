@@ -7,6 +7,7 @@ import { CoursesModule } from './courses/courses.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import ormConfig from '../../ormconfig';
 import { PingModule } from './ping/ping.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PingModule } from './ping/ping.module';
     NotesModule,
     CoursesModule,
     PingModule,
+    SettingsModule
   ],
 })
 export class AppModule {}

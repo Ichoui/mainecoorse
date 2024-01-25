@@ -50,6 +50,7 @@ export const App = (): JSX.Element => {
   const [snackValues, setSnackValues] = useState<ISnackbar>({ open: false });
 
   const [{}, fetchPing] = configAxios({ method: 'GET', url: 'ping', manual: true });
+  // const [{}, getFlag] = configAxios({ method: 'GET', url: 'settings/flags', manual: true });
 
   const [appReady, setAppReady] = useState(false);
   useEffect(() => {
@@ -58,7 +59,7 @@ export const App = (): JSX.Element => {
       // Permet principalement l'attente que la fonction firebase soit chaude
       // On attend que l'application soit ready pour affichier l'application
       timer = setInterval(() => {
-        fetchPing().then(e => setAppReady(true));
+        fetchPing().then(() => setAppReady(true));
       }, 2500);
     }
 
