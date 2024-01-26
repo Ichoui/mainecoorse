@@ -54,18 +54,19 @@ export const Flags = (props: {
         }
         return previous; // default
       })
-      .then((f: EFlags) => {
+      .then((newSlug: EFlags) => {
         // Si on utilise le composant pour envoyer un update en base
         if (setSnackValues) {
           handleFlag(previousSlug);
+          localStorage.setItem('flag', newSlug)
         }
 
-        // Si on utilise le composant juste pour avoir le switch de pays
-        if (onChange) {
-          onChange(f);
-        }
-      });
+      if (onChange) {
+        onChange(newSlug);
+      }
+    });
   };
+
 
   const handleFlag = useDebouncedCallback((previousSlug: string) => {
     let message: string;
@@ -85,16 +86,17 @@ export const Flags = (props: {
       .then(() => setSnackValues({ open: true, message, severity: 'success', autoHideDuration: 1000 }))
       .catch(() => {
         setFlag(getFlagPath(previousSlug));
+        localStorage.setItem('flag', previousSlug)
         // @ts-ignore
         setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 });
       });
   }, 250);
 
   return (
-    <div className='wrapper-flags'>
-      <div className='flags' onClick={() => nextFlag(flag!.slug)}>
-        <img src={flag!.path} alt={flag!.slug} />
+      <div className='wrapper-flags'>
+        <div className='flags' onClick={() => nextFlag(flag!.slug)}>
+          <img src={flag!.path} alt={flag!.slug} />
+        </div>
       </div>
-    </div>
   );
 };

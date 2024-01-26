@@ -1,4 +1,4 @@
-import React, { createContext, SyntheticEvent, useEffect, useState } from 'react';
+import React, { createContext, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { IconButton, Tab, Tabs, ThemeProvider } from '@mui/material';
 import {
   CalendarMonthRounded,
@@ -48,8 +48,8 @@ export const App = (): JSX.Element => {
   const handleChangeTab = (event: SyntheticEvent, newValue: 'articles' | 'calendar' | 'recettes' | 'courses') =>
     setValue(newValue);
 
-  const [snackValues, setSnackValues] = useState<ISnackbar>({ open: false });
   const [flag, setFlag] = useState<EFlags>();
+  const [snackValues, setSnackValues] = useState<ISnackbar>({ open: false });
   const [{}, fetchPing] = configAxios({ method: 'GET', url: 'ping', manual: true });
   const [{}, getFlag] = configAxios({ method: 'GET', url: 'settings/flag', manual: true });
 
@@ -71,8 +71,13 @@ export const App = (): JSX.Element => {
   }, [fetchPing, setAppReady, appReady]);
 
   useEffect(() => {
+    setFlag(localStorage.getItem('flag') as EFlags)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localStorage.getItem('flag')]);
+
+  useEffect(() => {
     getFlag().then(e => setFlag(e.data));
-  }, [getFlag]);
+  }, [flag, getFlag]);
 
   return (
     <ThemeProvider theme={themeOptions}>
@@ -94,12 +99,14 @@ export const App = (): JSX.Element => {
           )}
           <img src={maple} alt='Logo mainecoorse' />
 
+          {/*<FlagContext.Provider value={{ flag }}>*/}
           {(flag === EFlags.QCOCCITAN || flag === EFlags.QUEBEC) && (
             <img className='bouffe lys' src={lys} alt='fleur de lys' />
           )}
           {(flag === EFlags.QCOCCITAN || flag === EFlags.OCCITAN) && (
             <img className='bouffe occitan' src={occitan} alt='croix occitane' />
           )}
+          {/*</FlagContext.Provider>*/}
         </span>
 
         <NavLink to='/courses' className={({ isActive }) => (isActive ? 'active' : '')} onClick={() => setValue(false)}>
