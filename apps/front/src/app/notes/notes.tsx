@@ -17,8 +17,8 @@ export const Notes = (): JSX.Element => {
     autoCancel: false,
   });
 
-  const [{ data: getSettings, loading: getLoadingSettings, error: getSettingsError }] = configAxios({
-    url: 'settings',
+  const [{ data: settingFlag, loading: getLoadingFlag, error: getFlagError }] = configAxios({
+    url: 'settings/flag',
     method: 'GET',
     autoCancel: false,
   });
@@ -42,9 +42,9 @@ export const Notes = (): JSX.Element => {
   return (
     <div className='Notes'>
       <div className='wrapper'>
-        {getLoading && getLoadingSettings && <Loader />}
-        {(getError || getSettingsError) && <DataError />}
-        {!getLoading && !getError && !getSettingsError && !getLoadingSettings && (
+        {getLoading && getLoadingFlag && <Loader />}
+        {(getError || getFlagError) && <DataError />}
+        {!getLoading && !getError && !getFlagError && !getLoadingFlag && (
           <Fragment>
             <h2>Pense-bête</h2>
             <TextField
@@ -57,7 +57,7 @@ export const Notes = (): JSX.Element => {
               multiline
             ></TextField>
             <h2>Pays de bouffe</h2>
-            <Flags setSnackValues={setSnackValues} settings={getSettings}></Flags>
+            <Flags setSnackValues={setSnackValues} settingFlag={settingFlag}></Flags>
           </Fragment>
         )}
 

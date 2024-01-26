@@ -13,6 +13,9 @@ import { RefetchFunction } from 'axios-hooks';
 import { urlTest } from '@shared/utils/url.utils';
 import { sortItemsByLabel } from '@shared/utils/sort.utils';
 import { LoaderThree } from '@shared/svg/loader-three';
+import { useDebouncedCallback } from 'use-debounce';
+import { Flags } from '@components/flags/flags';
+import { EFlags } from '@shared-interfaces/flags';
 
 export const EditRecette = (): JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
@@ -118,10 +121,10 @@ const TSXForm = (props: any): JSX.Element => {
     initializeUrlTest(values.url);
   }, [values.url]);
 
-  const initializeUrlTest = (val: string): void => {
+  const initializeUrlTest = useDebouncedCallback((val: string): void => {
     setPreviewImg({ url: val, pending: true });
     urlTest(val ?? '', undefined, true).then(res => setPreviewImg({ url: res.url, pending: false }));
-  };
+  }, 250);
 
   return (
     <form onSubmit={handleSubmit} autoComplete='off'>
@@ -197,6 +200,13 @@ const TSXForm = (props: any): JSX.Element => {
           />
         )}
       />
+      <Flags
+        settingFlag={values.flag || EFlags.QCOCCITAN}
+        onChange={flag => {
+          console.log(flag);
+          setFieldValue('flag', flag);
+        }}
+      ></Flags>
       <TextField
         label='Description*'
         placeholder='Qui a dit que le magret et la choucroute ça se mariait pas bien ? 🦆'
@@ -353,6 +363,7 @@ const RecetteForm = withFormik({
     label: props.item?.label,
     url: props.item?.url,
     description: props.item?.description,
+    flag: props.item?.flag,
     link: props.item?.link,
     tags: props.item?.tags,
     articlesList: props.item?.articlesList ?? [{ label: '', quantity: '', id: null }],
@@ -369,11 +380,7 @@ const RecetteForm = withFormik({
       .url("C'est pas une vrai URL ça 🙀")
       .max(512, 'Trop long ton lien ! 😡')
       .required('Met une image stp 🖼️'),
-    link: yup
-      .string()
-      .url("URL ou rien 👾")
-      .max(1024, 'Trop long ton lien ! 😡')
-      .notRequired(),
+    link: yup.string().url('URL ou rien 👾').max(1024, 'Trop long ton lien ! 😡').notRequired(),
     description: yup.string().max(1024, 'Trop long ton fichu texte ! 😡').required('Encore un autographe svp 🖋️️'),
     articlesList: yup
       .array()

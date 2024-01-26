@@ -9,23 +9,24 @@ import { ISnackbar } from '@shared-interfaces/items';
 import { EFlags } from '@shared-interfaces/flags';
 
 export const Flags = (props: {
-  setSnackValues: ({ open, message, severity }: ISnackbar) => void;
-  settings: { strict: boolean; flag: string };
+  setSnackValues?: ({ open, message, severity }: ISnackbar) => void;
+  settingFlag: EFlags;
+  onChange?: (flag: EFlags) => void;
 }): JSX.Element => {
   // eslint-disable-next-line prefer-const
-  let { setSnackValues, settings } = props;
+  let { setSnackValues, settingFlag, onChange } = props;
   const flagList = [
     {
       slug: EFlags.QCOCCITAN,
-      value: QcOccitan,
+      path: QcOccitan,
     },
     {
       slug: EFlags.OCCITAN,
-      value: Occitan,
+      path: Occitan,
     },
     {
       slug: EFlags.QUEBEC,
-      value: Quebec,
+      path: Quebec,
     },
   ];
   const [{ loading }, putData] = configAxios({
@@ -33,21 +34,37 @@ export const Flags = (props: {
     method: 'PUT',
     autoCancel: false,
   });
-  const getFlag = (slug: string): { value: string; slug: EFlags } | undefined => flagList.find(f => f.slug === slug);
-  const [flag, setFlag] = useState<{ value: string; slug: EFlags } | undefined>(getFlag(settings.flag));
+  const getFlagPath = (slug: string): { path: string; slug: EFlags } | undefined => flagList.find(f => f.slug === slug);
+  const [flag, setFlag] = useState<{ path: string; slug: EFlags } | undefined>(getFlagPath(settingFlag));
 
-  const nextFlag = (slug: EFlags): void => {
-    if (slug === EFlags.QCOCCITAN) {
-      setFlag(flagList[1]);
-    }
-    if (slug === EFlags.OCCITAN) {
-      setFlag(flagList[2]);
-    }
-    if (slug === EFlags.QUEBEC) {
-      setFlag(flagList[0]);
-    }
+  const nextFlag = (previousSlug: EFlags): void => {
+    Promise.resolve(previousSlug)
+      .then(previous => {
+        if (previous === EFlags.QCOCCITAN) {
+          setFlag(flagList[1]);
+          return flagList[1].slug;
+        }
+        if (previous === EFlags.OCCITAN) {
+          setFlag(flagList[2]);
+          return flagList[2].slug;
+        }
+        if (previous === EFlags.QUEBEC) {
+          setFlag(flagList[0]);
+          return flagList[0].slug;
+        }
+        return previous; // default
+      })
+      .then((f: EFlags) => {
+        // Si on utilise le composant pour envoyer un update en base
+        if (setSnackValues) {
+          handleFlag(previousSlug);
+        }
 
-    handleFlag(slug);
+        // Si on utilise le composant juste pour avoir le switch de pays
+        if (onChange) {
+          onChange(f);
+        }
+      });
   };
 
   const handleFlag = useDebouncedCallback((previousSlug: string) => {
@@ -64,9 +81,11 @@ export const Flags = (props: {
       method: 'PUT',
       data: { flag: flag!.slug },
     })
+      // @ts-ignore
       .then(() => setSnackValues({ open: true, message, severity: 'success', autoHideDuration: 1000 }))
       .catch(() => {
-        setFlag(getFlag(previousSlug));
+        setFlag(getFlagPath(previousSlug));
+        // @ts-ignore
         setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 });
       });
   }, 250);
@@ -74,7 +93,7 @@ export const Flags = (props: {
   return (
     <div className='wrapper-flags'>
       <div className='flags' onClick={() => nextFlag(flag!.slug)}>
-        <img src={flag!.value} alt={flag!.slug} />
+        <img src={flag!.path} alt={flag!.slug} />
       </div>
     </div>
   );

@@ -28,6 +28,7 @@ export class DaysService {
         'recette.link',
         'recette.tags',
         'recette.itemType',
+        'recette.flag',
         'recette.complements',
         'recette.approved',
         'recetteArticle.quantity',
@@ -48,6 +49,7 @@ export class DaysService {
           link: r.recette.link,
           tags: r.recette.tags,
           itemType: r.recette.itemType,
+          flag: r.recette.flag,
           complements: r.recette.complements,
           approved: r.recette.approved,
           articlesList: r.recette.recetteArticle.map(ra => ({

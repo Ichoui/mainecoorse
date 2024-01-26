@@ -1,3 +1,5 @@
+import { EFlags } from './flags';
+
 export enum ItemType {
   ARTICLE = 'article',
   RECETTE = 'recette',
@@ -11,6 +13,7 @@ export interface ItemBase {
   label: string;
   tags: Tags[] | string[];
   articlesList?: ArticleList[];
+  flag: EFlags;
 
   tableIdentifier?: number; // calendar Items, from days or divers table
   complements?: string;
@@ -22,7 +25,7 @@ export interface ArticleList {
   id: number;
   label: string;
   quantity: number;
-  url?: string
+  url?: string;
 }
 
 export interface CoursesArticleList extends ArticleList {

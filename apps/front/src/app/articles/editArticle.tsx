@@ -12,6 +12,9 @@ import { RefetchFunction } from 'axios-hooks';
 import { SnackbarContext } from '@app/app';
 import { urlTest } from '@shared/utils/url.utils';
 import { LoaderThree } from '@shared/svg/loader-three';
+import { EFlags } from '@shared-interfaces/flags';
+import { Flags } from '@/shared/components/flags/flags';
+import { useDebouncedCallback } from 'use-debounce';
 
 export const EditArticle = (): JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
@@ -111,6 +114,7 @@ const ArticleForm = (props: {
     label: item?.label,
     url: item?.url,
     description: item?.description,
+    flag: item?.flag || EFlags.QCOCCITAN,
     tags: item?.tags,
   };
   const validationSchema = yup.object().shape({
@@ -139,10 +143,10 @@ const ArticleForm = (props: {
     initializeUrlTest(item?.url);
   }, []);
 
-  const initializeUrlTest = (val: string): void => {
+  const initializeUrlTest = useDebouncedCallback((val: string): void => {
     setPreviewImg({ url: val, pending: true });
     urlTest(val ?? '', undefined, true).then(res => setPreviewImg({ url: res.url, pending: false }));
-  };
+  },250);
 
   return (
     <form onSubmit={formik.handleSubmit} autoComplete='off'>
@@ -203,6 +207,15 @@ const ArticleForm = (props: {
           />
         )}
       />
+
+      <Flags
+        settingFlag={formik.values.flag || EFlags.QCOCCITAN}
+        onChange={flag => {
+          console.log(flag);
+          formik.setFieldValue('flag', flag);
+        }}
+      ></Flags>
+
       <TextField
         label='Description*'
         placeholder='On se fait une petite Raclette, une Tartiflette ou une Fondue ? 🫕'
