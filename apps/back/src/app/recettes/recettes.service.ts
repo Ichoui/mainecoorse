@@ -7,21 +7,25 @@ import { RecettesEntity } from './recettes.entity';
 import { DiversService } from '../calendar/divers/divers.service';
 import { DaysService } from '../calendar/days/days.service';
 import { RecetteArticleService } from '../recette-article/recette-article.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class RecettesService {
   constructor(
     @InjectRepository(RecettesEntity) private _recettesEntityRepository: Repository<RecettesEntity>,
+    private _settingsService: SettingsService,
     private _diversService: DiversService,
     private _daysService: DaysService,
     private _recetteArticleService: RecetteArticleService,
   ) {}
 
   async getRecettes(): Promise<ItemBase[]> {
+    const flag = await this._settingsService.getFlag();
     const query: ItemBase[] = await this._recettesEntityRepository
       .find({
         relations: ['recetteArticle.article'],
         order: { id: 'ASC' },
+        where: { flag },
       })
       .then(query => {
         return query.map(recette => {
@@ -72,14 +76,16 @@ export class RecettesService {
   async putRecette(id: number, recette: RecettesUpdateDto): Promise<void> {
     const entity = await this._recettesEntityRepository.findOneBy({ id });
     if (!entity) {
-      throw new NotFoundException('Impossible d\'éditer la recette');
+      throw new NotFoundException("Impossible d'éditer la recette");
     }
 
     await this._recetteArticleService
       .upsertRecetteArticleRelation(id, recette.articlesList, true)
       .then(articlesList => this._recettesEntityRepository.update({ id }, { ...recette, articlesList }))
       .catch(err => {
-        throw new BadRequestException('Il est arrivé malheur à la relation Recette-Article en édition...', { cause: err });
+        throw new BadRequestException('Il est arrivé malheur à la relation Recette-Article en édition...', {
+          cause: err,
+        });
       });
   }
 

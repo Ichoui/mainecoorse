@@ -8,11 +8,13 @@ import { DiversService } from '../calendar/divers/divers.service';
 import { DaysService } from '../calendar/days/days.service';
 import { CoursesService } from '../courses/courses.service';
 import { RecetteArticleService } from '../recette-article/recette-article.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class ArticlesService {
   constructor(
     @InjectRepository(ArticlesEntity) private _articlesEntityRepository: Repository<ArticlesEntity>,
+    private _settingsService: SettingsService,
     private _diversService: DiversService,
     private _daysService: DaysService,
     private _coursesService: CoursesService,
@@ -20,12 +22,8 @@ export class ArticlesService {
   ) {}
 
   async getArticles(): Promise<ItemBase[]> {
-    const query = this._articlesEntityRepository
-      .createQueryBuilder('a')
-      .select('*')
-      .where('a.id is not null')
-      .orderBy({ id: 'ASC' })
-      .getRawMany();
+    const flag = await this._settingsService.getFlag();
+    const query = this._articlesEntityRepository.find({ order: { id: 'ASC' }, where: { flag } });
 
     if (!query) {
       throw new NotFoundException('Aucun article listé');
@@ -36,7 +34,7 @@ export class ArticlesService {
   async postArticle(articles: ArticlesCreateDto): Promise<void> {
     const entity = this._articlesEntityRepository.create({ ...articles, itemType: ItemType.ARTICLE });
     if (!entity) {
-      throw new NotFoundException('Impossible de créer l\'article');
+      throw new NotFoundException("Impossible de créer l'article");
     }
     await this._articlesEntityRepository.save(entity);
   }
@@ -44,7 +42,7 @@ export class ArticlesService {
   async putArticle(id: number, articles: ArticlesUpdateDto): Promise<void> {
     const entity = await this._articlesEntityRepository.findOneBy({ id });
     if (!entity) {
-      throw new NotFoundException('Impossible d\'éditer l\'article');
+      throw new NotFoundException("Impossible d'éditer l'article");
     }
     await this._articlesEntityRepository.update({ id }, { ...articles });
   }
@@ -52,7 +50,7 @@ export class ArticlesService {
   async removeArticle(id: number): Promise<void> {
     const entity = await this._articlesEntityRepository.findOneBy({ id });
     if (!entity) {
-      throw new NotFoundException('Impossible de supprimer l\'article');
+      throw new NotFoundException("Impossible de supprimer l'article");
     }
 
     const existInDivers = await this._diversService.removeForbiddenIfExisting(id, ItemType.ARTICLE);

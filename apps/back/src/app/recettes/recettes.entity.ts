@@ -3,6 +3,7 @@ import { ItemType, Tags } from '@shared-interfaces/items';
 import { DaysEntity } from '../calendar/days/days.entity';
 import { DiversEntity } from '../calendar/divers/divers.entity';
 import { RecetteArticleEntity } from '../recette-article/recette-article.entity';
+import { EFlags } from '@shared-interfaces/flags';
 
 @Entity({
   name: 'recettes',
@@ -28,6 +29,9 @@ export class RecettesEntity extends BaseEntity {
     enum: ItemType,
   })
   itemType: ItemType;
+
+  @Column({ type: 'enum', enum: EFlags })
+  flag: EFlags;
 
   @Column({ type: 'varchar', length: 512 })
   url: string;

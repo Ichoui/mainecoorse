@@ -7,6 +7,7 @@ import { CalendarModule } from '../calendar/calendar.module';
 import { CoursesModule } from '../courses/courses.module';
 import { RecettesModule } from '../recettes/recettes.module';
 import { RecetteArticleModule } from '../recette-article/recette-article.module';
+import { SettingsModule } from '../settings/settings.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { RecetteArticleModule } from '../recette-article/recette-article.module'
     CalendarModule,
     CoursesModule,
     RecettesModule,
+    SettingsModule
   ],
   controllers: [ArticlesController],
   providers: [ArticlesService],

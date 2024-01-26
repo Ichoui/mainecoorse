@@ -45,9 +45,6 @@ export const Notes = (): JSX.Element => {
         {getLoading && getLoadingSettings && <Loader />}
         {(getError || getSettingsError) && <DataError />}
         {!getLoading && !getError && !getSettingsError && !getLoadingSettings && (
-        // {getLoading && <Loader />}
-        // {getError && <DataError />}
-        // {!getLoading && !getError && (
           <Fragment>
             <h2>Pense-bête</h2>
             <TextField

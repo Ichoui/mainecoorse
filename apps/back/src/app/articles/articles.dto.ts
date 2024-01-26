@@ -1,5 +1,6 @@
 import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { ItemType, Tags } from '@shared-interfaces/items';
+import { EFlags } from '@shared-interfaces/flags';
 
 export class ArticlesCreateDto {
   @IsOptional()
@@ -19,6 +20,10 @@ export class ArticlesCreateDto {
   @IsNotEmpty()
   @IsEnum(ItemType)
   itemType: ItemType;
+
+  @IsNotEmpty()
+  @IsEnum(EFlags)
+  flag: EFlags;
 
   @IsNotEmpty()
   @IsString()

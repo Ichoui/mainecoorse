@@ -25,9 +25,4 @@ export class SettingsController {
   updateFlag(@Body() settings: SettingsDto): Promise<void> {
     return this._settingsService.updateFlag(settings);
   }
-
-  @Put('/strict')
-  updateStrict(@Body() settings: SettingsDto): Promise<void> {
-    return this._settingsService.updateStrict(settings);
-  }
 }

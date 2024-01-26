@@ -3,7 +3,6 @@ import Occitan from '/flags/occitan.png';
 import QcOccitan from '/flags/qcoccitan.png';
 import React, { JSX, useState } from 'react';
 import './flags.scss';
-import { Checkbox, FormControlLabel } from '@mui/material';
 import { useDebouncedCallback } from 'use-debounce';
 import { axiosUrl, configAxios } from '@shared/hooks/axios.config';
 import { ISnackbar } from '@shared-interfaces/items';
@@ -35,7 +34,6 @@ export const Flags = (props: {
     autoCancel: false,
   });
   const getFlag = (slug: string): { value: string; slug: EFlags } | undefined => flagList.find(f => f.slug === slug);
-  const [draconien, setDraconien] = useState<boolean>(settings.strict);
   const [flag, setFlag] = useState<{ value: string; slug: EFlags } | undefined>(getFlag(settings.flag));
 
   const nextFlag = (slug: EFlags): void => {
@@ -52,29 +50,7 @@ export const Flags = (props: {
     handleFlag(slug);
   };
 
-  const handleCheck = useDebouncedCallback((checked: boolean) => {
-    setDraconien(checked);
-    putData({
-      url: axiosUrl(`settings/strict`),
-      method: 'PUT',
-      data: { strict: checked },
-    })
-      .then(() =>
-        setSnackValues({
-          open: true,
-          message: `🐉 Mode Draco ${checked ? 'activé' : 'désactivé'} !`,
-          severity: 'success',
-          autoHideDuration: 500,
-        }),
-      )
-      .catch(() => {
-        setDraconien(!checked);
-        setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 });
-      });
-  }, 250);
-
   const handleFlag = useDebouncedCallback((previousSlug: string) => {
-    console.log(flag); //
     let message: string;
     if (flag!.slug === EFlags.QUEBEC) {
       message = '⚜️ On va manger Québécois !';
@@ -88,7 +64,7 @@ export const Flags = (props: {
       method: 'PUT',
       data: { flag: flag!.slug },
     })
-      .then(() => setSnackValues({ open: true, message, severity: 'success', autoHideDuration: 500 }))
+      .then(() => setSnackValues({ open: true, message, severity: 'success', autoHideDuration: 1000 }))
       .catch(() => {
         setFlag(getFlag(previousSlug));
         setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 });
@@ -100,11 +76,6 @@ export const Flags = (props: {
       <div className='flags' onClick={() => nextFlag(flag!.slug)}>
         <img src={flag!.value} alt={flag!.slug} />
       </div>
-      <FormControlLabel
-        control={<Checkbox color='secondary' onChange={event => handleCheck(event.target.checked)} />}
-        label='🐲 Draconien'
-        checked={draconien}
-      />
     </div>
   );
 };
