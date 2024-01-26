@@ -18,6 +18,7 @@ import { SnackbarPortal } from '@components/snackbarPortal/snackbarPortal';
 import { ISnackbar } from '@shared-interfaces/items';
 import { configAxios } from '@shared/hooks/axios.config';
 import { PingBounce } from '@components/loaders/ping-bounce/ping-bounce';
+import { EFlags } from '@shared-interfaces/flags';
 
 type SnackDefaultValue = {
   snackValues: ISnackbar;
@@ -48,9 +49,9 @@ export const App = (): JSX.Element => {
     setValue(newValue);
 
   const [snackValues, setSnackValues] = useState<ISnackbar>({ open: false });
-
+  const [flag, setFlag] = useState<EFlags>();
   const [{}, fetchPing] = configAxios({ method: 'GET', url: 'ping', manual: true });
-  // const [{}, getFlag] = configAxios({ method: 'GET', url: 'settings/flags', manual: true });
+  const [{}, getFlag] = configAxios({ method: 'GET', url: 'settings/flag', manual: true });
 
   const [appReady, setAppReady] = useState(false);
   useEffect(() => {
@@ -68,6 +69,10 @@ export const App = (): JSX.Element => {
       clearInterval(timer);
     };
   }, [fetchPing, setAppReady, appReady]);
+
+  useEffect(() => {
+    getFlag().then(e => setFlag(e.data));
+  }, [getFlag]);
 
   return (
     <ThemeProvider theme={themeOptions}>
@@ -88,8 +93,13 @@ export const App = (): JSX.Element => {
             </div>
           )}
           <img src={maple} alt='Logo mainecoorse' />
-          <img className='bouffe lys' src={lys} alt='fleur de lys' />
-          <img className='bouffe occitan' src={occitan} alt='croix occitane' />
+
+          {(flag === EFlags.QCOCCITAN || flag === EFlags.QUEBEC) && (
+            <img className='bouffe lys' src={lys} alt='fleur de lys' />
+          )}
+          {(flag === EFlags.QCOCCITAN || flag === EFlags.OCCITAN) && (
+            <img className='bouffe occitan' src={occitan} alt='croix occitane' />
+          )}
         </span>
 
         <NavLink to='/courses' className={({ isActive }) => (isActive ? 'active' : '')} onClick={() => setValue(false)}>
