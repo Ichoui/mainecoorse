@@ -1,5 +1,5 @@
 import '../dialog.scss';
-import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Fab } from '@mui/material';
+import { Avatar, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Fab } from '@mui/material';
 import { DialogTransitionUp } from '@components/dialogs/dialog';
 import { ItemBase } from '@shared-interfaces/items';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +9,9 @@ import { OpenInNewRounded } from '@mui/icons-material';
 import disapproved from '/disapproved.png';
 import approved from '/approved.png';
 import { isBoolean } from 'class-validator';
+import occitan from '/flags/croix-occitane.png';
+import lys from '/flags/fleur-de-lys.png';
+import { EFlags } from '@shared-interfaces/flags';
 
 export const DialogInspectItem = (props: {
   open: boolean;
@@ -53,7 +56,15 @@ export const DialogInspectItem = (props: {
           )}
 
           {item?.tags && (
-            <div className='tags'>{item.tags?.map((tag, i) => <Chip key={i} label={tag} variant='outlined' />)}</div>
+            <div className='tags'>
+              {(item?.flag === EFlags.QCOCCITAN || item?.flag === EFlags.QUEBEC) && (
+                <Avatar src={lys} sx={{ width: 24, height: 24 }}></Avatar>
+              )}
+              {(item?.flag === EFlags.QCOCCITAN || item?.flag === EFlags.OCCITAN) && (
+                <Avatar src={occitan} sx={{ width: 24, height: 24 }}></Avatar>
+              )}
+              {item.tags?.map((tag, i) => <Chip key={i} label={tag} variant='outlined' />)}
+            </div>
           )}
 
           {!isArticle && item?.link && (
