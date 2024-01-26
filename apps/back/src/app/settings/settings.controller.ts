@@ -1,9 +1,10 @@
-import { Controller, Get, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseInterceptors } from '@nestjs/common';
 
 import { SettingsService } from './settings.service';
 import { ReqInterceptor } from '../../shared/interceptor.service';
 import { SettingsEntity } from './settings.entity';
 import { EFlags } from '@shared-interfaces/flags';
+import { SettingsDto } from './settings.dto';
 
 @UseInterceptors(ReqInterceptor)
 @Controller('settings')
@@ -21,12 +22,12 @@ export class SettingsController {
   }
 
   @Put('/flag')
-  updateFlag(): Promise<void> {
-    return this._settingsService.updateFlag();
+  updateFlag(@Body() settings: SettingsDto): Promise<void> {
+    return this._settingsService.updateFlag(settings);
   }
 
   @Put('/strict')
-  updateStrict(): Promise<void> {
-    return this._settingsService.updateStrict();
+  updateStrict(@Body() settings: SettingsDto): Promise<void> {
+    return this._settingsService.updateStrict(settings);
   }
 }

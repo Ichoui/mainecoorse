@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SettingsEntity } from './settings.entity';
 import { EFlags } from '@shared-interfaces/flags';
+import { SettingsDto } from './settings.dto';
 
 @Injectable()
 export class SettingsService {
@@ -30,11 +31,15 @@ export class SettingsService {
     return entity.flag;
   }
 
-  async updateFlag(): Promise<void> {
-    return Promise.resolve();
+  async updateFlag(settings: SettingsDto): Promise<void> {
+    await this._settingsEntityRepository.update({ settingsId: 1 }, { flag: settings.flag }).catch(() => {
+      throw new Error('Le flag ne peut pas être mis à jour');
+    });
   }
 
-  async updateStrict(): Promise<void> {
-    return Promise.resolve();
+  async updateStrict(settings: SettingsDto): Promise<void> {
+    await this._settingsEntityRepository.update({ settingsId: 1 }, { strict: settings.strict }).catch(() => {
+      throw new Error('Le mode strict ne peut pas être mis à jour');
+    });
   }
 }

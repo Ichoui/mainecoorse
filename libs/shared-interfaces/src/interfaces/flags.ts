@@ -1,5 +1,5 @@
 export enum EFlags {
-  QUEBEC = 'qc',
+  QUEBEC = 'quebec',
   OCCITAN = 'occitan',
   QCOCCITAN = 'qcoccitan',
 }

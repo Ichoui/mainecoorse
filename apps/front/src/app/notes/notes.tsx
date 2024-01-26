@@ -42,12 +42,12 @@ export const Notes = (): JSX.Element => {
   return (
     <div className='Notes'>
       <div className='wrapper'>
-        {/*{getLoading && getLoadingSettings && <Loader />}*/}
-        {/*{(getError || getSettingsError) && <DataError />}*/}
-        {/*{!getLoading && !getError && !getSettingsError && !getLoadingSettings && (*/}
-        {getLoading && <Loader />}
-        {getError && <DataError />}
-        {!getLoading && !getError && (
+        {getLoading && getLoadingSettings && <Loader />}
+        {(getError || getSettingsError) && <DataError />}
+        {!getLoading && !getError && !getSettingsError && !getLoadingSettings && (
+        // {getLoading && <Loader />}
+        // {getError && <DataError />}
+        // {!getLoading && !getError && (
           <Fragment>
             <h2>Pense-bête</h2>
             <TextField

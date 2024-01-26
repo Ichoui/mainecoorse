@@ -11,11 +11,10 @@ import { EFlags } from '@shared-interfaces/flags';
 
 export const Flags = (props: {
   setSnackValues: ({ open, message, severity }: ISnackbar) => void;
-  settings: { strict: boolean; slug: string };
+  settings: { strict: boolean; flag: string };
 }): JSX.Element => {
   // eslint-disable-next-line prefer-const
   let { setSnackValues, settings } = props;
-  settings = { strict: false, slug: EFlags.QCOCCITAN }; //tmp
   const flagList = [
     {
       slug: EFlags.QCOCCITAN,
@@ -37,7 +36,7 @@ export const Flags = (props: {
   });
   const getFlag = (slug: string): { value: string; slug: EFlags } | undefined => flagList.find(f => f.slug === slug);
   const [draconien, setDraconien] = useState<boolean>(settings.strict);
-  const [flag, setFlag] = useState<{ value: string; slug: EFlags } | undefined>(getFlag(settings.slug));
+  const [flag, setFlag] = useState<{ value: string; slug: EFlags } | undefined>(getFlag(settings.flag));
 
   const nextFlag = (slug: EFlags): void => {
     if (slug === EFlags.QCOCCITAN) {
@@ -60,7 +59,14 @@ export const Flags = (props: {
       method: 'PUT',
       data: { strict: checked },
     })
-      .then(() => setSnackValues({ open: true, message: '🦊', severity: 'success', autoHideDuration: 500 }))
+      .then(() =>
+        setSnackValues({
+          open: true,
+          message: `🐉 Mode Draco ${checked ? 'activé' : 'désactivé'} !`,
+          severity: 'success',
+          autoHideDuration: 500,
+        }),
+      )
       .catch(() => {
         setDraconien(!checked);
         setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 });
@@ -68,13 +74,21 @@ export const Flags = (props: {
   }, 250);
 
   const handleFlag = useDebouncedCallback((previousSlug: string) => {
-    console.log(flag);
+    console.log(flag); //
+    let message: string;
+    if (flag!.slug === EFlags.QUEBEC) {
+      message = '⚜️ On va manger Québécois !';
+    } else if (flag!.slug === EFlags.OCCITAN) {
+      message = '🏉 On va manger Toulousain !';
+    } else {
+      message = '🏉⚜️ On va manger Toulouquébécois !';
+    }
     putData({
       url: axiosUrl(`settings/flag`),
       method: 'PUT',
       data: { flag: flag!.slug },
     })
-      .then(() => setSnackValues({ open: true, message: '🦊', severity: 'success', autoHideDuration: 500 }))
+      .then(() => setSnackValues({ open: true, message, severity: 'success', autoHideDuration: 500 }))
       .catch(() => {
         setFlag(getFlag(previousSlug));
         setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 });

@@ -19,7 +19,7 @@ export class NotesService {
   }
 
   async postNotes(notesDto: NotesDto): Promise<string> {
-    const entity = this._notesEntityRepository.create({ oneId: 1, ...notesDto });
+    const entity: NotesEntity = this._notesEntityRepository.create({ oneId: 1, ...notesDto });
     return this._notesEntityRepository.save(entity).then(e => manageNoteData(e));
   }
 }
