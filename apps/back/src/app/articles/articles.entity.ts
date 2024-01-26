@@ -3,7 +3,7 @@ import { ItemBase, ItemType, Tags } from '@shared-interfaces/items';
 import { DaysEntity } from '../calendar/days/days.entity';
 import { DiversEntity } from '../calendar/divers/divers.entity';
 import { CoursesEntity } from '../courses/courses.entity';
-import { RecetteArticleEntity } from '../recette-article.entity.ts/recette-article.entity';
+import { RecetteArticleEntity } from '../recette-article/recette-article.entity';
 
 @Entity({
   name: 'articles',

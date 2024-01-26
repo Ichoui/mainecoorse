@@ -6,7 +6,7 @@ import { ArticlesEntity } from './articles.entity';
 import { CalendarModule } from '../calendar/calendar.module';
 import { CoursesModule } from '../courses/courses.module';
 import { RecettesModule } from '../recettes/recettes.module';
-import { RecetteArticleModule } from '../recette-article.entity.ts/recette-article.module';
+import { RecetteArticleModule } from '../recette-article/recette-article.module';
 
 @Module({
   imports: [

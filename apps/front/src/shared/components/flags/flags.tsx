@@ -1,12 +1,13 @@
 import Quebec from '/flags/qc.png';
 import Occitan from '/flags/occitan.png';
 import QcOccitan from '/flags/qcoccitan.png';
-import React, { JSX,  useState } from 'react';
+import React, { JSX, useState } from 'react';
 import './flags.scss';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { useDebouncedCallback } from 'use-debounce';
 import { axiosUrl, configAxios } from '@shared/hooks/axios.config';
 import { ISnackbar } from '@shared-interfaces/items';
+import { EFlags } from '@shared-interfaces/flags';
 
 export const Flags = (props: {
   setSnackValues: ({ open, message, severity }: ISnackbar) => void;
@@ -14,18 +15,18 @@ export const Flags = (props: {
 }): JSX.Element => {
   // eslint-disable-next-line prefer-const
   let { setSnackValues, settings } = props;
-  settings = { strict: false, slug: 'qcoccitan' }; //tmp
+  settings = { strict: false, slug: EFlags.QCOCCITAN }; //tmp
   const flagList = [
     {
-      slug: 'qcoccitan',
+      slug: EFlags.QCOCCITAN,
       value: QcOccitan,
     },
     {
-      slug: 'occitan',
+      slug: EFlags.OCCITAN,
       value: Occitan,
     },
     {
-      slug: 'quebec',
+      slug: EFlags.QUEBEC,
       value: Quebec,
     },
   ];
@@ -34,18 +35,18 @@ export const Flags = (props: {
     method: 'PUT',
     autoCancel: false,
   });
-  const getFlag = (slug: string): { value: string; slug: string } | undefined => flagList.find(f => f.slug === slug);
+  const getFlag = (slug: string): { value: string; slug: EFlags } | undefined => flagList.find(f => f.slug === slug);
   const [draconien, setDraconien] = useState<boolean>(settings.strict);
-  const [flag, setFlag] = useState<{ value: string; slug: string } | undefined>(getFlag(settings.slug));
+  const [flag, setFlag] = useState<{ value: string; slug: EFlags } | undefined>(getFlag(settings.slug));
 
-  const nextFlag = (slug: string): void => {
-    if (slug === 'qcoccitan') {
+  const nextFlag = (slug: EFlags): void => {
+    if (slug === EFlags.QCOCCITAN) {
       setFlag(flagList[1]);
     }
-    if (slug === 'occitan') {
+    if (slug === EFlags.OCCITAN) {
       setFlag(flagList[2]);
     }
-    if (slug === 'quebec') {
+    if (slug === EFlags.QUEBEC) {
       setFlag(flagList[0]);
     }
 

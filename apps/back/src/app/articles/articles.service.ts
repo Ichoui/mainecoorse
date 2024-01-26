@@ -7,7 +7,7 @@ import { ArticlesCreateDto, ArticlesUpdateDto } from './articles.dto';
 import { DiversService } from '../calendar/divers/divers.service';
 import { DaysService } from '../calendar/days/days.service';
 import { CoursesService } from '../courses/courses.service';
-import { RecetteArticleService } from '../recette-article.entity.ts/recette-article.service';
+import { RecetteArticleService } from '../recette-article/recette-article.service';
 
 @Injectable()
 export class ArticlesService {

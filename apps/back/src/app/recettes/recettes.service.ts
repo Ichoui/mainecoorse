@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { RecettesEntity } from './recettes.entity';
 import { DiversService } from '../calendar/divers/divers.service';
 import { DaysService } from '../calendar/days/days.service';
-import { RecetteArticleService } from '../recette-article.entity.ts/recette-article.service';
+import { RecetteArticleService } from '../recette-article/recette-article.service';
 
 @Injectable()
 export class RecettesService {

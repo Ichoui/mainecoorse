@@ -4,7 +4,7 @@ import { RecettesController } from './recettes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecettesEntity } from './recettes.entity';
 import { CalendarModule } from '../calendar/calendar.module';
-import { RecetteArticleModule } from '../recette-article.entity.ts/recette-article.module';
+import { RecetteArticleModule } from '../recette-article/recette-article.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RecettesEntity]), RecetteArticleModule, CalendarModule],

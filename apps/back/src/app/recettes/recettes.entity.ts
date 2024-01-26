@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 't
 import { ItemType, Tags } from '@shared-interfaces/items';
 import { DaysEntity } from '../calendar/days/days.entity';
 import { DiversEntity } from '../calendar/divers/divers.entity';
-import { RecetteArticleEntity } from '../recette-article.entity.ts/recette-article.entity';
+import { RecetteArticleEntity } from '../recette-article/recette-article.entity';
 
 @Entity({
   name: 'recettes',
