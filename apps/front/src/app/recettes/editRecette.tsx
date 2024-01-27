@@ -362,7 +362,7 @@ const RecetteForm = withFormik({
     label: props.item?.label,
     url: props.item?.url,
     description: props.item?.description,
-    flag: props.item?.flag || EFlags.QCOCCITAN,
+    flag: props.item?.flag || localStorage.getItem('flag') || EFlags.QCOCCITAN,
     link: props.item?.link,
     tags: props.item?.tags,
     articlesList: props.item?.articlesList ?? [{ label: '', quantity: '', id: null }],

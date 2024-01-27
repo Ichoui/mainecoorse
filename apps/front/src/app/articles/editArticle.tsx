@@ -114,7 +114,7 @@ const ArticleForm = (props: {
     label: item?.label,
     url: item?.url,
     description: item?.description,
-    flag: item?.flag || EFlags.QCOCCITAN,
+    flag: item?.flag || localStorage.getItem('flag') as EFlags || EFlags.QCOCCITAN,
     tags: item?.tags,
   };
   const validationSchema = yup.object().shape({
