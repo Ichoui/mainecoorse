@@ -144,8 +144,6 @@ export const Calendar = () => {
     [executePut, executeRemove, setSnackValues, days, divers],
   );
 
-  // useEffect(() => {}, [executePut, executeRemove, setSnackValues, days, divers]);
-
   const handleOnBeforeCapture = () => {
     setIsDragging(true);
   };

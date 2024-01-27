@@ -59,7 +59,7 @@ export class DiversService {
     const queryArticle: ItemBase[] = await this._diversEntityRepository
       .createQueryBuilder('divers')
       .select(
-        'article.id, article.label, article.description, article.url, article.tags, article.itemType, divers.id as "tableIdentifier"',
+        'article.id, article.label, article.description, article.url, article.tags, article.itemType, article.flag, divers.id as "tableIdentifier"',
       )
       .leftJoin('divers.article', 'article')
       .where('divers.article is not null')

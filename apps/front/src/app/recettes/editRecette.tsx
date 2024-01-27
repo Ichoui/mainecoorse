@@ -30,7 +30,7 @@ export const EditRecette = (): JSX.Element => {
 
   // eslint-disable-next-line no-empty-pattern
   const [{}, removeRecette] = configAxios({ url: 'recettes', method: 'DELETE', manual: true });
-  const [{ data }] = configAxios({ url: 'articles', method: 'GET', useCache: true });
+  const [{ data }, fetchArticles] = configAxios({ url: 'articles', method: 'GET', useCache: false });
 
   const [{ loading }, saveData] = configAxios({
     url: 'recettes',
@@ -39,7 +39,7 @@ export const EditRecette = (): JSX.Element => {
     params: { id: item?.id },
   });
   const [backgroundSize, setBackgroundSize] = useState<string>('contain'); // add state for background size
-
+  const [flag, setFlag] = useState<EFlags>(item?.flag);
   useEffect(() => {
     urlTest(item?.url ?? '', defaultUrl).then(res => {
       setBgi(res.url);
@@ -56,6 +56,10 @@ export const EditRecette = (): JSX.Element => {
       image.src = res.url;
     });
   }, [item?.url]);
+
+  useEffect(() => {
+    fetchArticles({ params: { flag } });
+  }, [fetchArticles, flag, setFlag]);
 
   // Dialog Confirmation
   const [openDialogConfirmation, setOpenDialogConfirmation] = useState(false);
@@ -92,6 +96,7 @@ export const EditRecette = (): JSX.Element => {
         setSnackValues={setSnackValues}
         saveData={saveData}
         loading={loading}
+        flagChanged={flag => setFlag(flag)}
       />
     </div>
   );
@@ -110,6 +115,7 @@ const TSXForm = (props: any): JSX.Element => {
     handleRemove,
     articlesData,
     loading,
+    flagChanged,
   } = props;
   // @ts-ignore
   const recettesTags = Object.values(RecetteTags);
@@ -204,6 +210,7 @@ const TSXForm = (props: any): JSX.Element => {
         settings={{ flag: values.flag || EFlags.QCOCCITAN }}
         onChange={flag => {
           setFieldValue('flag', flag);
+          return flagChanged(flag);
         }}
       ></Flags>
       <TextField
@@ -358,6 +365,7 @@ const RecetteForm = withFormik({
     setSnackValues: ({ open, message, severity }: ISnackbar) => void;
     saveData: RefetchFunction<unknown, unknown>;
     loading: boolean;
+    flagChanged: (flag: EFlags) => void;
   }) => ({
     label: props.item?.label,
     url: props.item?.url,

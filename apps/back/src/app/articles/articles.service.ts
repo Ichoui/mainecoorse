@@ -22,9 +22,20 @@ export class ArticlesService {
     private _recettesArticleService: RecetteArticleService,
   ) {}
 
-  async getArticles(): Promise<ItemBase[]> {
+  async getArticles(params?: { flag: EFlags }): Promise<ItemBase[]> {
     const settings = await this._settingsService.generalSettings();
-    const where = this._settingsService.whereClause(settings);
+    let where;
+    if (params?.flag) {
+      if (params.flag === EFlags.QCOCCITAN) {
+        // On renvoie tout quand qcoccitan
+        where = [{ flag: EFlags.QCOCCITAN }, { flag: EFlags.QUEBEC }, { flag: EFlags.OCCITAN }];
+      } else {
+        // On prend juste le param donné, car c'est strict
+        where = params;
+      }
+    } else {
+      where = this._settingsService.whereClause(settings);
+    }
 
     const query = this._articlesEntityRepository.find({
       order: { id: 'ASC' },

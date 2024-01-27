@@ -4,6 +4,7 @@ import { ArticlesService } from './articles.service';
 import { ItemBase } from '@shared-interfaces/items';
 import { ReqInterceptor } from '../../shared/interceptor.service';
 import { ArticlesCreateDto, ArticlesUpdateDto } from './articles.dto';
+import { EFlags } from '@shared-interfaces/flags';
 
 @UseInterceptors(ReqInterceptor)
 @Controller('articles')
@@ -11,8 +12,8 @@ export class ArticlesController {
   constructor(private readonly _articlesService: ArticlesService) {}
 
   @Get()
-  getArticles(): Promise<ItemBase[]> {
-    return this._articlesService.getArticles();
+  getArticles(@Query() params?: { flag: EFlags }): Promise<ItemBase[]> {
+    return this._articlesService.getArticles(params);
   }
 
   @Post()
