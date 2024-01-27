@@ -15,6 +15,7 @@ export class SettingsService {
       const createEntity = this._settingsEntityRepository.create({
         settingsId: 1,
         flag: EFlags.QCOCCITAN,
+        strict: false,
       });
       return this._settingsEntityRepository.save(createEntity);
     }
@@ -33,5 +34,27 @@ export class SettingsService {
     await this._settingsEntityRepository.update({ settingsId: 1 }, { flag: settings.flag }).catch(() => {
       throw new Error('Le flag ne peut pas être mis à jour');
     });
+  }
+
+  async updateStrict(settings: SettingsDto): Promise<void> {
+    await this._settingsEntityRepository.update({ settingsId: 1 }, { strict: settings.strict }).catch(() => {
+      throw new Error('Le mode strict ne peut pas être mis à jour');
+    });
+  }
+
+  whereClause(settings: SettingsEntity): any[] {
+    let where;
+    if (settings.strict) {
+      where = [{ flag: settings.flag }];
+    } else {
+      if (settings.flag === EFlags.QUEBEC) {
+        where = [{ flag: EFlags.QCOCCITAN }, { flag: EFlags.QUEBEC }];
+      } else if (settings.flag === EFlags.OCCITAN) {
+        where = [{ flag: EFlags.QCOCCITAN }, { flag: EFlags.OCCITAN }];
+      } else {
+        where = [{ flag: EFlags.QCOCCITAN }, { flag: EFlags.QUEBEC }, { flag: EFlags.OCCITAN }];
+      }
+    }
+    return where;
   }
 }

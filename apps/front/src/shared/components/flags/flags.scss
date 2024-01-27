@@ -1,7 +1,7 @@
 .wrapper-flags {
   display: flex;
-  justify-content: center;
-
+  justify-content: space-around;
+  align-items: center;
   .flags {
     img {
       border-radius: 50%;

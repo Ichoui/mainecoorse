@@ -9,6 +9,7 @@ import { DaysService } from '../calendar/days/days.service';
 import { CoursesService } from '../courses/courses.service';
 import { RecetteArticleService } from '../recette-article/recette-article.service';
 import { SettingsService } from '../settings/settings.service';
+import { EFlags } from '@shared-interfaces/flags';
 
 @Injectable()
 export class ArticlesService {
@@ -22,8 +23,13 @@ export class ArticlesService {
   ) {}
 
   async getArticles(): Promise<ItemBase[]> {
-    const flag = await this._settingsService.getFlag();
-    const query = this._articlesEntityRepository.find({ order: { id: 'ASC' }, where: { flag } });
+    const settings = await this._settingsService.generalSettings();
+    const where = this._settingsService.whereClause(settings);
+
+    const query = this._articlesEntityRepository.find({
+      order: { id: 'ASC' },
+      where,
+    });
 
     if (!query) {
       throw new NotFoundException('Aucun article listé');

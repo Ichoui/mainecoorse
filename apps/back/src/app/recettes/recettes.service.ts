@@ -20,12 +20,13 @@ export class RecettesService {
   ) {}
 
   async getRecettes(): Promise<ItemBase[]> {
-    const flag = await this._settingsService.getFlag();
+    const settings = await this._settingsService.generalSettings();
+    const where = this._settingsService.whereClause(settings);
     const query: ItemBase[] = await this._recettesEntityRepository
       .find({
         relations: ['recetteArticle.article'],
         order: { id: 'ASC' },
-        where: { flag },
+        where,
       })
       .then(query => {
         return query.map(recette => {

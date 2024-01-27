@@ -10,4 +10,7 @@ export class SettingsEntity extends BaseEntity {
 
   @Column({ type: 'enum', enum: EFlags })
   flag: EFlags;
+
+  @Column()
+  strict: boolean;
 }

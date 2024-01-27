@@ -146,7 +146,7 @@ const ArticleForm = (props: {
   const initializeUrlTest = useDebouncedCallback((val: string): void => {
     setPreviewImg({ url: val, pending: true });
     urlTest(val ?? '', undefined, true).then(res => setPreviewImg({ url: res.url, pending: false }));
-  },250);
+  }, 250);
 
   return (
     <form onSubmit={formik.handleSubmit} autoComplete='off'>
@@ -209,9 +209,8 @@ const ArticleForm = (props: {
       />
 
       <Flags
-        settingFlag={formik.values.flag || EFlags.QCOCCITAN}
+        settings={{ flag: formik.values.flag || EFlags.QCOCCITAN }}
         onChange={flag => {
-          console.log(flag);
           formik.setFieldValue('flag', flag);
         }}
       ></Flags>

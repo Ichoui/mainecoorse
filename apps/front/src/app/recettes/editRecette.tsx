@@ -201,9 +201,8 @@ const TSXForm = (props: any): JSX.Element => {
         )}
       />
       <Flags
-        settingFlag={values.flag || EFlags.QCOCCITAN}
+        settings={{ flag: values.flag || EFlags.QCOCCITAN }}
         onChange={flag => {
-          console.log(flag);
           setFieldValue('flag', flag);
         }}
       ></Flags>
