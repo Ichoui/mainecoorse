@@ -12,8 +12,9 @@ export const Coches = (props: {
   item: CoursesArticleList;
   setSnackValues: ({ open, message, severity }: ISnackbar) => void;
   executePut: RefetchFunction<any, any>;
+  cocheChanged: () => void
 }) => {
-  const { item, setSnackValues, executePut } = props;
+  const { item, setSnackValues, executePut, cocheChanged } = props;
   const [checked, setChecked] = useState(item.purchased);
 
   const handleCheck = useDebouncedCallback((checked: boolean) => {
@@ -22,6 +23,7 @@ export const Coches = (props: {
       method: 'PUT',
       data: { purchased: checked },
     })
+      .then(() => cocheChanged())
       .then(() => setSnackValues({ open: true, message: '🦊', severity: 'success', autoHideDuration: 500 }))
       .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
   }, 250);
@@ -32,6 +34,7 @@ export const Coches = (props: {
       method: 'PUT',
       data: { quantity },
     })
+      .then(() => cocheChanged())
       .then(() => setSnackValues({ open: true, message: '🦆', severity: 'success', autoHideDuration: 500 }))
       .catch(() => setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error', autoHideDuration: 1000 }));
   }, 250);

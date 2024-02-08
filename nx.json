@@ -54,8 +54,7 @@
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/.eslintrc.json",
-      "!{projectRoot}/jest.config.[jt]s"
+      "!{projectRoot}/.eslintrc.json"
     ],
     "sharedGlobals": []
   },

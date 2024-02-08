@@ -9,15 +9,36 @@ import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 import { SnackbarContext } from '@app/app';
 import { Tumbleweed } from '@app/courses/tumbleweed/tumbleweed';
+import { Socket, io } from 'socket.io-client';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
+
+let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 export const Courses = () => {
   const [itemsSortedByTags, setItemsSorted] = useState<(string | CoursesArticleList[])[]>([]);
-  const [{ data, error, loading: loadingGet }] = configAxios({ url: 'courses', method: 'GET', autoCancel: false });
+  const [{ data, error, loading: loadingGet }, fetchCourses] = configAxios({
+    url: 'courses',
+    method: 'GET',
+    autoCancel: false,
+  });
   const { setSnackValues } = useContext(SnackbarContext);
   // eslint-disable-next-line no-empty-pattern
   const [{}, executePutQuantity] = configAxios({ method: 'PUT', manual: true });
   // eslint-disable-next-line no-empty-pattern
   const [{}, executePurge] = configAxios({ url: 'courses', method: 'DELETE', manual: true });
+
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_SOCKETIO, { transports: ['websocket'] });
+    socket.on('fetchData', (res: { refetch: boolean; socketId: string }) => {
+      if (res.refetch && socket.id !== res.socketId) {
+        fetchCourses().then(e => setItemsSorted(sortByTags(e.data)));
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [fetchCourses]);
 
   useEffect(() => {
     setItemsSorted(sortByTags(data));
@@ -30,10 +51,13 @@ export const Courses = () => {
     if (purge) {
       executePurge()
         .then(res => setItemsSorted(sortByTags(res.data)))
+        .then(() => cocheChanged())
         .then(() => setSnackValues({ open: true, message: '♻️ Purgatoire en cours...', severity: 'success' }))
         .catch(error => setSnackValues({ open: true, error, severity: 'error' }));
     }
   };
+
+  const cocheChanged = () => socket.emit('reloadCourses');
 
   return (
     <div className='Courses'>
@@ -57,6 +81,7 @@ export const Courses = () => {
                           item={item}
                           setSnackValues={setSnackValues}
                           executePut={executePutQuantity}
+                          cocheChanged={cocheChanged}
                         ></Coches>
                       ))}
                     </div>
