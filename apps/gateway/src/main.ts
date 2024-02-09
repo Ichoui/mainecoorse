@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import { Express } from 'express-serve-static-core';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { CoursesGateway } from './app/courses.gateway';
+import * as fs from 'fs';
 
 const server = express();
 async function createServer(server: Express | NestApplicationOptions) {
@@ -20,8 +21,8 @@ async function createServer(server: Express | NestApplicationOptions) {
     {
       cors,
       httpsOptions: {
-        key: '/etc/letsencrypt/live/vps-07f85069.vps.ovh.net/privkey.pem',
-        cert: '/etc/letsencrypt/live/vps-07f85069.vps.ovh.net/fullchain.pem',
+        key: fs.readFileSync('/etc/letsencrypt/live/vps-07f85069.vps.ovh.net/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/vps-07f85069.vps.ovh.net/fullchain.pem'),
       },
     },
   );
