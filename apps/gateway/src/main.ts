@@ -6,6 +6,7 @@ import { Express } from 'express-serve-static-core';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { CoursesGateway } from './app/courses.gateway';
 import * as fs from 'fs';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
 const server = express();
 async function createServer(server: Express | NestApplicationOptions) {
@@ -21,8 +22,6 @@ async function createServer(server: Express | NestApplicationOptions) {
     {
       cors,
       httpsOptions: {
-        // key: fs.readFileSync('./key.pem', 'utf8'),
-        // cert: fs.readFileSync('./server.crt', 'utf8')
         key: fs.readFileSync('/var/www/privkey.pem'),
         cert: fs.readFileSync('/var/www/fullchain.pem'),
       },
@@ -34,6 +33,7 @@ async function createServer(server: Express | NestApplicationOptions) {
   app.use(cookieParser());
   const prefix = 'gateway';
   app.setGlobalPrefix(prefix);
+  app.useWebSocketAdapter(new IoAdapter(app));
 
   return app.init();
 }
