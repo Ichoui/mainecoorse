@@ -23,21 +23,8 @@ async function createServer() {
   const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(
     CoursesGateway,
     new ExpressAdapter(server),
-    // {
-    //   cors,
-    //   httpsOptions: {
-    //     key: fs.readFileSync('/var/www/privkey.pem'),
-    //     cert: fs.readFileSync('/var/www/fullchain.pem'),
-    //   },
-    // },
+    { cors },
   );
-
-  // app.disable('x-powered-by');
-  // app.disable('X-Powered-By');
-  // app.use(cookieParser());
-  // const prefix = 'gateway';
-  // app.setGlobalPrefix(prefix);
-
 
   await app.init();
 
