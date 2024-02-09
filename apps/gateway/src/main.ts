@@ -23,8 +23,8 @@ async function createServer(server: Express | NestApplicationOptions) {
       httpsOptions: {
         // key: fs.readFileSync('./key.pem', 'utf8'),
         // cert: fs.readFileSync('./server.crt', 'utf8')
-        key: fs.readFileSync('/etc/letsencrypt/live/vps-07f85069.vps.ovh.net/privkey.pem'),
-        cert: fs.readFileSync('/etc/letsencrypt/live/vps-07f85069.vps.ovh.net/fullchain.pem'),
+        key: fs.readFileSync('/var/www/privkey.pem'),
+        cert: fs.readFileSync('/var/www/fullchain.pem'),
       },
     },
   );
