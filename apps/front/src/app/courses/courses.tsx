@@ -28,7 +28,7 @@ export const Courses = () => {
   const [{}, executePurge] = configAxios({ url: 'courses', method: 'DELETE', manual: true });
 
   useEffect(() => {
-    socket = io(import.meta.env.VITE_SOCKETIO, {  secure: true });
+    socket = io(import.meta.env.VITE_SOCKETIO, { transports: ['websocket'], secure: true });
     socket.on('fetchData', (res: { refetch: boolean; socketId: string }) => {
       if (res.refetch && socket.id !== res.socketId) {
         fetchCourses().then(e => setItemsSorted(sortByTags(e.data)));
