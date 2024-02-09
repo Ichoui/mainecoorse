@@ -17,7 +17,13 @@ async function createServer(server: Express | NestApplicationOptions) {
   const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(
     CoursesGateway,
     new ExpressAdapter(server),
-    { cors },
+    {
+      cors,
+      httpsOptions: {
+        key: '/etc/letsencrypt/live/vps-07f85069.vps.ovh.net/privkey.pem',
+        cert: '/etc/letsencrypt/live/vps-07f85069.vps.ovh.net/fullchain.pem',
+      },
+    },
   );
 
   app.disable('x-powered-by');
