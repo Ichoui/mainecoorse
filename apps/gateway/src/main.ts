@@ -23,13 +23,15 @@ async function createServer() {
   const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(
     CoursesGateway,
     new ExpressAdapter(server),
-    { cors },
+    // { cors },
   );
 
+
+app.enableCors()
   await app.init();
 
-  https.createServer(httpsOptions, server)
-  await app.listen(35000)
+  https.createServer(httpsOptions, server).listen(35000)
+  // await app.listen(35000)
 }
 
 createServer()
