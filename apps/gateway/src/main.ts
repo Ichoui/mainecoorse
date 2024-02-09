@@ -10,13 +10,14 @@ const server = express();
 async function createServer(server: Express | NestApplicationOptions) {
   const cors = {
     // https://github.com/expressjs/cors#configuration-options
-    origin: ['http://localhost:1418'],
+    origin: ['http://localhost:1418', process.env.VITE_SOCKETIO],
     methods: ['GET', 'OPTIONS'],
   };
 
   const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(
     CoursesGateway,
     new ExpressAdapter(server),
+    { cors },
   );
 
   app.disable('x-powered-by');

@@ -6,6 +6,7 @@ export class CoursesGateway implements OnGatewayConnection {
   @WebSocketServer() server: Server;
 
   handleConnection(client: Socket): void {
+    console.warn(client.id);
     client.on('reloadCourses', () => this.server.emit('fetchData', { refetch: true, socketId: client.id }));
   }
 }
