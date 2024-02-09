@@ -28,9 +28,8 @@ async function createServer() {
 
   await app.init();
 
-  http.createServer(server).listen(3000);
-  https.createServer(httpsOptions, server).listen(35000);
-  return app.init();
+  https.createServer(httpsOptions, server)
+  await app.listen(35000)
 }
 
 createServer()
