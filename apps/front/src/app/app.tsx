@@ -20,7 +20,6 @@ import { configAxios } from '@shared/hooks/axios.config';
 import { PingBounce } from '@components/loaders/ping-bounce/ping-bounce';
 import { EFlags } from '@shared-interfaces/flags';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, onSnapshot } from 'firebase/firestore';
 
 type SnackDefaultValue = {
   snackValues: ISnackbar;
@@ -106,7 +105,7 @@ export const App = (): React.JSX.Element => {
         <span className='logo' onClick={() => setSkyrim(!skyrim)}>
           {skyrim && (
             <div style={{ display: 'none' }}>
-              <audio autoPlay={true}>
+              <audio autoPlay={true} loop={true}>
                 <source src={skyrimTroll} type='audio/mp3' />
               </audio>
             </div>
