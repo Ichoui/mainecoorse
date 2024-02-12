@@ -9,10 +9,7 @@ import { DataError } from '@components/data-error/data-error';
 import { configAxios } from '@shared/hooks/axios.config';
 import { SnackbarContext } from '@app/app';
 import { Tumbleweed } from '@app/courses/tumbleweed/tumbleweed';
-import { Socket, io } from 'socket.io-client';
-import { DefaultEventsMap } from '@socket.io/component-emitter';
-
-let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
+import { doc, setDoc, getFirestore, onSnapshot } from 'firebase/firestore';
 
 export const Courses = () => {
   const [itemsSortedByTags, setItemsSorted] = useState<(string | CoursesArticleList[])[]>([]);
@@ -27,17 +24,14 @@ export const Courses = () => {
   // eslint-disable-next-line no-empty-pattern
   const [{}, executePurge] = configAxios({ url: 'courses', method: 'DELETE', manual: true });
 
+  /* Listen to any change in firestore to use websocket firebase techno */
   useEffect(() => {
-    socket = io('wss://vps-07f85069.vps.ovh.net:31820', { transports: ['websocket'], secure: true });
-    socket.on('fetchData', (res: { refetch: boolean; socketId: string }) => {
-      if (res.refetch && socket.id !== res.socketId) {
+    const db = getFirestore();
+    onSnapshot(doc(db, 'websocket', import.meta.env.DEV ? 'io.dev' : 'io'), doc => {
+      if (!doc.metadata.hasPendingWrites) {
         fetchCourses().then(e => setItemsSorted(sortByTags(e.data)));
       }
     });
-
-    return () => {
-      socket.disconnect();
-    };
   }, [fetchCourses]);
 
   useEffect(() => {
@@ -57,7 +51,13 @@ export const Courses = () => {
     }
   };
 
-  const cocheChanged = () => socket.emit('reloadCourses');
+  /* Emit new value to firebase */
+  const cocheChanged = () => {
+    const db = getFirestore();
+    setDoc(doc(db, 'websocket', import.meta.env.DEV ? 'io.dev' : 'io'), {
+      date: new Date(),
+    });
+  };
 
   return (
     <div className='Courses'>

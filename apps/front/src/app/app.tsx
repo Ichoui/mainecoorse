@@ -1,4 +1,4 @@
-import React, { createContext, SyntheticEvent, useContext, useEffect, useState } from 'react';
+import React, { createContext, SyntheticEvent, useEffect, useState } from 'react';
 import { IconButton, Tab, Tabs, ThemeProvider } from '@mui/material';
 import {
   CalendarMonthRounded,
@@ -19,6 +19,8 @@ import { ISnackbar } from '@shared-interfaces/items';
 import { configAxios } from '@shared/hooks/axios.config';
 import { PingBounce } from '@components/loaders/ping-bounce/ping-bounce';
 import { EFlags } from '@shared-interfaces/flags';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs, doc, onSnapshot } from 'firebase/firestore';
 
 type SnackDefaultValue = {
   snackValues: ISnackbar;
@@ -71,13 +73,25 @@ export const App = (): JSX.Element => {
   }, [fetchPing, setAppReady, appReady]);
 
   useEffect(() => {
-    setFlag(localStorage.getItem('flag') as EFlags)
+    setFlag(localStorage.getItem('flag') as EFlags);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage.getItem('flag')]);
 
   useEffect(() => {
     getFlag().then(e => setFlag(e.data));
   }, [flag, getFlag]);
+
+  useEffect(() => {
+    const firebaseConfig = {
+      apiKey: 'AIzaSyBZEBaWhHJw0klSitaLtNpANQUnsYSWG3M',
+      authDomain: 'mainecoorse.firebaseapp.com',
+      projectId: 'mainecoorse',
+      storageBucket: 'mainecoorse.appspot.com',
+      messagingSenderId: '298528650719',
+      appId: '1:298528650719:web:8c4333145d259444aa006a',
+    };
+    initializeApp(firebaseConfig);
+  }, []);
 
   return (
     <ThemeProvider theme={themeOptions}>

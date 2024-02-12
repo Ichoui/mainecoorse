@@ -17,7 +17,7 @@ import { useFormik } from 'formik';
 import { ManageQuantity } from '@components/manage-quantity/manage-quantity';
 import { axiosUrl, configAxios } from '@shared/hooks/axios.config';
 import { SnackbarContext } from '@app/app';
-import { io } from 'socket.io-client';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
 export const DialogAddCalendar = (props: {
   open: boolean;
@@ -79,8 +79,10 @@ export const DialogAddCalendar = (props: {
         articles = formik.values.articles!.map(val => ({ id: val.id, quantity: Math.ceil(val.quantity * 2) / 2 }));
       }
       promiseArray.push(upsert({ articles }, axiosUrl('courses'), 'POST'));
-      const socket = io(import.meta.env.VITE_SOCKETIO, { transports: ['websocket'] });
-      promiseArray.push(socket.emit('reloadCourses'))
+      const db = getFirestore();
+      setDoc(doc(db, 'websocket', import.meta.env.DEV ? 'io.dev' : 'io'), {
+        date: new Date(),
+      });
     }
     Promise.all(promiseArray)
       .then(() => onClose())
