@@ -113,14 +113,12 @@ export const App = (): JSX.Element => {
           )}
           <img src={maple} alt='Logo mainecoorse' />
 
-          {/*<FlagContext.Provider value={{ flag }}>*/}
           {(flag === EFlags.QCOCCITAN || flag === EFlags.QUEBEC) && (
             <img className='bouffe lys' src={lys} alt='fleur de lys' />
           )}
           {(flag === EFlags.QCOCCITAN || flag === EFlags.OCCITAN) && (
             <img className='bouffe occitan' src={occitan} alt='croix occitane' />
           )}
-          {/*</FlagContext.Provider>*/}
         </span>
 
         <NavLink to='/courses' className={({ isActive }) => (isActive ? 'active' : '')} onClick={() => setValue(false)}>
