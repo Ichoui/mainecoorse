@@ -3,7 +3,7 @@ import { Item } from '@components/item/item';
 import { ItemBase, RecetteTags } from '@shared-interfaces/items';
 import { Autocomplete, Chip, Fab, TextField } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { Loader } from '@components/loaders/loader/loader';
@@ -12,7 +12,7 @@ import MapleNoResults from '/maple-no-results.png';
 import { configAxios } from '@shared/hooks/axios.config';
 import { sortItemsByLabel } from '@shared/utils/sort.utils';
 
-export const Recettes = (): JSX.Element => {
+export const Recettes = (): React.JSX.Element => {
   const [{ data, error, loading }, refetchRecettes] = configAxios({
     url: 'recettes',
     method: 'GET',
@@ -22,11 +22,21 @@ export const Recettes = (): JSX.Element => {
   const [filteredRecettes, setFilteredRecettes] = useState<ItemBase[]>([]);
   // @ts-ignore
   const recettesTags = Object.values(RecetteTags);
+  const location = useLocation();
 
   useEffect(() => {
     setRecettes(sortItemsByLabel(data));
     setFilteredRecettes(data);
-  }, [data, loading, error]);
+
+    if (location.state?.itemLabel) {
+      setTimeout(() => {
+        (document.getElementById(location.state.itemLabel) as HTMLElement)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      },250);
+    }
+  }, [data, loading, error, location]);
 
   const handleSearch = useDebouncedCallback(value => {
     const filter = recettes?.filter(f => f.label.toLowerCase().includes(value.toLowerCase()));

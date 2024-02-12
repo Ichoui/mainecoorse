@@ -22,7 +22,7 @@ import { configAxios } from '@shared/hooks/axios.config';
 import { urlTest } from '@shared/utils/url.utils';
 import { LoaderThree } from '@shared/svg/loader-three';
 
-export const Item = (props: { item: ItemBase; itemRemoved: () => void }): JSX.Element => {
+export const Item = (props: { item: ItemBase; itemRemoved: () => void }): React.JSX.Element => {
   const { item, itemRemoved } = props;
   const isArticle = item.itemType === ItemType.ARTICLE;
   const urlToRoute = `/${isArticle ? 'article' : 'recette'}/${item.id}`;
@@ -78,8 +78,9 @@ export const Item = (props: { item: ItemBase; itemRemoved: () => void }): JSX.El
     urlTest(item?.url ?? '').then(res => setItemUrl({ url: res.url, pending: false, typeUrl: res.typeUrl }));
   }, [item?.url, setItemUrl]);
 
+
   return (
-    <div className='item'>
+    <div className='item' id={item.label}>
       <Card variant='outlined'>
         {/* DATA*/}
         <CardActionArea onClick={() => handleDialogInspectItem(true)}>

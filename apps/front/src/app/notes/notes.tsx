@@ -10,7 +10,7 @@ import Maple from '/maple.png';
 import { SnackbarContext } from '@app/app';
 import { Flags } from '@components/flags/flags';
 
-export const Notes = (): JSX.Element => {
+export const Notes = (): React.JSX.Element => {
   const [{ data: getData, loading: getLoading, error: getError }] = configAxios({
     url: 'notes',
     method: 'GET',

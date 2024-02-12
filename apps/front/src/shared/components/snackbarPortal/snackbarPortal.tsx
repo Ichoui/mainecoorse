@@ -1,9 +1,9 @@
 import { Alert, Snackbar, Typography } from '@mui/material';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { ISnackbar } from '@shared-interfaces/items';
 import { HttpStatus } from '@nestjs/common';
 
-export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: () => void }): JSX.Element => {
+export const SnackbarPortal = (props: { snackValues: ISnackbar; closeSnackbar: () => void }): React.JSX.Element => {
   const { snackValues } = props;
   const [open, setOpen] = useState(false);
 

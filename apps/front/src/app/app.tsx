@@ -33,7 +33,7 @@ export const SnackbarContext = createContext<SnackDefaultValue>({
   },
 });
 
-export const App = (): JSX.Element => {
+export const App = (): React.JSX.Element => {
   const loc = useLocation();
   const location = () => {
     const pathname = loc.pathname.split('/')[1];

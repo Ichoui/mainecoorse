@@ -13,7 +13,7 @@ export const Flags = (props: {
   setSnackValues?: ({ open, message, severity }: ISnackbar) => void;
   settings: { flag: EFlags; strict?: boolean };
   onChange?: (flag: EFlags) => void;
-}): JSX.Element => {
+}): React.JSX.Element => {
   // eslint-disable-next-line prefer-const
   let { setSnackValues, settings, onChange } = props;
   const flagList = [

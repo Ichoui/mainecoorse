@@ -1,5 +1,5 @@
 import '@styles/forms.scss';
-import { Params, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, Params, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Chip, TextField } from '@mui/material';
 import { DeleteForeverRounded, SaveAsRounded } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
@@ -16,7 +16,7 @@ import { EFlags } from '@shared-interfaces/flags';
 import { Flags } from '@/shared/components/flags/flags';
 import { useDebouncedCallback } from 'use-debounce';
 
-export const EditArticle = (): JSX.Element => {
+export const EditArticle = (): React.JSX.Element => {
   const { articleId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://img.cuisineaz.com/660x660/2013/12/20/i47006-raclette.jpeg';
   const isNewArticle = articleId === 'new';
@@ -62,7 +62,7 @@ export const EditArticle = (): JSX.Element => {
             message: '👽 Article supprimé',
             severity: 'success',
           });
-          navigation('/articles');
+          navigation('/articles', { state: { itemLabel: null } });
         })
         .catch(error => {
           setSnackValues({ open: true, error, severity: 'error' });
@@ -92,9 +92,9 @@ const ArticleForm = (props: {
   isNewArticle: boolean;
   handleRemove: (open: boolean, remove?: boolean) => void;
   item: ItemBase;
-  navigation: (to: string) => void;
+  navigation: NavigateFunction;
   setSnackValues: ({ open, message, severity }: ISnackbar) => void;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const { handleRemove, isNewArticle, openDialogConfirmation, item, navigation, setSnackValues } = props;
   const [{ loading }, saveData] = configAxios({
     url: 'articles',
@@ -114,8 +114,8 @@ const ArticleForm = (props: {
     label: item?.label,
     url: item?.url,
     description: item?.description,
-    flag: item?.flag || localStorage.getItem('flag') as EFlags || EFlags.QCOCCITAN,
-    tags: item?.tags,
+    flag: item?.flag || (localStorage.getItem('flag') as EFlags) || EFlags.QCOCCITAN,
+    tags: item?.tags
   };
   const validationSchema = yup.object().shape({
     label: yup
@@ -262,7 +262,7 @@ const ArticleForm = (props: {
 const submit = (
   values: FormikValues,
   saveData: RefetchFunction<unknown, unknown>,
-  navigation: (to: string) => void,
+  navigation: NavigateFunction,
   setSnackValues: ({ open, message, severity }: ISnackbar) => void,
   isNewArticle: boolean,
 ): void => {
@@ -275,7 +275,7 @@ const submit = (
         message: isNewArticle ? '🌞 Article enregistré' : '🌞 Article modifié',
         severity: 'success',
       });
-      navigation('/articles');
+      navigation('/articles', { state: { itemLabel: values.label } });
     })
     .catch(error => setSnackValues({ open: true, error, severity: 'error' }));
 };

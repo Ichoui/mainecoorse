@@ -18,7 +18,7 @@ export const DialogInspectItem = (props: {
   isArticle: boolean;
   item: ItemBase;
   onClose: (confirm?: boolean) => void;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const { open, onClose, isArticle, item } = props;
   const handleClose = () => {
     onClose();

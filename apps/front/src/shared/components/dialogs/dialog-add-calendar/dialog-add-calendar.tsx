@@ -24,7 +24,7 @@ export const DialogAddCalendar = (props: {
   item: ItemBase;
   isArticle: boolean;
   onClose: (confirm?: boolean) => void;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const { open, isArticle, item, onClose } = props;
   const [calendarCheck, setCalendarCheck] = useState(false);
   const [coursesCheck, setCoursesCheck] = useState(false);

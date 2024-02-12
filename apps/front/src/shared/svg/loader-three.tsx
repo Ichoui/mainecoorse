@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const LoaderThree = (): JSX.Element => {
+export const LoaderThree = (): React.JSX.Element => {
   return (
     <svg
       version='1.1'

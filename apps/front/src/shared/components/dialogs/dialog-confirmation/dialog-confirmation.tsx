@@ -7,7 +7,7 @@ export const DialogConfirmation = (props: {
   isArticle?: boolean;
   purge?: boolean;
   onClose: (confirm?: boolean) => void;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const { open, isArticle, purge = false, onClose } = props;
   const handleClose = () => {
     onClose();

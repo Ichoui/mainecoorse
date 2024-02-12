@@ -1,8 +1,9 @@
 import Map404 from '/map404.png';
 import './data-error.scss';
 import Typography from '@mui/material/Typography';
+import React from 'react';
 
-export const DataError = (): JSX.Element => {
+export const DataError = (): React.JSX.Element => {
   return (
     <div className='DataError'>
       <Typography color='error'>Maple404</Typography>

@@ -2,6 +2,7 @@ import { ItemBase } from '@shared-interfaces/items';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { Chip } from '@mui/material';
 import ReactDOM from 'react-dom';
+import React from 'react';
 
 const portal: HTMLElement = document.createElement('div');
 portal.classList.add('allez-le-portail');
@@ -18,7 +19,7 @@ export const ReparentingPortal = (props: {
   const { item, provided, snapshot, onClick, onDelete } = props;
   const usePortal: boolean = snapshot?.isDragging;
 
-  const child: JSX.Element = (
+  const child: React.JSX.Element = (
     <Chip
       className={snapshot.isDragging ? 'is-dragging' : ''}
       label={item.label}

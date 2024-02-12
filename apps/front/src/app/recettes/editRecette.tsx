@@ -1,5 +1,5 @@
 import '@styles/forms.scss';
-import { Params, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, Params, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, Chip, IconButton, TextField, Typography } from '@mui/material';
 import { DeleteForeverRounded, DeleteRounded, SaveAsRounded } from '@mui/icons-material';
 import { FieldArray, withFormik } from 'formik';
@@ -17,7 +17,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { Flags } from '@components/flags/flags';
 import { EFlags } from '@shared-interfaces/flags';
 
-export const EditRecette = (): JSX.Element => {
+export const EditRecette = (): React.JSX.Element => {
   const { recetteId }: Readonly<Params<string>> = useParams();
   const defaultUrl = 'https://alsace-1bc06.kxcdn.com/img/ybc_blog/post/Choucroute_big.jpg';
   const isNewRecette = recetteId === 'new';
@@ -73,7 +73,7 @@ export const EditRecette = (): JSX.Element => {
             message: '👽 Recette supprimé',
             severity: 'success',
           });
-          navigation('/recettes');
+          navigation('/recettes', { state: { itemLabel: null } });
         })
         .catch(() => {
           setSnackValues({ open: true, message: '😨 Erreur !', severity: 'error' });
@@ -102,7 +102,7 @@ export const EditRecette = (): JSX.Element => {
   );
 };
 
-const TSXForm = (props: any): JSX.Element => {
+const TSXForm = (props: any): React.JSX.Element => {
   const {
     values,
     touched,
@@ -361,7 +361,7 @@ const RecetteForm = withFormik({
     handleRemove: (open: boolean, remove?: boolean) => void;
     item: ItemBase;
     articlesData: ItemBase[];
-    navigation: (to: string) => void;
+    navigation: NavigateFunction;
     setSnackValues: ({ open, message, severity }: ISnackbar) => void;
     saveData: RefetchFunction<unknown, unknown>;
     loading: boolean;
@@ -418,7 +418,7 @@ const RecetteForm = withFormik({
           message: isNewRecette ? '🌞 Recette enregistrée' : '🌞 Recette modifiée',
           severity: 'success',
         });
-        navigation('/recettes');
+        navigation('/recettes', { state: { itemLabel: values.label } });
       })
       .catch(error => {
         setSnackValues({ open: true, error, severity: 'error' });
