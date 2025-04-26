@@ -8,6 +8,12 @@ Nest et Firebase utilisation [NESTxFIREBASE](https://reza-rahmati.medium.com/set
 
 Autre lien helpful : https://itnext.io/nx-nest-firebase-the-dream-616e8ee71920
 
+Lancer le projet avec npm les commandes basiques :
+- npm run start:front
+- npm run start:back
+
+Le back doit avoir la base de donnée installée pour fonctionner.
+
 ## Journal de Debug GCP
 
 https://console.cloud.google.com/welcome?authuser=0&hl=fr&project=mainecoorse
@@ -18,6 +24,12 @@ Permet de voir tous logs d'erreur via GCP
 A noter : URL trouvable depuis l'interface Firebase Functions, en cliquant sur la fonction !
 
 ## PostgreSQL
+###
+Installer PgAdmin4 et postgresql sur la machine
+Créer l'utilisateur postgres
+Créer la base de données mainecoorse, en host mettre 127.0.0.1 et le password lié à postgres qu'on retrouve dans les fichiers .env.
+Importer une BDD existante, dans le Drive.
+
 
 ### Tester la base de prod sans proxy
 
@@ -28,7 +40,8 @@ Depuis le fichier .env, il faut remplacer les logins et le host équivalent à l
 On extrait la bdd de manière récurrente
 
 - Clic droit sur le nom de bdd > Backup : Nom du fichier, pas d'options.
-  On peut restaurer la bdd
+  
+On peut restaurer la bdd comme ceci :
 - Clic droit sur le nom de la bdd à restaurer > Restore : Nom du fichier, options [Queries: Clean Before Restore]
 
 ## NPM Packages

@@ -4,11 +4,11 @@
   "license": "GPL-3.0-only",
   "main": "main.js",
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "scripts": {
     "start:front": "nx serve front --host --open",
-    "start:back": "nx serve back ",
+    "start:back": "nx serve back",
     "preview:front": "nx preview front --host --open",
     "lint:back": "nx lint back",
     "lint:front": "nx lint front",
