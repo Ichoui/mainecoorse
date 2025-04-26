@@ -14,6 +14,10 @@ Lancer le projet avec npm les commandes basiques :
 
 Le back doit avoir la base de donnée installée pour fonctionner.
 
+## Environnements
+
+Voir Notes Apple
+
 ## Journal de Debug GCP
 
 https://console.cloud.google.com/welcome?authuser=0&hl=fr&project=mainecoorse
