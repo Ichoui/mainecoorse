@@ -12,7 +12,6 @@ export class ArticlesCreateDto {
   @MaxLength(40)
   label: string;
 
-  @IsNotEmpty()
   @IsString()
   @MaxLength(1024)
   description: string;
@@ -25,7 +24,6 @@ export class ArticlesCreateDto {
   @IsEnum(EFlags)
   flag: EFlags;
 
-  @IsNotEmpty()
   @IsString()
   @MaxLength(512)
   url: string;

@@ -32,7 +32,7 @@ export const Articles = (): React.JSX.Element => {
           behavior: 'smooth',
           block: 'start',
         });
-      },250);
+      }, 250);
     }
   }, [data, loading, error, location]);
 
@@ -65,7 +65,7 @@ export const Articles = (): React.JSX.Element => {
           variant='outlined'
           onChange={e => handleSearch(e.target.value)}
           size='small'
-        ></TextField>
+        />
 
         <Autocomplete
           multiple

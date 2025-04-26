@@ -6,7 +6,7 @@ import { ManageQuantity } from '@components/manage-quantity/manage-quantity';
 import { RefetchFunction } from 'axios-hooks';
 import { axiosUrl } from '@shared/hooks/axios.config';
 import { useDebouncedCallback } from 'use-debounce';
-import { urlTest } from '@shared/utils/url.utils';
+import Maple from '/maple.png';
 
 export const Coches = (props: {
   item: CoursesArticleList;
@@ -45,7 +45,8 @@ export const Coches = (props: {
 
   const [icon, setIcon] = useState<string>('');
   useEffect(() => {
-    urlTest(item?.url ?? '').then(res => setIcon(res.url));
+    setIcon(item?.url ?? Maple)
+    //urlTest(item?.url ?? '').then(res => setIcon(res.url));
   }, [setIcon, item?.url]);
 
   return (

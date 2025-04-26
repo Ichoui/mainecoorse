@@ -82,7 +82,7 @@ export const Courses = () => {
                           setSnackValues={setSnackValues}
                           executePut={executePutQuantity}
                           cocheChanged={cocheChanged}
-                        ></Coches>
+                        />
                       ))}
                     </div>
                   </div>

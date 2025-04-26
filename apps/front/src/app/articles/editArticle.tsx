@@ -113,7 +113,7 @@ const ArticleForm = (props: {
   const initialValues: Partial<ItemBase> = {
     label: item?.label,
     url: item?.url,
-    description: item?.description,
+    description: item?.description || '',
     flag: item?.flag || (localStorage.getItem('flag') as EFlags) || EFlags.QCOCCITAN,
     tags: item?.tags
   };
@@ -126,9 +126,10 @@ const ArticleForm = (props: {
     url: yup
       .string()
       .url('Gruge pas, on veut un lien pas long !')
-      .max(512, 'Trop long ton lien ! 😡')
-      .required('Met une image stp 🖼️'),
-    description: yup.string().max(1024, 'Trop long ton fichu texte ! 😡').required('Un autographe svp 🖋️'),
+      .max(512, 'Trop long ton lien ! 😡'),
+      //.required('Met une image stp 🖼️'),
+    description: yup.string().max(1024, 'Trop long ton fichu texte ! 😡'),
+    //.required('Un autographe svp 🖋️'),
     tags: yup.array().min(1, 'Tu voulais des tags, tu les mets ! 🧌').required(),
   });
 
@@ -164,7 +165,7 @@ const ArticleForm = (props: {
       />
       <div className='image-web'>
         <TextField
-          label='Image Web*'
+          label='Image Web'
           placeholder='https://munster-alsace.de'
           type='text'
           name='url'
@@ -216,7 +217,7 @@ const ArticleForm = (props: {
       ></Flags>
 
       <TextField
-        label='Description*'
+        label='Description'
         placeholder='On se fait une petite Raclette, une Tartiflette ou une Fondue ? 🫕'
         name='description'
         value={formik.values.description}

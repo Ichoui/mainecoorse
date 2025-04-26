@@ -14,10 +14,6 @@ Lancer le projet avec npm les commandes basiques :
 
 Le back doit avoir la base de donnée installée pour fonctionner.
 
-## Environnements
-
-Voir Notes Apple
-
 ## Journal de Debug GCP
 
 https://console.cloud.google.com/welcome?authuser=0&hl=fr&project=mainecoorse
@@ -73,6 +69,8 @@ Lors du build du back, il faut que le fichier .env.prod soit envoyé dans '/dist
 Lors du build du front, il faut que le fichier .env.production soit buildé également. ViteJS s'en occupe pour nous.
 
 ## Environnements
+Voir Notes Apple
+
 
 ### Front
 
