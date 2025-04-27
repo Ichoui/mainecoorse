@@ -4,6 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  root: __dirname,
   cacheDir: '../../node_modules/.vite/front',
   plugins: [
     tsconfigPaths(),
@@ -36,6 +37,9 @@ export default defineConfig({
     host: 'localhost',
   },
   build: {
+    outDir: '../../dist/apps/front',
+    reportCompressedSize: true,
+    commonjsOptions: { transformMixedEsModules: true },
     assetsInlineLimit: 20000,
   },
   resolve: {

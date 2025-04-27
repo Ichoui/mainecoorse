@@ -4,3 +4,6 @@
 !/apps/back/.env
 
 !/apps/back/.env.prod
+
+/.nx/cache
+/.nx/workspace-data
