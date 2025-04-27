@@ -41,7 +41,7 @@ export const EditRecette = (): React.JSX.Element => {
   const [backgroundSize, setBackgroundSize] = useState<string>('contain'); // add state for background size
   const [flag, setFlag] = useState<EFlags>(item?.flag);
   useEffect(() => {
-    urlTest(item?.url ?? '', defaultUrl).then(res => {
+    urlTest(item?.url, defaultUrl).then(res => {
       setBgi(res.url);
 
       const image = new Image();

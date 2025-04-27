@@ -26,7 +26,7 @@ export const DialogInspectItem = (props: {
 
   const [itemUrl, setItemUrl] = useState({ url: '', pending: true, typeUrl: '' });
   useEffect(() => {
-    urlTest(item?.url ?? '').then(res => setItemUrl({ url: res.url, pending: false, typeUrl: res.typeUrl }));
+    urlTest(item?.url).then(res => setItemUrl({ url: res.url, pending: false, typeUrl: res.typeUrl }));
   }, [item?.url, setItemUrl]);
 
   return (

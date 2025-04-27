@@ -46,7 +46,6 @@ export const Coches = (props: {
   const [icon, setIcon] = useState<string>('');
   useEffect(() => {
     setIcon(item?.url ?? Maple)
-    //urlTest(item?.url ?? '').then(res => setIcon(res.url));
   }, [setIcon, item?.url]);
 
   return (

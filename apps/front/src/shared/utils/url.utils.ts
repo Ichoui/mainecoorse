@@ -5,13 +5,16 @@ export async function urlTest(
   defaultUrl?: string,
   callbackInitialValue?: boolean,
 ): Promise<{ typeUrl: string; url: string }> {
+  if (!url) {
+    return returnGastronomy();
+  }
   return axios
     .get(url)
     .then(() => ({ url: url, typeUrl: 'correct' }))
-    .catch((err) => {
+    .catch(err => {
       if (callbackInitialValue) {
         if (err) {
-          return {url: '', typeUrl: 'incorrect'}
+          return { url: '', typeUrl: 'incorrect' };
         }
         return { url: url, typeUrl: 'default' };
       }
@@ -19,13 +22,17 @@ export async function urlTest(
       if (defaultUrl) {
         return { url: defaultUrl, typeUrl: 'default' };
       } else {
-        return {
-          url: gastronomyArray[Math.floor(Math.random() * gastronomyArray.length)],
-          typeUrl: 'incorrect',
-        };
+       return returnGastronomy();
       }
     });
 }
+
+const returnGastronomy = (): { url: string; typeUrl: string } => {
+  return {
+    url: gastronomyArray[Math.floor(Math.random() * gastronomyArray.length)],
+    typeUrl: 'incorrect',
+  };
+};
 
 const gastronomyArray = [
   './assets/gastronomy/apple-1.png',

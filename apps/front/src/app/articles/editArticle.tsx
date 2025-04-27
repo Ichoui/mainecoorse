@@ -27,7 +27,7 @@ export const EditArticle = (): React.JSX.Element => {
   const [backgroundSize, setBackgroundSize] = useState<string>('contain'); // add state for background size
 
   useEffect(() => {
-    urlTest(item?.url ?? '', defaultUrl).then(res => {
+    urlTest(item?.url, defaultUrl).then(res => {
       setBgi(res.url);
       const image = new Image();
       image.onload = function (e) {
