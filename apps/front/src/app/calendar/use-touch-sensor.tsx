@@ -1,7 +1,7 @@
 /* eslint-disable */
 // @ts-nocheck
-import * as React from 'react';
-import { useCallback, useMemo } from 'use-memo-one';
+import React, { useCallback, useMemo } from 'react';
+
 import type { Position } from 'css-box-model';
 import { DraggableId, FluidDragActions, PreDragActions, SensorAPI } from '@hello-pangea/dnd';
 
