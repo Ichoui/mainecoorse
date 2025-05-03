@@ -10,6 +10,7 @@ import {
 import './app.scss';
 import maple from '/logo.png';
 import skyrimTroll from '/skyrim.mp3';
+import hungrySharkTroll from '/hungryShark.mp3';
 import occitan from '/flags/croix-occitane.png';
 import lys from '/flags/fleur-de-lys.png';
 import { backgroundThemeColor, headerThemeColor, themeOptions } from '@styles/theme';
@@ -44,7 +45,8 @@ export const App = (): React.JSX.Element => {
       return 'articles';
     }
   };
-  const [skyrim, setSkyrim] = useState<boolean>(true);
+
+  const [skyrimOrHungryshark, setSkyrimOrHungryshark] = useState<boolean>(true);
   const [value, setValue] = useState<string | boolean>(location());
   const handleChangeTab = (event: SyntheticEvent, newValue: 'articles' | 'calendar' | 'recettes' | 'courses') =>
     setValue(newValue);
@@ -102,11 +104,11 @@ export const App = (): React.JSX.Element => {
           </IconButton>
         </NavLink>
 
-        <span className='logo' onClick={() => setSkyrim(!skyrim)}>
-          {skyrim && (
+        <span className='logo' onClick={() => setSkyrimOrHungryshark(!skyrimOrHungryshark)}>
+          {skyrimOrHungryshark && (
             <div style={{ display: 'none' }}>
               <audio autoPlay={true} loop={true}>
-                <source src={skyrimTroll} type='audio/mp3' />
+                <source src={[skyrimTroll, hungrySharkTroll][Math.floor(Math.random() * 2)]} type='audio/mp3' />
               </audio>
             </div>
           )}
