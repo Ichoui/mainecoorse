@@ -38,6 +38,7 @@ export default defineConfig({
   },
   build: {
     outDir: '../../dist/apps/front',
+    emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: { transformMixedEsModules: true },
     assetsInlineLimit: 20000,

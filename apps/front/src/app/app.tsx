@@ -58,7 +58,7 @@ export const App = (): React.JSX.Element => {
 
   const [appReady, setAppReady] = useState(false);
   useEffect(() => {
-    let timer: NodeJS.Timer;
+    let timer: NodeJS.Timeout;
     if (!appReady) {
       // Permet principalement l'attente que la fonction firebase soit chaude
       // On attend que l'application soit ready pour affichier l'application

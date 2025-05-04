@@ -240,7 +240,7 @@ const TSXForm = (props: any): React.JSX.Element => {
 
       <div className='articlesList'>
         <FieldArray name='articlesList'>
-          {({ remove, push }) => (
+          {({ remove, push }:{remove: any, push: any} ) => (
             <Fragment>
               {(values.articlesList as ArticleList[])?.map((p, index) => {
                 return (

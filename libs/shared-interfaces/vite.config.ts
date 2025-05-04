@@ -8,15 +8,20 @@ import { resolve } from 'path';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/shared-interfaces',
-
+  root: __dirname, // semble être une ligne importante, si jamais bug de build dans le futur !
   plugins: [
     dts({
       entryRoot: 'src',
-      tsconfigPath: joinPathFragments(__dirname, 'tsconfig.lib.json'),
+      // tsconfigPath: joinPathFragments(__dirname, 'tsconfig.lib.json'),
+      tsconfigPath: resolve(__dirname, 'tsconfig.lib.json'),
     }),
     react(),
     viteTsConfigPaths({
-      root: '../../',
+      //   root: '../../',
+      // on ne remonte plus dans tout le repo, on cible uniquement le tsconfig de la lib
+      projects: [resolve(__dirname, 'tsconfig.lib.json')],
+      // si tu as encore du bruit (IDE, autres monorepos…), ignore les erreurs de parsing
+      ignoreConfigErrors: true,
     }),
   ],
 
@@ -24,7 +29,7 @@ export default defineConfig({
     alias: [
       {
         find: '@shared-interfaces',
-        replacement: resolve(__dirname, '/src/interfaces'),
+        replacement: resolve(__dirname, 'src/interfaces'),
       },
     ],
   },

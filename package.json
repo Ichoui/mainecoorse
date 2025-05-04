@@ -19,8 +19,9 @@
     "firebase:emulator": "firebase emulators:start --only functions --inspect-functions --debug",
     "ncu": "ncu",
     "test:ncu": "ncu --doctor -u",
-    "build:front": "nx build front --skip-nx-cache",
+    "build:front": "nx build front --production --skip-nx-cache --emptyOutDir=true",
     "build:back": "nx build back --skip-nx-cache && npm run rename-env",
+    "build:front:prod": "nx build front --production --skip-nx-cache --emptyOutDir=true",
     "firebase:deploy:front": "firebase deploy --only hosting",
     "firebase:deploy:back": "firebase deploy --only functions --force"
   },
