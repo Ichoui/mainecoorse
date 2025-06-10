@@ -34,7 +34,7 @@ export const Recettes = (): React.JSX.Element => {
           behavior: 'smooth',
           block: 'start',
         });
-      },250);
+      }, 250);
     }
   }, [data, loading, error, location]);
 
@@ -64,7 +64,7 @@ export const Recettes = (): React.JSX.Element => {
           variant='outlined'
           onChange={e => handleSearch(e.target.value)}
           size='small'
-        ></TextField>
+        />
 
         <Autocomplete
           multiple
@@ -87,9 +87,7 @@ export const Recettes = (): React.JSX.Element => {
       {error && <DataError />}
 
       <div className='listing'>
-        {filteredRecettes?.map((recette, i) => (
-          <Item key={i} item={recette} itemRemoved={() => refetchRecettes()} />
-        ))}
+        {filteredRecettes?.map((recette, i) => <Item key={i} item={recette} itemRemoved={() => refetchRecettes()} />)}
         {filteredRecettes?.length === 0 && !loading && !error && (
           <div className='no-results'>
             <img src={MapleNoResults} alt='Aucun résultats' />

@@ -148,7 +148,7 @@ const TSXForm = (props: any): React.JSX.Element => {
       />
       <div className='image-web'>
         <TextField
-          label='Image Web*'
+          label='Image Web'
           placeholder='https://potee-egal-choucroute.de'
           type='text'
           name='url'
@@ -214,7 +214,7 @@ const TSXForm = (props: any): React.JSX.Element => {
         }}
       ></Flags>
       <TextField
-        label='Description*'
+        label='Description'
         placeholder='Qui a dit que le magret et la choucroute ça se mariait pas bien ? 🦆'
         name='description'
         value={values.description}
@@ -228,7 +228,7 @@ const TSXForm = (props: any): React.JSX.Element => {
       />
       <TextField
         label='Compléments'
-        placeholder='Un peu de Sel ou de Poivre ? 🧂e'
+        placeholder='Un peu de Sel ou de Poivre ? 🧂'
         name='complements'
         value={values?.complements ?? ''}
         variant='outlined'
@@ -386,9 +386,10 @@ const RecetteForm = withFormik({
       .string()
       .url("C'est pas une vrai URL ça 🙀")
       .max(512, 'Trop long ton lien ! 😡')
-      .required('Met une image stp 🖼️'),
+      .notRequired(),
+      //.required('Met une image stp 🖼️'),
     link: yup.string().url('URL ou rien 👾').max(1024, 'Trop long ton lien ! 😡').notRequired(),
-    description: yup.string().max(1024, 'Trop long ton fichu texte ! 😡').required('Encore un autographe svp 🖋️️'),
+    description: yup.string().max(2048, 'Trop long ton fichu texte ! 😡').notRequired(), //.required('Encore un autographe svp 🖋️️'),
     articlesList: yup
       .array()
       .of(

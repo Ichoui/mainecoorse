@@ -12,9 +12,9 @@ export class RecettesCreateDto {
   @MaxLength(40)
   label: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  @MaxLength(1024)
+  @MaxLength(2048)
   description: string;
 
   @IsOptional()
@@ -35,7 +35,7 @@ export class RecettesCreateDto {
   @IsEnum(EFlags)
   flag: EFlags;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(512)
   url: string;

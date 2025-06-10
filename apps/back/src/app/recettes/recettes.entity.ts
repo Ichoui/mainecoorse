@@ -15,7 +15,7 @@ export class RecettesEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 40 })
   label: string;
 
-  @Column({ type: 'varchar', length: 1024 })
+  @Column({ type: 'varchar', length: 2048, nullable: true })
   description: string;
 
   @Column({ type: 'varchar', length: 1024, nullable: true })
@@ -33,7 +33,7 @@ export class RecettesEntity extends BaseEntity {
   @Column({ type: 'enum', enum: EFlags })
   flag: EFlags;
 
-  @Column({ type: 'varchar', length: 512 })
+  @Column({ type: 'varchar', length: 512, nullable: true})
   url: string;
 
   @Column({

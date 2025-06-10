@@ -96,10 +96,12 @@ export const DialogInspectItem = (props: {
             </p>
           )}
 
-          <p
-            className='description'
-            dangerouslySetInnerHTML={{ __html: `<strong>Description</strong><br/> ${item.description}` }}
-          />
+          {item?.description && (
+            <p
+              className='description'
+              dangerouslySetInnerHTML={{ __html: `<strong>Description</strong><br/> ${item.description}` }}
+            />
+          )}
         </div>
       </DialogContent>
       <DialogActions>
